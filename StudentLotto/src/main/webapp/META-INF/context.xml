@@ -1,0 +1,5 @@
+<Context docBase="${catalina.home}/webapps/StudentLotto" privileged="true">
+	<ResourceLink global="StudentLottoDb" 
+	name="StudentLottoDb"
+	type="javax.sql.DataSource"/>
+</Context>
