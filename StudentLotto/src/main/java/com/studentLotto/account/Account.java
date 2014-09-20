@@ -14,7 +14,7 @@ public class Account implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long id; 
 
 	@Column(unique = true)
 	private String email;
