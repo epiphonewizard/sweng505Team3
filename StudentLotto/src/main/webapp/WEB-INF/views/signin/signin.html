@@ -19,6 +19,12 @@
 	      		An email has been sent to your account. Please respond to it to verify your account.
 	      	</p>
 	      </th:block>
+	      <th:block th:if="${message.message == 'email.activate'}">
+	      	<h1>Welcome to Student Lotto</h1>
+	      	<p class="lead">
+	      		Your account has been activated. Please sign in!
+	      	</p>
+	      </th:block>
 	    </th:block>
 	    <th:block th:unless="${message != null}">
 	        <h1>Welcome to Student Lotto</h1>
