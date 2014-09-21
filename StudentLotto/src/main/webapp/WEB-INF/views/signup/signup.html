@@ -11,6 +11,30 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     
     <script>
+    	function clearNA(id){
+    		if ($("#" + id).val() == "NA") $("#"+ id).val('')
+    	}
+    	
+    	function setNA(id){
+    		if ($("#" + id).val() == "") $("#"+ id).val('NA')    		
+    	}
+    	
+    	function clickUserType(){
+			  if($("input[name='userType']:checked").val() == "Student" ){
+				  clearNA("mailStreetAddress")
+				  clearNA("mailCity")
+				  clearNA("mailZip")
+				  clearNA("major")
+				  $("#studentInfo").show('medium')
+			  } else {
+				  setNA("mailStreetAddress")
+				  setNA("mailCity")
+				  setNA("mailZip")
+				  setNA("major")
+				  $("#studentInfo").hide('medium')				  
+			  }
+		  }
+    
 	  $(function() {
 	    $( "#dateOfBirth" ).datepicker({
 	      changeMonth: true,
@@ -20,11 +44,12 @@
 	  });
 	  
 	  $(document).ready(function(){
-		  $("input[name='userType']").click(function(){
-			  if($("input[name='userType']:checked").val() == "Student" ) $("#studentInfo").show('medium')
-			  else $("#studentInfo").hide('medium') 
-		  })
+		  $("input[name='userType']").click(clickUserType)	
+		  clickUserType()
 		  
+		  $("#phoneNumber").change(function(){
+			  $("#phoneNumber").val($("#phoneNumber").val().replace(/\D/g,''));
+		  })
 	  })
 	  
 	  
@@ -37,10 +62,14 @@
     <th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
         <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     </th:block>
+    <div class="col-lg-10" th:classappend="${#fields.hasErrors('global')}? 'has-error'">
+		<span class="help-block" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
+	</div>
     <fieldset>
         <legend>Please Sign Up</legend>
         <div class="form-narrow" id="loginInfo">
         	<label>Login Info</label>
+        	
 	        <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">Email</label>
 	            <div class="col-lg-10">
