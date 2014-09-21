@@ -1,10 +1,13 @@
 package com.studentLotto.signup;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.*;
 
 import com.studentLotto.account.Account;
 
-public class SignupForm {
+@ScriptAssert(lang="javascript", script="_this.password.equals(_this.confirm)", message="Password and Confirm fields must match")
+public class SignupForm { 
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 	private static final String EMAIL_MESSAGE = "{email.message}";
@@ -33,6 +36,7 @@ public class SignupForm {
     
 
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+    @Pattern(regexp ="\\d?\\d{3}?\\d{7}", message = "Enter a valid phone number")
     private String phoneNumber;
     
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
@@ -50,18 +54,19 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeZip;
     
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String mailStreetAddress;
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String mailCity;
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String mailState = "PA";
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String mailCountry = "USA";
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String mailZip;
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String school = "PennState";
-    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String major;
 
 

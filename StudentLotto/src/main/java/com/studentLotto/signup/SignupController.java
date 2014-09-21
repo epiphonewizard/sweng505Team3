@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.*;
+import com.studentLotto.support.mail.MailSenderImpl;
+import com.studentLotto.support.mail.MessageCreator;
 import com.studentLotto.support.web.*;
 
 @Controller
@@ -40,12 +42,19 @@ public class SignupController {
 			return SIGNUP_VIEW_NAME;
 		}
 		Account account = accountRepository.save(signupForm.createAccount());
-		userService.signin(account);
+		emailActivation(account.getEmail(), account.getId());
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:/";
+		return "redirect:/signin"; 
 	}
 	
+	/**
+	 * refrerence data used in creation of page. This will need to be updated for real values
+	 * once database is completely set up.
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	protected Map referenceData(HttpServletRequest request) throws Exception {
 		Map referenceData = new HashMap();
 		
@@ -69,6 +78,12 @@ public class SignupController {
 		referenceData.put("schoolList", schools);
 		
 		return referenceData;
+	}
+	
+	private void emailActivation(String emailAddress, Long acountId){
+		new MailSenderImpl().sendMail("sweng505team3@gmail.com", emailAddress, 
+				"Registration Activation", 
+				new MessageCreator().registrationValidationEmail(emailAddress));
 	}
 	
 	
