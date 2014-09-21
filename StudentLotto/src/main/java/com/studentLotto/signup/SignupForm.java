@@ -17,6 +17,7 @@ public class SignupForm {
 	private String password;
     
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+    
     private String confirm;
     
     private String userType = "Student";
@@ -31,15 +32,22 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String lastName;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String phoneNumber;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeStreetAddress;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeCity;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeState = "PA";
+    
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeCountry = "USA";
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String homeZip;
     
     
