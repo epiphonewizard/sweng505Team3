@@ -82,7 +82,8 @@ public class SignupController {
 	
 	private void emailActivation(String emailAddress, Long acountId){
 		new MailSenderImpl().sendMail("sweng505team3@gmail.com", emailAddress, 
-				"Registration Activation", new MessageCreator().registrationValidationEmail("ryanhicke@gmail.com"));
+				"Registration Activation", 
+				new MessageCreator().registrationValidationEmail(emailAddress));
 	}
 	
 	
