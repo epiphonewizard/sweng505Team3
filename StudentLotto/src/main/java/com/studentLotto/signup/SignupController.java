@@ -39,11 +39,10 @@ public class SignupController {
 		if (errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
 		}
-		Account account = accountRepository.save(signupForm.createAccount());
-		userService.signin(account);
+		accountRepository.save(signupForm.createAccount());
         // see /WEB-INF/i18n/messages.properties and /WEB-INF/views/homeSignedIn.html
         MessageHelper.addSuccessAttribute(ra, "signup.success");
-		return "redirect:/";
+		return "redirect:/signin";
 	}
 	
 	protected Map referenceData(HttpServletRequest request) throws Exception {
