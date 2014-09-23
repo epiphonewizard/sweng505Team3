@@ -6,7 +6,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "account")
 @NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
 public class Account implements java.io.Serializable {
 
@@ -21,6 +20,10 @@ public class Account implements java.io.Serializable {
 	
 	@JsonIgnore
 	private String password;
+	
+	@OneToOne
+	@JoinColumn(name="id", referencedColumnName="accountId")
+	private Person person;
 
 	private String role = "ROLE_USER";
 
@@ -61,4 +64,13 @@ public class Account implements java.io.Serializable {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
 }
