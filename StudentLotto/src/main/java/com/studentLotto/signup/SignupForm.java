@@ -20,7 +20,6 @@ public class SignupForm {
 	private String password;
     
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    
     private String confirm;
     
     private String userType = "Student";
@@ -35,6 +34,7 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String lastName;
     
+
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     @Pattern(regexp ="\\d?\\d{3}?\\d{7}", message = "Enter a valid phone number")
     private String phoneNumber;

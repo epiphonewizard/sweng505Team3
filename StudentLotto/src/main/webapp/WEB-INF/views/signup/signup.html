@@ -42,7 +42,7 @@
 	      yearRange: "c-100:c"
 	    });
 	  });
-	  
+
 	  $(document).ready(function(){
 		  $("input[name='userType']").click(clickUserType)	
 		  clickUserType()
@@ -51,12 +51,11 @@
 			  $("#phoneNumber").val($("#phoneNumber").val().replace(/\D/g,''));
 		  })
 	  })
-	  
-	  
 	</script>
 </head>
 <body>
 <div th:replace="fragments/header :: header">Header</div>
+
 <form id="registrationForm" class="form-narrow form-horizontal" method="post" th:action="@{/signup}" th:object="${signupForm}">
     <!-- /* Show general error message when form contains errors */ -->
     <th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
