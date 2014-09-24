@@ -1,6 +1,7 @@
 package com.studentLotto.account;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -9,10 +10,12 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="Student.findAll", query="SELECT s FROM Student s")
+@NamedQuery(name="Student.findByUniversityEmail", query="SELECT s FROM Student s WHERE s.uEmailAddress = :email")
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static final String FIND_BY_UNIVERSITY_EMAIL = "Student.findByUniversityEmail";
+	
 	@Id
 	@GeneratedValue
 	private Long id;
