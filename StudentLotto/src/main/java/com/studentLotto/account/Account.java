@@ -1,11 +1,14 @@
 package com.studentLotto.account;
 
+import java.security.MessageDigest;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "account")
 @NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
 public class Account implements java.io.Serializable {
 
@@ -13,24 +16,20 @@ public class Account implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue
-	private Long id; 
+	private Long id;
 
 	@Column(unique = true)
 	private String email;
-	
+
 	@JsonIgnore
 	private String password;
-	
-	@OneToOne
-	@JoinColumn(name="id", referencedColumnName="accountId")
-	private Person person;
 
 	private String role = "ROLE_USER";
 
-    protected Account() {
+	protected Account() {
 
 	}
-	
+
 	public Account(String email, String password, String role) {
 		this.email = email;
 		this.password = password;
@@ -41,7 +40,7 @@ public class Account implements java.io.Serializable {
 		return id;
 	}
 
-    public String getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
@@ -65,12 +64,28 @@ public class Account implements java.io.Serializable {
 		this.role = role;
 	}
 
-	public Person getPerson() {
-		return person;
+	public boolean emailAccountActivation(String emailAddress, String password) {
+		return false;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public String generateAccountActivationKey(String emailAddress,
+			String password) {
+		String accountActivationkey = "";
+		return accountActivationkey;
+	}
+
+	public boolean isActivationKeyUnique(String activationKey) {
+		return false;
+	}
+
+	public boolean saveAccountActivationInfo(String activationKey,
+			long accountId) {
+		return false;
+	}
+
+	public boolean sendEmail(String recipientAddress, String emailTitle,
+			String emailBody) {
+		return false;
 	}
 
 }
