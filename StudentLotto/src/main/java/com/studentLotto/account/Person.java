@@ -6,22 +6,20 @@ import javax.persistence.*;
 
 import java.util.Date;
 
-
 /**
  * The persistent class for the person database table.
  * 
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name="Person.findById", query="SELECT p FROM Person p WHERE p.id = :id"),
-@NamedQuery(name="Person.findByName", query="SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname")
-})
+		@NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id"),
+		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname") })
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String FIND_BY_ID = "Person.findById";
 	public static final String FIND_BY_NAME = "Person.findByName";
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -45,19 +43,38 @@ public class Person implements Serializable {
 
 	private String phoneNumber;
 
-	//bi-directional one-to-one association to Student
+	// bi-directional one-to-one association to Student
 	@OneToOne
-	@JoinColumn(name="id", referencedColumnName="personId")
+	@JoinColumn(name = "id", referencedColumnName = "personId")
 	private Student student;
-	
-	@OneToOne(mappedBy="person")
+
+	@OneToOne(mappedBy = "person")
 	private Account account;
 
 	public Person() {
 	}
 
+
+	
+
 	public Long getId() {
 		return this.id;
+	}
+
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public void setId(Long id) {
@@ -151,7 +168,5 @@ public class Person implements Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
-	
 
 }

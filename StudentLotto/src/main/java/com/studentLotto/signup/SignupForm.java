@@ -1,76 +1,76 @@
 package com.studentLotto.signup;
 
+import java.util.Date;
+
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.*;
 
 import com.studentLotto.account.Account;
+import com.studentLotto.account.Person;
 
-@ScriptAssert(lang="javascript", script="_this.password.equals(_this.confirm)", message="Password and Confirm fields must match")
-public class SignupForm { 
+@ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.confirm)", message = "Password and Confirm fields must match")
+public class SignupForm {
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 	private static final String EMAIL_MESSAGE = "{email.message}";
 
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	@Email(message = SignupForm.EMAIL_MESSAGE)
 	private String email;
 
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String password;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String confirm;
-    
-    private String userType = "Student";
-    
 
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String dateOfBirth;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String firstName;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String lastName;
-    
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String confirm;
 
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    @Pattern(regexp ="\\d?\\d{3}?\\d{7}", message = "Enter a valid phone number")
-    private String phoneNumber;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String homeStreetAddress;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String homeCity;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String homeState = "PA";
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String homeCountry = "USA";
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String homeZip;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String mailStreetAddress;
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String mailCity;
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String mailState = "PA";
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String mailCountry = "USA";
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String mailZip;
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String school = "PennState";
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-    private String major;
+	private String userType = "Student";
 
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String dateOfBirth;
 
-    public String getEmail() { 
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String firstName;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String lastName;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	@Pattern(regexp = "\\d?\\d{3}?\\d{7}", message = "Enter a valid phone number")
+	private String phoneNumber;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String homeStreetAddress;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String homeCity;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String homeState = "PA";
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String homeCountry = "USA";
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String homeZip;
+
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailStreetAddress;
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailCity;
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailState = "PA";
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailCountry = "USA";
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailZip;
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String school = "PennState";
+	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String major;
+
+	public String getEmail() {
 		return email;
 	}
 
@@ -85,7 +85,7 @@ public class SignupForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getConfirm() {
 		return confirm;
 	}
@@ -93,11 +93,9 @@ public class SignupForm {
 	public void setConfirm(String confirm) {
 		this.confirm = confirm;
 	}
-	
-	
 
 	public Account createAccount() {
-        return new Account(getEmail(), getPassword(), "ROLE_USER");
+		return new Account(getEmail(), getPassword(), "ROLE_USER");
 	}
 
 	public String getUserType() {
@@ -179,7 +177,6 @@ public class SignupForm {
 	public void setHomeZip(String homeZip) {
 		this.homeZip = homeZip;
 	}
-	
 
 	public String getMailCity() {
 		return mailCity;
@@ -236,5 +233,18 @@ public class SignupForm {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-	
+
+	/**
+	 * this.birthdate = birthdate; this.fname = fname; this.lname = lname;
+	 * this.permAddressCity = permAddressCity; this.permAddressLine1 =
+	 * permAddressLine1; this.permAddressLine2 = permAddressLine2;
+	 * this.permAddressState = permAddressState; this.permAddressZip =
+	 * permAddressZip; this.phoneNumber = phoneNumber;
+	 * 
+	 * @return
+	 */
+	public Person createPerson() {
+		return new Person(new Date(getDateOfBirth()), "AA", "A", "B", "C", "D",
+				"E", "F", "G");
+	}
 }
