@@ -50,7 +50,7 @@ public class SignupController {
 		Account account = accountRepository.save(signupForm.createAccount());
 		// Person person =personRepository.save(signupForm.createPerson());
 
-		emailActivation(account.getEmail(), account.getId());
+		//emailActivation(account.getEmail(), account.getId());
 		// see /WEB-INF/i18n/messages.properties and
 		// /WEB-INF/views/homeSignedIn.html
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
@@ -92,10 +92,10 @@ public class SignupController {
 		return referenceData;
 	}
 
-	private void emailActivation(String emailAddress, Long acountId) {
+	/*private void emailActivation(String emailAddress, Long acountId) {
 		new MailSenderImpl().sendMail("sweng505team3@gmail.com", emailAddress,
 				"Registration Activation",
 				new MessageCreator().registrationValidationEmail(emailAddress));
-	}
+	}*/
 
 }

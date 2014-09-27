@@ -10,6 +10,8 @@ import javax.mail.MessagingException;
 
 import org.apache.commons.codec.binary.Base64;
 
+import com.studentLotto.support.mail.MessageCreator;
+
 /**
  * 
  * @author Elie the account utilities class used to assist the account ORM with
@@ -108,7 +110,9 @@ public class AccountUtilities {
 		// if key already exists for the same user, we dont need to re save it!
 		// instead all we need to do is re generate the activation link and
 		// email it to the user
-		String activationLink = generateLink(activationkey);
+		MessageCreator mc= new MessageCreator();
+		String activationLink = mc.registrationValidationEmail(email, activationkey);
+
 
 		EmailService emailService = new EmailService();
 		try {
@@ -179,11 +183,6 @@ public class AccountUtilities {
 		return ACTIVATION_CODES_STATUS.KEY_EXISTS_FOR_OTHER_USER;
 	}
 
-	public String generateLink(String activationKey) {
-		String link = "http://localhost:8080/StudentLotto/actky=?";
-		link += activationKey;
-		return link;
-	}
 
 	/**
 	 * Method used to convert the encrypted sha256 bytes to string format
