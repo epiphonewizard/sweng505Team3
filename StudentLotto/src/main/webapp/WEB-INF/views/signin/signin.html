@@ -25,6 +25,26 @@
 	      		Your account has been activated. Please sign in!
 	      	</p>
 	      </th:block>
+	      <th:block th:if="${message.message == 'email.reset'}">
+	      	<h1>Welcome to Student Lotto</h1>
+	      	<p class="lead">
+	      		An email has been sent to you with instructions on how to reset your password.
+	      	</p>
+	      </th:block>	      
+	      <th:block th:if="${message.message == 'email.expired'}">
+		    <div th:replace="fragments/alert :: alert (type='danger', message='Your email code has expired.')">Alert</div>
+			<h1>Welcome to Student Lotto</h1>
+	        <p class="lead">
+	            Participate in your schools' scholarship lottery or donate to a school of your choice
+	        </p>
+	      </th:block>
+	      <th:block th:if="${message.message == 'password.changed'}">
+		    <div th:replace="fragments/alert :: alert (type='success', message='Your password has been changed.')">Alert</div>
+			<h1>Welcome to Student Lotto</h1>
+	        <p class="lead">
+	            Participate in your schools' scholarship lottery or donate to a school of your choice
+	        </p>
+	      </th:block>
 	    </th:block>
 	    <th:block th:unless="${message != null}">
 	        <h1>Welcome to Student Lotto</h1>

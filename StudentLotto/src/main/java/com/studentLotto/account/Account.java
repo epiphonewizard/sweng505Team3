@@ -1,5 +1,7 @@
 package com.studentLotto.account;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -26,7 +28,9 @@ public class Account implements java.io.Serializable {
 	private Person person;
 
 	private String role = "ROLE_USER";
+	
 
+	
     protected Account() {
 
 	}

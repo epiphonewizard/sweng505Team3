@@ -24,6 +24,13 @@ public class AccountRepository {
 		return account;
 	}
 
+	@Transactional
+	public Account changePassword(Account account, String password){
+		account.setPassword(passwordEncoder.encode(password));
+		entityManager.merge(account);
+		return account;
+	}
+	
 	public Account findByEmail(String email) {
 		try {
 			return entityManager
