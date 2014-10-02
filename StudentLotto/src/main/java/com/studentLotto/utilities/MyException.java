@@ -1,4 +1,4 @@
-package Utilities;
+package com.studentLotto.utilities;
 
 /**
  * My custom exception

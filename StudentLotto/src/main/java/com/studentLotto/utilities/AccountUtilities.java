@@ -1,4 +1,4 @@
-package Utilities;
+package com.studentLotto.utilities;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
