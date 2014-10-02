@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UniversityRepository {
 	
-	@PersistenceContext
+	/*@PersistenceContext
 	private EntityManager entityManager;	
 	
 	@Transactional
@@ -26,5 +26,5 @@ public class UniversityRepository {
 		} catch (PersistenceException e) {
 			return null;
 		}
-	}
+	}*/
 }
