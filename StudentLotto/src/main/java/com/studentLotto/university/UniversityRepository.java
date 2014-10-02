@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UniversityRepository {
 	
-	/*@PersistenceContext
+	@PersistenceContext
 	private EntityManager entityManager;	
 	
 	@Transactional
@@ -18,7 +18,7 @@ public class UniversityRepository {
 		return university;
 	}
 	
-	public University findByUniversityId(int id) {
+	/*public University findByUniversityId(int id) {
 		try {
 			return entityManager.createNamedQuery(University.FIND_BY_ID, University.class)
 					.setParameter("id", id)
