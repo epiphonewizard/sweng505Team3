@@ -1,7 +1,6 @@
 package com.studentLotto.account;
 
 import javax.persistence.*;
-import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
