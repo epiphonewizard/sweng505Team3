@@ -1,6 +1,7 @@
 package com.studentLotto.university;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -33,7 +34,13 @@ public class University implements Serializable {
 
 	private String zip;
 
-	public University() {
+	public University(String name, String addressLine1, String addressLine2, String city, String state, String zip) {
+		this.name = name;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
 	}
 
 	public Long getId() {
