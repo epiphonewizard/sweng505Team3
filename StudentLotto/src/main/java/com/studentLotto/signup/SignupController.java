@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import Utilities.AccountUtilities;
-
 import com.studentLotto.account.*;
 import com.studentLotto.support.mail.MailSenderImpl;
 import com.studentLotto.support.mail.MessageCreator;
 import com.studentLotto.support.web.*;
+import com.studentLotto.utilities.AccountActivation;
+import com.studentLotto.utilities.AccountActivationRepository;
+import com.studentLotto.utilities.AccountUtilities;
 
 @Controller
 public class SignupController {
@@ -34,6 +36,9 @@ public class SignupController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private AccountActivationRepository accountActivationRepo;
 
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
@@ -50,12 +55,19 @@ public class SignupController {
 		Account account = accountRepository.save(signupForm.createAccount());
 		// Person person =personRepository.save(signupForm.createPerson());
 
-		//emailActivation(account.getEmail(), account.getId());
+		// emailActivation(account.getEmail(), account.getId());
 		// see /WEB-INF/i18n/messages.properties and
 		// /WEB-INF/views/homeSignedIn.html
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
-		AccountUtilities au = new AccountUtilities();
-		au.emailAccountActivation(account.getEmail(), account.getPassword());
+		AccountUtilities accountUtilities = new AccountUtilities();
+
+		AccountActivation accountActivation = accountUtilities
+				.emailAccountActivation(account.getEmail(),
+						account.getPassword(), accountActivationRepo);
+		if (accountActivation != null) {
+			accountActivationRepo.save(accountActivation);
+		}
+
 		return "redirect:/signin";
 	}
 
@@ -91,11 +103,5 @@ public class SignupController {
 
 		return referenceData;
 	}
-
-	/*private void emailActivation(String emailAddress, Long acountId) {
-		new MailSenderImpl().sendMail("sweng505team3@gmail.com", emailAddress,
-				"Registration Activation",
-				new MessageCreator().registrationValidationEmail(emailAddress));
-	}*/
 
 }
