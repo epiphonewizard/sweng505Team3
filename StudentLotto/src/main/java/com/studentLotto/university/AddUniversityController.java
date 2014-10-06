@@ -14,7 +14,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studentLotto.account.UniversityRepository;
 import com.studentLotto.account.UserService;
 import com.studentLotto.support.web.MessageHelper;
 

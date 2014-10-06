@@ -1,5 +1,8 @@
 package com.studentLotto.signup;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.allOf;
@@ -10,6 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.studentLotto.config.WebAppConfigurationAware;
 
 public class SignupControllerTest extends WebAppConfigurationAware {
+	
+	private SignupForm signupForm = new SignupForm();
+	
+	
     @Test
     public void displaysSignupForm() throws Exception {
         mockMvc.perform(get("/signup"))
@@ -22,4 +29,6 @@ public class SignupControllerTest extends WebAppConfigurationAware {
                         ))
                 );
     }
+    
+    
 }

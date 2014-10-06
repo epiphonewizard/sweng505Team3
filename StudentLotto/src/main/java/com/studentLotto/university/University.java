@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.account.Student;
+
 
 /**
  * The persistent class for the University database table.
  * 
  */
 @Entity
-@NamedQuery(name="University.findAll", query="SELECT u FROM University u")
 public class University implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -28,20 +29,32 @@ public class University implements Serializable {
 
 	private String name;
 
-	//private Object picture;
+	@Column(columnDefinition="blob")
+	private byte[] picture;
 
 	private String state;
 
 	private String zip;
+	
+	@OneToOne(mappedBy="university")
+	private Student student;
 
-	public University(String name, String addressLine1, String addressLine2, String city, String state, String zip) {
-		this.name = name;
+	public University() {
+	}
+
+	public University( String addressLine1, String addressLine2,
+			String city, String name,
+			String state, String zip) {
+		super();
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
 		this.city = city;
+		this.name = name;
 		this.state = state;
 		this.zip = zip;
 	}
+
+
 
 	public Long getId() {
 		return this.id;
@@ -91,13 +104,13 @@ public class University implements Serializable {
 		this.name = name;
 	}
 
-	/*public Object getPicture() {
+	public byte[] getPicture() {
 		return this.picture;
 	}
 
-	public void setPicture(Object picture) {
+	public void setPicture(byte[] picture) {
 		this.picture = picture;
-	}*/
+	}
 
 	public String getState() {
 		return this.state;
