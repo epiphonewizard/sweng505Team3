@@ -13,12 +13,14 @@ import java.util.Date;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id"),
-		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname") })
+		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname"),
+		@NamedQuery(name = "Person.findByAccountId", query = "SELECT p FROM Person p WHERE p.accountId = :accountId")  })
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIND_BY_ID = "Person.findById";
 	public static final String FIND_BY_NAME = "Person.findByName";
+	public static final String FIND_BY_ACCOUNT_ID = "Person.findByAccountId";
 
 	@Id
 	@GeneratedValue
@@ -42,6 +44,8 @@ public class Person implements Serializable {
 	private String permAddressZip;
 
 	private String phoneNumber;
+	
+	private Long accountId;
 
 	// bi-directional one-to-one association to Student
 	@OneToOne
@@ -167,6 +171,20 @@ public class Person implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+
+
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+
+
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 }

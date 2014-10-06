@@ -90,8 +90,9 @@ public class PasswordResetController {
 		
 		session.setAttribute("email", email);
 		session.setAttribute("guid", id);
+		ChangePasswordForm passwordForm = new ChangePasswordForm();
 		
-		model.addAttribute(new ChangePasswordForm());
+		model.addAttribute(passwordForm);
 		
         return PASSWORD_RESET_CHANGE_VIEW_NAME;
 	}

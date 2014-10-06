@@ -38,4 +38,14 @@ public class PersonRepository {
 			return null;
 		}
 	}
+	
+	public Person findByAccountId(Long accountId) {
+		try {
+			return entityManager.createNamedQuery(Person.FIND_BY_ACCOUNT_ID, Person.class)
+					.setParameter("accountId", accountId)
+					.getSingleResult();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
 }

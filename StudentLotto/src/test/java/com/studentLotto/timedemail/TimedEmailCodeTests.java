@@ -45,6 +45,4 @@ public class TimedEmailCodeTests {
 		TimedEmailCode code = new TimedEmailCode(email, guid, twentyThreeHoursAgo);
 		assertEquals(code.safeToUse(email), false);		
 	}
-
-
 }

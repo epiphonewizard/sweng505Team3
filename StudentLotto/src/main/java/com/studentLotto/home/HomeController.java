@@ -22,4 +22,5 @@ public class HomeController {
         MessageHelper.addSuccessAttribute(ra, "email.activate");
         return "redirect:/signin";				
 	}
+	
 }
