@@ -64,7 +64,6 @@ public class AccountActivationRepository {
 		accountActivation.setActivationStatus(activationStatus);
 		accountActivation = entityManager.merge(accountActivation);
 		entityManager.flush();
-		System.out.println(accountActivation.toString());
 		return accountActivation;
 
 	}
