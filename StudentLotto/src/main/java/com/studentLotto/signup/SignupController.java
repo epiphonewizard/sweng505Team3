@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.*;
+import com.studentLotto.support.mail.MailSenderImpl;
+import com.studentLotto.support.mail.MessageCreator;
 import com.studentLotto.support.web.*;
-import com.studentLotto.university.University;
-import com.studentLotto.university.UniversityRepository;
+import com.studentLotto.utilities.AccountActivation;
+import com.studentLotto.utilities.AccountActivationRepository;
 import com.studentLotto.utilities.AccountUtilities;
 
 @Controller
@@ -30,20 +33,16 @@ public class SignupController {
 
 	@Autowired
 	private PersonRepository personRepository;
-	
-	@Autowired
-	private StudentRepository studentRepository;
 
 	@Autowired
-	private UniversityRepository universityRepository;
-	
-	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private AccountActivationRepository accountActivationRepo;
 
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
-		model.addAttribute("allSchools", universityRepository.findAll());
 		return SIGNUP_VIEW_NAME;
 	}
 
@@ -53,39 +52,23 @@ public class SignupController {
 		if (errors.hasErrors()) {
 			return SIGNUP_VIEW_NAME;
 		}
-		
-		Account account = null;
-		
-		if("Student".equals(signupForm.getUserType())) {
-			account = createStudentAccount(signupForm);
-			encryptPassword(account);
-			
-		} else {
-			account = createDonorAccount(signupForm);
-			encryptPassword(account);
-		}
-	
+		Account account = accountRepository.save(signupForm.createAccount());
+		// Person person =personRepository.save(signupForm.createPerson());
+
+		// emailActivation(account.getEmail(), account.getId());
 		// see /WEB-INF/i18n/messages.properties and
 		// /WEB-INF/views/homeSignedIn.html
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
-		AccountUtilities au = new AccountUtilities();
-		au.emailAccountActivation(account.getEmail(), account.getPassword());
+		AccountUtilities accountUtilities = new AccountUtilities();
+
+		AccountActivation accountActivation = accountUtilities
+				.emailAccountActivation(account.getEmail(),
+						account.getPassword(), accountActivationRepo);
+		if (accountActivation != null) {
+			accountActivationRepo.save(accountActivation);
+		}
+
 		return "redirect:/signin";
-	}
-	
-	private Account createDonorAccount(SignupForm signupForm) {
-		Person person = personRepository.save(new Person(signupForm.getDateOfBirth(), signupForm.getFirstName(), signupForm.getLastName(), signupForm.getHomeCity(), signupForm.getHomeStreetAddress(), "", signupForm.getHomeState(), signupForm.getHomeZip(), signupForm.getPhoneNumber(), new Account(signupForm.getEmail(), signupForm.getPassword())));
-		return person.getAccount();
-	}
-	
-	private Account createStudentAccount(SignupForm signupForm) {
-		University university = universityRepository.findOne(signupForm.getSchool());
-		Student student = studentRepository.save(new Student(signupForm.getMailCity(), signupForm.getMailStreetAddress(), "", signupForm.getMailState(), signupForm.getHomeZip(), signupForm.getEmail(), new Person(signupForm.getDateOfBirth(), signupForm.getFirstName(), signupForm.getLastName(), signupForm.getHomeCity(), signupForm.getHomeStreetAddress(), "", signupForm.getHomeState(), signupForm.getHomeZip(), signupForm.getPhoneNumber(), new Account(signupForm.getEmail(), signupForm.getPassword())), university));
-		return student.getPerson().getAccount();
-	}
-	
-	private void encryptPassword(Account account) {
-		accountRepository.changePassword(account, account.getPassword());
 	}
 
 	/**
@@ -96,23 +79,23 @@ public class SignupController {
 	 * @return
 	 * @throws Exception
 	 */
-	protected Map<String,LinkedHashMap<String, String>> referenceData(HttpServletRequest request) throws Exception {
-		Map<String,LinkedHashMap<String, String>> referenceData = new HashMap<String,LinkedHashMap<String, String>>();
+	protected Map referenceData(HttpServletRequest request) throws Exception {
+		Map referenceData = new HashMap();
 
-		LinkedHashMap<String, String> countries = new LinkedHashMap<String, String>();
+		Map<String, String> countries = new LinkedHashMap<String, String>();
 		countries.put("US", "United Stated");
 		countries.put("CHINA", "China");
 		countries.put("SG", "Singapore");
 		countries.put("MY", "Malaysia");
 		referenceData.put("countryList", countries);
 
-		LinkedHashMap<String, String> states = new LinkedHashMap<String, String>();
+		Map<String, String> states = new LinkedHashMap<String, String>();
 		states.put("OR", "Oregon");
 		states.put("CA", "California");
 		states.put("PA", "Pennyslvannia");
 		referenceData.put("stateList", states);
 
-		LinkedHashMap<String, String> schools = new LinkedHashMap<String, String>();
+		Map<String, String> schools = new LinkedHashMap<String, String>();
 		schools.put("PennState", "Penn State");
 		schools.put("OregonState", "Oregon State");
 		schools.put("USC", "University of Southern California");
@@ -120,4 +103,5 @@ public class SignupController {
 
 		return referenceData;
 	}
+
 }

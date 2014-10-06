@@ -5,14 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class AccountValidationTest {
-/*
+
 	Account account;
 
 	public AccountValidationTest() {
 		account = new Account();
 		// reset test database here!
 	}
-
+/*
 	@Test
 	public void isActivationKeyUniqueTest() {
 		// start with a new account object
@@ -153,6 +153,6 @@ public class AccountValidationTest {
 		email = "email@email.email";
 		password = "password";
 		assertTrue(account.emailAccountActivation(email, password));
-	}*/
-
+	}
+*/
 }
