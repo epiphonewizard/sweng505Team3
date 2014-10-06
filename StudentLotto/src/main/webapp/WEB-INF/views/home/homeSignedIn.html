@@ -14,7 +14,10 @@
     <!-- /* Handle the flash message */-->
     <th:block th:if="${message != null}">
         <!-- /* The message code is returned from the @Controller */ -->
-<!--         <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div> -->
+		<!-- <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div> -->
+		<th:block th:if="${message.message == 'addUniversity.success'}">
+	      	<h1>University Successfully Added</h1>
+	    </th:block>
     </th:block>
     <p>
         Welcome to the Student Lotto application!

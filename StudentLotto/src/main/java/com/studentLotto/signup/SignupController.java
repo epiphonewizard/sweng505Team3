@@ -14,10 +14,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import Utilities.AccountUtilities;
-
 import com.studentLotto.account.*;
 import com.studentLotto.support.web.*;
+import com.studentLotto.utilities.AccountUtilities;
 
 @Controller
 public class SignupController {

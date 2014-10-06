@@ -1,4 +1,4 @@
-package Utilities;
+package com.studentLotto.utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
