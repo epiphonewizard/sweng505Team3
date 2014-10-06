@@ -44,11 +44,11 @@ public class Person implements Serializable {
 	private String phoneNumber;
 
 	// bi-directional one-to-one association to Student
-	@OneToOne
-	@JoinColumn(name = "id", referencedColumnName = "personId")
+	@OneToOne(mappedBy="person")
 	private Student student;
 
-	@OneToOne(mappedBy = "person")
+	@OneToOne(cascade=CascadeType.ALL, optional = false)
+	@JoinColumn(name="accountId")
 	private Account account;
 
 	public Person() {
@@ -76,6 +76,45 @@ public class Person implements Serializable {
 		this.permAddressZip = permAddressZip;
 		this.phoneNumber = phoneNumber;
 	}
+
+	
+	
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber, Student student) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
+		this.student = student;
+	}
+	
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber, Account account) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
+		this.account = account;
+	}
+
+
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -167,6 +206,10 @@ public class Person implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+	
+	public boolean isStudent() {
+		return this.student != null;
 	}
 
 }

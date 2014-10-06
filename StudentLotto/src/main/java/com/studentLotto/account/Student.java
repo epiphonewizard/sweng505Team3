@@ -10,12 +10,9 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="Student.findByUniversityEmail", query="SELECT s FROM Student s WHERE s.uEmailAddress = :email")
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String FIND_BY_UNIVERSITY_EMAIL = "Student.findByUniversityEmail";
-	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -33,10 +30,29 @@ public class Student implements Serializable {
 	private String uEmailAddress;
 
 	//bi-directional one-to-one association to Person
-	@OneToOne(mappedBy="student")
+	@OneToOne(cascade=CascadeType.ALL, optional = false)
+	@JoinColumn(name="personId")
 	private Person person;
 
+	@OneToOne(optional = false)
+	@JoinColumn(name="uId")
+	private University university;
+	
 	public Student() {
+	}
+		
+	public Student(String uAddressCity, String uAddressLine1,
+			String uAddressLine2, String uAddressState, String uAddressZip,
+			String uEmailAddress, Person person, University university) {
+		super();
+		this.uAddressCity = uAddressCity;
+		this.uAddressLine1 = uAddressLine1;
+		this.uAddressLine2 = uAddressLine2;
+		this.uAddressState = uAddressState;
+		this.uAddressZip = uAddressZip;
+		this.uEmailAddress = uEmailAddress;
+		this.person = person;
+		this.university = university;
 	}
 
 	public Long getId() {
@@ -102,5 +118,15 @@ public class Student implements Serializable {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
+
+	public University getUniversity() {
+		return university;
+	}
+
+	public void setUniversity(University university) {
+		this.university = university;
+	}
+	
+	
 
 }

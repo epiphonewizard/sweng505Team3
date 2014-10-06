@@ -36,22 +36,22 @@ class JpaConfig implements TransactionManagementConfigurer {
 		return dataSource;
 	}
 
-    @Bean
+    @Bean(name="entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(configureDataSource());
-        entityManagerFactoryBean.setPackagesToScan("com.studentLotto");
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactory.setDataSource(configureDataSource());
+        entityManagerFactory.setPackagesToScan("com.studentLotto");
+        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
         jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
-        entityManagerFactoryBean.setJpaProperties(jpaProperties);
-
-        return entityManagerFactoryBean;
+        entityManagerFactory.setJpaProperties(jpaProperties);
+ 
+        return entityManagerFactory;
     }
 
-    @Bean
+    @Bean(name="transactionManager")
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new JpaTransactionManager();
     }
