@@ -34,7 +34,7 @@ public class AccountActivationRepository {
 							AccountActivation.class).setParameter("code", code)
 					.getSingleResult();
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+		
 			return null;
 		}
 	}
@@ -46,7 +46,7 @@ public class AccountActivationRepository {
 							AccountActivation.class)
 					.setParameter("email", email).getSingleResult();
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+		
 			return null;
 		}
 	}
