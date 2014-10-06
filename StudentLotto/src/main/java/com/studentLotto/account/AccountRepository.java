@@ -25,6 +25,11 @@ public class AccountRepository {
 	}
 	
 	@Transactional
+	public void remove(Account account) {
+		entityManager.remove(account);
+	}
+	
+	@Transactional
 	public Account saveAndFlush(Account account) {
 		account.setPassword(passwordEncoder.encode(account.getPassword()));
 		entityManager.persist(account);

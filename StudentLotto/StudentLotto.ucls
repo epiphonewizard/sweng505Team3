@@ -1,301 +1,599 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.6" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="com.studentLotto.account.Account" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/Account.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="420" y="739"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="com.studentLotto.account.UserService" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/UserService.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1430" y="670"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="com.studentLotto.account.AccountRepository" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/AccountRepository.java" binary="false" 
+  <interface id="1" language="java" name="com.studentLotto.config.DataSourceConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/DataSourceConfig.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="984" y="714"/>    
+    <position height="81" width="150" x="5484" y="1292"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </class>  
-  <class id="4" language="java" name="com.studentLotto.account.AccountController" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/AccountController.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="969" y="511"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="com.studentLotto.home.HomeController" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/home/HomeController.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="706" y="97"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="com.studentLotto.signin.SigninController" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/signin/SigninController.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="668" y="234"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="com.studentLotto.signup.SignupForm" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/signup/SignupForm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2437" y="649"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="com.studentLotto.signup.SignupController" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/signup/SignupController.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1456" y="316"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" name="com.studentLotto.passwordreset.PasswordResetController" project="StudentLotto" 
+  </interface>  
+  <class id="2" language="java" name="com.studentLotto.passwordreset.PasswordResetController" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/passwordreset/PasswordResetController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="984" y="1065"/>    
+    <position height="225" width="377" x="6263" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="com.studentLotto.passwordreset.PasswordResetForm" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/passwordreset/PasswordResetForm.java" binary="false" 
+  <class id="3" language="java" name="com.studentLotto.signin.SigninController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/signin/SigninController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1489" y="1047"/>    
+    <position height="99" width="115" x="4146" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="com.studentLotto.passwordreset.ChangePasswordForm" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/passwordreset/ChangePasswordForm.java" binary="false" 
+  <class id="4" language="java" name="com.studentLotto.utilities.AccountUtilities" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/utilities/AccountUtilities.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1292" y="1060"/>    
+    <position height="153" width="350" x="7728" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="com.studentLotto.timedemail.TimedEmailCodeRepository" project="StudentLotto" 
+  <class id="5" language="java" name="com.studentLotto.config.DefaultDataSourceConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/DefaultDataSourceConfig.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="167" x="5484" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.studentLotto.account.AccountRepository" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/AccountRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="236" x="6559" y="1899"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.studentLotto.error.CustomErrorController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/error/CustomErrorController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="354" x="3046" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.studentLotto.signup.SignupForm" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/signup/SignupForm.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="1215" width="198" x="5246" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.studentLotto.account.Student" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/Student.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="567" width="342" x="5674" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.studentLotto.signup.SignupController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/signup/SignupController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="410" x="7278" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.studentLotto.timedemail.TimedEmailCodeRepository" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/timedemail/TimedEmailCodeRepository.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="664" y="1062"/>    
+    <position height="135" width="215" x="6407" y="1292"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="com.studentLotto.account.Person" project="StudentLotto" 
+  <interface id="12" language="java" name="com.studentLotto.account.StudentRepository" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/StudentRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="206" x="7482" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="13" language="java" name="com.studentLotto.account.PersonRepository" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/PersonRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="63" width="126" x="7316" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="14" language="java" name="com.studentLotto.support.mail.MailSenderImpl.EmailAuth" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/mail/MailSenderImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="290" x="6056" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.studentLotto.config.WebMvcConfig.FaviconController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/WebMvcConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="123" x="8118" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="com.studentLotto.config.JpaConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/JpaConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="390" x="42" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="17" language="java" name="com.studentLotto.utilities.AccountUtilities.ACTIVATION_CODES_STATUS" 
+    project="StudentLotto" file="/StudentLotto/src/main/java/com/studentLotto/utilities/AccountUtilities.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="339" x="7728" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="18" language="java" name="com.studentLotto.account.Person" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/account/Person.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="783" width="194" x="15" y="19"/>    
-    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="com.studentLotto.account.Student" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/Student.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="420" y="278"/>    
+    <position height="819" width="382" x="5350" y="1899"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="com.studentLotto.account.AccountEditForm" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/account/AccountEditForm.java" binary="false" 
+  <interface id="19" language="java" name="com.studentLotto.Application" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/Application.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="63" width="103" x="1015" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="20" language="java" name="com.studentLotto.config.MongoConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/MongoConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="255" x="4951" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="com.studentLotto.config.WebMvcConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/WebMvcConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="368" x="8118" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="com.studentLotto.config.WebAppInitializer" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/WebAppInitializer.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="648" y="515"/>    
+    <position height="171" width="204" x="2274" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="com.studentLotto.university.AddUniversityController" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/university/AddUniversityController.java" binary="false" 
+  <class id="23" language="java" name="com.studentLotto.home.HomeController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/home/HomeController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="198" x="4301" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="com.studentLotto.support.web.Message" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/web/Message.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="172" x="6680" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="com.studentLotto.account.Account" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/Account.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="165" x="5025" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="com.studentLotto.account.UserService" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/UserService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="236" x="6838" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="com.studentLotto.support.mail.MailSenderImpl" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/mail/MailSenderImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1781" y="665"/>    
+    <position height="135" width="220" x="6003" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="com.studentLotto.university.AddUniversityForm" project="StudentLotto" 
+  <class id="28" language="java" name="com.studentLotto.utilities.EmailService" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/utilities/EmailService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="195" x="472" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="29" language="java" name="com.studentLotto.support.web.Message.Type" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/web/Message.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="136" x="6662" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="30" language="java" name="com.studentLotto.passwordreset.ChangePasswordForm" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/passwordreset/ChangePasswordForm.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="178" x="4539" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="com.studentLotto.config.SecurityConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/SecurityConfig.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="309" x="3797" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="com.studentLotto.support.web.MessageHelper" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/web/MessageHelper.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="261" width="317" x="3440" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="33" language="java" name="com.studentLotto.utilities.Database" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/utilities/Database.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="268" x="707" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="34" language="java" name="com.studentLotto.utilities.MyException" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/utilities/MyException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="154" x="4757" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="com.studentLotto.university.AddUniversityForm" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/university/AddUniversityForm.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2144" y="262"/>    
+    <position height="495" width="180" x="1766" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="com.studentLotto.university.University" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/university/University.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2192" y="802"/>    
+  <class id="36" language="java" name="com.studentLotto.config.ApplicationConfig" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/config/ApplicationConfig.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="333" x="1393" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="com.studentLotto.university.UniversityRepository" project="StudentLotto" 
+  <class id="37" language="java" name="com.studentLotto.error.ExceptionHandler" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/error/ExceptionHandler.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="270" x="2736" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="38" language="java" name="com.studentLotto.university.UniversityRepository" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/university/UniversityRepository.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1783" y="463"/>    
+    <position height="63" width="141" x="7114" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="39" language="java" name="com.studentLotto.support.mail.MessageCreator" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/support/mail/MessageCreator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="248" x="1986" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="com.studentLotto.timedemail.TimedEmailCode" project="StudentLotto" 
+  <class id="40" language="java" name="com.studentLotto.university.University" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/university/University.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="603" width="265" x="5691" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="com.studentLotto.timedemail.TimedEmailCode" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/timedemail/TimedEmailCode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="665" y="819"/>    
+    <position height="315" width="195" x="1158" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="21">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="22" name="account"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="25" name="userService"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="28" name="accountRepository"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="30">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="31" name="userService"/>      
-      <multiplicity id="32" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="33">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="34" name="person"/>      
-      <multiplicity id="35" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="36">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="37" name="accountRepository"/>      
-      <multiplicity id="38" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="39">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="40" name="accountRepository"/>      
-      <multiplicity id="41" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="42">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="43" name="universityRepository"/>      
-      <multiplicity id="44" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <class id="42" language="java" name="com.studentLotto.account.AccountController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/account/AccountController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="214" x="5230" y="1292"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="com.studentLotto.passwordreset.PasswordResetForm" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/passwordreset/PasswordResetForm.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="171" width="178" x="2518" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="com.studentLotto.university.AddUniversityController" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/university/AddUniversityController.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="346" x="6892" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <association id="45">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="46" name="person"/>      
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="46" name="university"/>      
       <multiplicity id="47" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="40" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="48">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="49" name="student"/>      
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="49" name="person"/>      
       <multiplicity id="50" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="51">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="52" name="timedEmailCodeRepository"/>      
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="52" name="userService"/>      
       <multiplicity id="53" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="26" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="54">    
     <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="55" name="userService"/>      
+      <attribute id="55" name="person"/>      
       <multiplicity id="56" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="57">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="58" name="accountRepository"/>      
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="58" name="personRepository"/>      
       <multiplicity id="59" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <bendpoint x="7285" y="1292"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="61" name="accountRepository"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="63">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <association id="64">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="65" name="userService"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="67">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <association id="68">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="69" name="type"/>      
+      <multiplicity id="70" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="71">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="29"/>  
+  </nesting>  
+  <association id="72">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="73" name="student"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="76" name="student"/>      
+      <multiplicity id="77" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="79" name="userService"/>      
+      <multiplicity id="80" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="81">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="82" name="timedEmailCodeRepository"/>      
+      <multiplicity id="83" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="84">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="17"/>  
+  </nesting>  
+  <nesting id="85">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="14"/>  
+  </nesting>  
+  <association id="86">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="87" name="accountRepository"/>      
+      <multiplicity id="88" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="89">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="90" name="universityRepository"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="92">    
+    <bendpoint x="6376" y="1292"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="93" name="accountRepository"/>      
+      <multiplicity id="94" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="95">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="96" name="account"/>      
+      <multiplicity id="97" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="98">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="99" name="accountRepository"/>      
+      <multiplicity id="100" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="101">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="102" name="universityRepository"/>      
+      <multiplicity id="103" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="104">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="105" name="studentRepository"/>      
+      <multiplicity id="106" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
