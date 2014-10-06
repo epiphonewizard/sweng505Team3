@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.university.University;
+
 
 /**
  * The persistent class for the student database table.

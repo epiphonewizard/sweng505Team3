@@ -91,6 +91,6 @@ public class AddUniversityForm {
 	 * @return
 	 */
 	public University createUniversity() {
-		return new University(getName(), getAddressLine1(), getAddressLine2(), getAddressCity(), getAddressState(), getAddressZip());
+		return new University(getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
 	}
 }

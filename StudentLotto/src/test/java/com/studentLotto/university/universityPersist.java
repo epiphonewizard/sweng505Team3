@@ -9,7 +9,7 @@ import com.studentLotto.account.Account;
 
 public class universityPersist {
 
-	@Test
+/*	@Test
 	public void persistTest() {
 		UniversityRepository universityRepository = new UniversityRepository();
 		AddUniversityForm addUniversityForm = new AddUniversityForm();
@@ -22,7 +22,7 @@ public class universityPersist {
 		
 		University university = universityRepository.save(addUniversityForm.createUniversity());
 
-	}
+	}*/
 	
 	@Test
 	public void createUniversityTest() {
