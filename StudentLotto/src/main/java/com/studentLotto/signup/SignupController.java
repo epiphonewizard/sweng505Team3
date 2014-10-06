@@ -58,8 +58,11 @@ public class SignupController {
 		
 		if("Student".equals(signupForm.getUserType())) {
 			account = createStudentAccount(signupForm);
+			encryptPassword(account);
+			
 		} else {
 			account = createDonorAccount(signupForm);
+			encryptPassword(account);
 		}
 	
 		// see /WEB-INF/i18n/messages.properties and
@@ -79,6 +82,10 @@ public class SignupController {
 		University university = universityRepository.findOne(signupForm.getSchool());
 		Student student = studentRepository.save(new Student(signupForm.getMailCity(), signupForm.getMailStreetAddress(), "", signupForm.getMailState(), signupForm.getHomeZip(), signupForm.getEmail(), new Person(signupForm.getDateOfBirth(), signupForm.getFirstName(), signupForm.getLastName(), signupForm.getHomeCity(), signupForm.getHomeStreetAddress(), "", signupForm.getHomeState(), signupForm.getHomeZip(), signupForm.getPhoneNumber(), new Account(signupForm.getEmail(), signupForm.getPassword())), university));
 		return student.getPerson().getAccount();
+	}
+	
+	private void encryptPassword(Account account) {
+		accountRepository.changePassword(account, account.getPassword());
 	}
 
 	/**
