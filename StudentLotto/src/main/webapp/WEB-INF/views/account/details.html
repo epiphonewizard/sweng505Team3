@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Lotto</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+  
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+
+<div class="form-narrow form-horizontal" >
+    <fieldset>
+        <legend>Account Information</legend>
+        	<span style="v-algin:right">
+	        	<a href="passwordReset" th:href="@{/account/edit}">Edit Account Info</a>
+	        </span>
+        <div class="form-narrow" id="loginInfo">
+        	<label>Personal Info</label>
+        	
+        	<div class="form-group" >
+	       		<label class="col-lg-2 control-label">Email</label>
+	            <span th:text="${account.getEmail()}"></span>
+	        </div>
+	        
+	        <div class="form-group" >
+	       		<label class="col-lg-2 control-label">First Name</label>
+	            <span th:text="${person.getFname()}"></span>
+	        </div>
+	        
+	        <div class="form-group" >
+	       		<label class="col-lg-2 control-label">Last Name</label>
+	            <span th:text="${person.getLname()}"></span>
+	        </div>
+  
+	        <div class="form-group" >
+	       		<label class="col-lg-2 control-label">Phone Number</label>
+	            <span th:text="${person.getPhoneNumber()}"></span>
+	        </div>	        
+	       
+        	<label>Home Address</label> 
+        	
+        	<div class="form-group" >
+	       		<label class="col-lg-2 control-label">Street Address</label>
+	            <span th:text="${person.getPermAddressLine1()}"></span>
+	        </div>	       
+
+        	<div class="form-group" >
+	       		<label class="col-lg-2 control-label">City</label>
+	            <span th:text="${person.getPermAddressCity()}"></span>
+	        </div>
+
+        	<div class="form-group" >
+	       		<label class="col-lg-2 control-label">State</label>
+	            <span th:text="${person.getPermAddressState()}"></span>
+	        </div>
+	        	        
+        	<div class="form-group" >
+	       		<label class="col-lg-2 control-label">Zip Code</label>
+	            <span th:text="${person.getPermAddressZip()}"></span>
+	        </div>
+	    </div>
+        
+        <th:block th:if="${student != null}">
+	        <div class="form-narrow" id="studentInfo">
+	        	<label>Student Info</label>
+	       	
+	       		<div>
+	        		<label>Mailing Address</label> 
+	        	</div>
+	        	<div class="form-group" >
+		       		<label class="col-lg-2 control-label">Street Address</label>
+		            <span th:text="${student.getUAddressLine1()}"></span>
+		        </div>	       
+	
+	        	<div class="form-group" >
+		       		<label class="col-lg-2 control-label">City</label>
+		            <span th:text="${student.getUAddressCity()}"></span>
+		        </div>
+	
+	        	<div class="form-group" >
+		       		<label class="col-lg-2 control-label">State</label>
+		            <span th:text="${student.getUAddressState()}"></span>
+		        </div>
+		        	        
+	        	<div class="form-group" >
+		       		<label class="col-lg-2 control-label">Zip Code</label>
+		            <span th:text="${student.getUAddressZip()}"></span>
+		        </div>
+			</div> 	
+		</th:block>
+
+    </fieldset>
+    </div>
+</body>
+</html>

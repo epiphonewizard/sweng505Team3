@@ -2,8 +2,6 @@ package com.studentLotto.university;
 
 import org.hibernate.validator.constraints.*;
 
-import com.studentLotto.account.University;
-
 public class AddUniversityForm {
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 
@@ -93,13 +91,6 @@ public class AddUniversityForm {
 	 * @return
 	 */
 	public University createUniversity() {
-		University university = new University();
-		university.setName(getName());
-		university.setAddressLine1(getAddressLine1());
-		university.setAddressLine2(getAddressLine2());
-		university.setCity(getAddressCity());
-		university.setState(getAddressState());
-		university.setZip(getAddressZip());
-		return university;
+		return new University(getName(), getAddressLine1(), getAddressLine2(), getAddressCity(), getAddressState(), getAddressZip());
 	}
 }
