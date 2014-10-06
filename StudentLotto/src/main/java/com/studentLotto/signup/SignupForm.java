@@ -7,9 +7,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.*;
 
 import com.studentLotto.account.Account;
-import com.studentLotto.account.Person;
-import com.studentLotto.account.Student;
-import com.studentLotto.account.University;
 
 @ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.confirm)", message = "Password and Confirm fields must match")
 public class SignupForm {
