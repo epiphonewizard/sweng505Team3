@@ -23,6 +23,14 @@ public class AccountRepository {
 		entityManager.persist(account);
 		return account;
 	}
+	
+	@Transactional
+	public Account saveAndFlush(Account account) {
+		account.setPassword(passwordEncoder.encode(account.getPassword()));
+		entityManager.persist(account);
+		entityManager.flush();
+		return account;
+	}
 
 	@Transactional
 	public Account changePassword(Account account, String password){

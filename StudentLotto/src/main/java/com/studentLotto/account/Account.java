@@ -1,7 +1,5 @@
 package com.studentLotto.account;
 
-import java.util.Date;
-
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -23,8 +21,8 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	private String password;
 	
-	@OneToOne
-	@JoinColumn(name="id", referencedColumnName="accountId")
+	
+	@OneToOne(mappedBy = "account")
 	private Person person;
 
 	private String role = "ROLE_USER";
@@ -39,6 +37,14 @@ public class Account implements java.io.Serializable {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+	}
+
+	
+	
+	public Account(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
 	}
 
 	public Long getId() {

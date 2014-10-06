@@ -26,16 +26,10 @@ class AccountController {
 
     private AccountRepository accountRepository;
 
-    private PersonRepository personRepository;
-    
-    private StudentRepository studentRepository;
-
     @Autowired
     public AccountController(AccountRepository accountRepository, PersonRepository personRepository,
     		StudentRepository studentRepository) {
         this.accountRepository = accountRepository;
-        this.personRepository = personRepository;
-        this.studentRepository = studentRepository;
     }
 
     @RequestMapping(value = "account/current", method = RequestMethod.GET)
@@ -50,8 +44,8 @@ class AccountController {
     public String details(Principal principal, Model model){
     	Assert.notNull(principal);
     	Account account = accountRepository.findByEmail(principal.getName());
-    	Person person =  personRepository.findByAccountId(account.getId());
-    	Student student = studentRepository.findByUniversityEmail(account.getEmail());
+    	Person person =  account.getPerson();
+    	Student student = person.getStudent();
     	model.addAttribute("account", account);
     	model.addAttribute("person", person);
     	model.addAttribute("student", student);
@@ -62,8 +56,8 @@ class AccountController {
     public String edit(Principal principal, Model model){
     	Assert.notNull(principal);
     	Account account = accountRepository.findByEmail(principal.getName());
-    	Person person =  personRepository.findByAccountId(account.getId());
-    	Student student = studentRepository.findByUniversityEmail(account.getEmail());
+    	Person person =  account.getPerson();
+    	Student student = person.getStudent();
     	model.addAttribute("account", account);
     	model.addAttribute("person", person);
     	model.addAttribute("student", student);

@@ -10,20 +10,23 @@ import com.studentLotto.account.Account;
 public class universityPersist {
 
 	@Test
-	public void test() {
-		University testUniversity = new University();
-		
+	public void persistTest() {
 		UniversityRepository universityRepository = new UniversityRepository();
+		AddUniversityForm addUniversityForm = new AddUniversityForm();
+
+		addUniversityForm.setName("CodeTest");
+		addUniversityForm.setAddressLine1("test");
+		addUniversityForm.setAddressCity("test");
+		addUniversityForm.setAddressState("MO");
+		addUniversityForm.setAddressZip("63303");
 		
-		testUniversity.setAddressLine1("1500 Pennsylvania Avenue");
-		testUniversity.setCity("Aimes");
-		testUniversity.setName("Iowa State");
-		testUniversity.setState("IA");
-		testUniversity.setZip("50011");
-		
-		University saveUniversity = universityRepository.save(testUniversity);
-		
-		//Account account = accountRepository.save(signupForm.createAccount());
+		University university = universityRepository.save(addUniversityForm.createUniversity());
+
+	}
+	
+	@Test
+	public void createUniversityTest() {
+		University university = null;
 	}
 
 }

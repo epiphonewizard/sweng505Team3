@@ -13,14 +13,12 @@ import java.util.Date;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id"),
-		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname"),
-		@NamedQuery(name = "Person.findByAccountId", query = "SELECT p FROM Person p WHERE p.accountId = :accountId")  })
+		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname") })
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIND_BY_ID = "Person.findById";
 	public static final String FIND_BY_NAME = "Person.findByName";
-	public static final String FIND_BY_ACCOUNT_ID = "Person.findByAccountId";
 
 	@Id
 	@GeneratedValue
@@ -44,15 +42,13 @@ public class Person implements Serializable {
 	private String permAddressZip;
 
 	private String phoneNumber;
-	
-	private Long accountId;
 
 	// bi-directional one-to-one association to Student
-	@OneToOne
-	@JoinColumn(name = "id", referencedColumnName = "personId")
+	@OneToOne(mappedBy="person")
 	private Student student;
 
-	@OneToOne(mappedBy = "person")
+	@OneToOne(cascade=CascadeType.ALL, optional = false)
+	@JoinColumn(name="accountId")
 	private Account account;
 
 	public Person() {
@@ -80,6 +76,45 @@ public class Person implements Serializable {
 		this.permAddressZip = permAddressZip;
 		this.phoneNumber = phoneNumber;
 	}
+
+	
+	
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber, Student student) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
+		this.student = student;
+	}
+	
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber, Account account) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
+		this.account = account;
+	}
+
+
+
 
 	public void setId(Long id) {
 		this.id = id;
@@ -172,19 +207,9 @@ public class Person implements Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-
-
-
-
-	public Long getAccountId() {
-		return accountId;
-	}
-
-
-
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
+	
+	public boolean isStudent() {
+		return this.student != null;
 	}
 
 }

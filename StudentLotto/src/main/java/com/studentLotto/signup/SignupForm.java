@@ -7,7 +7,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.*;
 
 import com.studentLotto.account.Account;
-import com.studentLotto.account.Person;
 
 @ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.confirm)", message = "Password and Confirm fields must match")
 public class SignupForm {
@@ -27,8 +26,8 @@ public class SignupForm {
 
 	private String userType = "Student";
 
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String dateOfBirth;
+	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private Date dateOfBirth;
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String firstName;
@@ -65,8 +64,8 @@ public class SignupForm {
 	private String mailCountry = "USA";
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String mailZip;
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String school = "PennState";
+	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private Long school;
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String major;
 
@@ -106,11 +105,11 @@ public class SignupForm {
 		this.userType = userType;
 	}
 
-	public String getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -218,11 +217,11 @@ public class SignupForm {
 		this.mailStreetAddress = mailStreetAddress;
 	}
 
-	public String getSchool() {
+	public Long getSchool() {
 		return school;
 	}
 
-	public void setSchool(String school) {
+	public void setSchool(Long school) {
 		this.school = school;
 	}
 
@@ -233,18 +232,5 @@ public class SignupForm {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-
-	/**
-	 * this.birthdate = birthdate; this.fname = fname; this.lname = lname;
-	 * this.permAddressCity = permAddressCity; this.permAddressLine1 =
-	 * permAddressLine1; this.permAddressLine2 = permAddressLine2;
-	 * this.permAddressState = permAddressState; this.permAddressZip =
-	 * permAddressZip; this.phoneNumber = phoneNumber;
-	 * 
-	 * @return
-	 */
-	public Person createPerson() {
-		return new Person(new Date(getDateOfBirth()), "AA", "A", "B", "C", "D",
-				"E", "F", "G");
-	}
+	
 }

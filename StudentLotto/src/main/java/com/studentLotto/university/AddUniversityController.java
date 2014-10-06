@@ -1,4 +1,5 @@
 package com.studentLotto.university;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.studentLotto.account.UniversityRepository;
 import com.studentLotto.account.UserService;
 import com.studentLotto.support.web.MessageHelper;
 
@@ -26,11 +28,17 @@ public class AddUniversityController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value = "addUniversity")
+	@RequestMapping(value = "addUniversity", method = RequestMethod.GET)
+	public String index(Principal principal, Model model) {
+		model.addAttribute(new AddUniversityForm());
+		return principal != null ? ADD_UNIVERSITY_VIEW_NAME : "redirect:/signin";
+	}
+	
+	/*@RequestMapping(value = "addUniversity")
 	public String addUniversity(Model model) {
 		model.addAttribute(new AddUniversityForm());
 		return ADD_UNIVERSITY_VIEW_NAME;
-	}
+	}*/
 
 	@RequestMapping(value = "addUniversity", method = RequestMethod.POST)
 	public String addUniversity(@Valid @ModelAttribute AddUniversityForm addUniversityForm,
@@ -40,7 +48,7 @@ public class AddUniversityController {
 		}
 		University university = universityRepository.save(addUniversityForm.createUniversity());
 		MessageHelper.addSuccessAttribute(ra, "addUniversity.success");
-		return "redirect:/addUniversity";
+		return "redirect:/";
 	}
 
 	/**
