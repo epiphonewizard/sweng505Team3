@@ -49,9 +49,6 @@ public class SignupForm {
 	private String homeState = "PA";
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String homeCountry = "USA";
-
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String homeZip;
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
@@ -60,14 +57,11 @@ public class SignupForm {
 	private String mailCity;
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String mailState = "PA";
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String mailCountry = "USA";
+
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String mailZip;
 	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private Long school;
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String major;
 
 	public String getEmail() {
 		return email;
@@ -161,14 +155,6 @@ public class SignupForm {
 		this.homeState = homeState;
 	}
 
-	public String getHomeCountry() {
-		return homeCountry;
-	}
-
-	public void setHomeCountry(String homeCountry) {
-		this.homeCountry = homeCountry;
-	}
-
 	public String getHomeZip() {
 		return homeZip;
 	}
@@ -193,14 +179,6 @@ public class SignupForm {
 		this.mailState = mailState;
 	}
 
-	public String getMailCountry() {
-		return mailCountry;
-	}
-
-	public void setMailCountry(String mailCountry) {
-		this.mailCountry = mailCountry;
-	}
-
 	public String getMailZip() {
 		return mailZip;
 	}
@@ -223,14 +201,6 @@ public class SignupForm {
 
 	public void setSchool(Long school) {
 		this.school = school;
-	}
-
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
 	}
 	
 }

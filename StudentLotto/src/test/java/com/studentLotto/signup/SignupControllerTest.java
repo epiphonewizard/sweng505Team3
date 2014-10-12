@@ -28,17 +28,14 @@ public class SignupControllerTest extends WebAppConfigurationAware {
 		signupForm.setEmail("test@test.com");
 		signupForm.setFirstName("John");
 		signupForm.setHomeCity("Hometown");
-		signupForm.setHomeCountry("USA");
 		signupForm.setHomeState("MO");
 		signupForm.setHomeStreetAddress("123 Fake St.");
 		signupForm.setHomeZip("66666");
 		signupForm.setLastName("Doe");
 		signupForm.setMailCity("Hometown");
-		signupForm.setMailCountry("USA");
 		signupForm.setMailState("MO");
 		signupForm.setMailStreetAddress("123 Fake St.");
 		signupForm.setMailZip("66666");
-		signupForm.setMajor("Physics");
 		signupForm.setPassword("test");
 		signupForm.setPhoneNumber("555-555-5555");
 		signupForm.setSchool(new Long(1));

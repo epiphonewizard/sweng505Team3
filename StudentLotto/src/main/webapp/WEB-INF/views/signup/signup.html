@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Signup</title>
+    <title>Student Lotto</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
@@ -216,16 +216,7 @@
 					</select>				
 	            </div>
 	        </div>    
-	        
-     	    <div class="form-group" th:classappend="${#fields.hasErrors('homeCountry')}? 'has-error'">
-	            <label for="email" class="col-lg-2 control-label">Country</label>
-	            <div class="col-lg-10">
-					<select id="homeCountry" th:field="*{homeCountry}">
-						<option value="USA">United States</option>
-						<option value="CA">Canada</option>
-					</select>
-	            </div>
-	        </div>    	
+
 	        
 	        <div class="form-group" th:classappend="${#fields.hasErrors('homeZip')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">Zip Code</label>
@@ -243,21 +234,13 @@
         	<div class="form-group" th:classappend="${#fields.hasErrors('school')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">School</label>
 	            <div class="col-lg-10">
-					<select id="homeCountry" th:field="*{school}" >
+					<select id="school" th:field="*{school}" >
 						<option th:each="school : ${allSchools}" 
           						th:value="${school.id}" 
           						th:text="${school.name}"></option>
 					</select>
 	            </div>
 	        </div>   
-	        
-	        <div class="form-group" th:classappend="${#fields.hasErrors('major')}? 'has-error'">
-	            <label for="email" class="col-lg-2 control-label">Major</label>
-	            <div class="col-lg-10">
-	                <input type="text" class="form-control" id="major"  th:field="*{major}" />
-	                <span class="help-block" th:if="${#fields.hasErrors('major')}" th:errors="*{major}">Incorrect name</span>
-	            </div>
-	        </div>    	
         	
         	
         	<label>Mailing Address</label> 
@@ -336,16 +319,7 @@
 					</select>				
 	            </div>
 	        </div>    
-	        
-     	    <div class="form-group" th:classappend="${#fields.hasErrors('mailCountry')}? 'has-error'">
-	            <label for="email" class="col-lg-2 control-label">Country</label>
-	            <div class="col-lg-10">
-					<select id="mailCountry" th:field="*{mailCountry}">
-						<option value="USA">United States</option>
-						<option value="CA">Canada</option>
-					</select>
-	            </div>
-	        </div>    	
+   	
 	        
 	        <div class="form-group" th:classappend="${#fields.hasErrors('mailZip')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">Zip Code</label>
