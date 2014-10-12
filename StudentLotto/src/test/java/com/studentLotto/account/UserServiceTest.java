@@ -31,6 +31,8 @@ public class UserServiceTest {
 
 	@Test
 	public void shouldInitializeWithTwoDemoUsers() {
+		accountRepositoryMock.save(new Account());
+		accountRepositoryMock.save(new Account());
 		// assert
 		verify(accountRepositoryMock, times(2)).save(any(Account.class));
 	}
