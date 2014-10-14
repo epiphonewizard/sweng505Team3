@@ -46,7 +46,7 @@ public class MessageCreator {
 	            "    </p>\n" +
 	            "    <p class=\"lead\">\n" +
 	            "    \tTo activate your account please click the following link:\n" +
-	            " \t\t\t<a href=\"${root}/StudentLotto/activation?id=${code}\">${root}/StudentLotto/activation?id=${code}&email=${email}</a>\n" +
+	            " \t\t\t<a href=\"${root}/activation?id=${code}&email=${email}\">Click to activate!</a>\n" +
 	            " \t</p>\n" +
 	            "</div>\n" +
 	            "</body>\n" +
