@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.studentLotto.account.AccountRepository;
 import com.studentLotto.support.web.MessageHelper;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
@@ -16,8 +18,12 @@ import com.studentLotto.utilities.AccountActivationRepository;
 public class HomeController {
 	private final static int ACTIVE_ACCOUNT_STATUS = 1;
 
-	@Autowired
 	private AccountActivationRepository accountActivationRepo;
+
+	@Autowired
+	public HomeController(AccountActivationRepository accountActivationRepo) {
+		this.accountActivationRepo = accountActivationRepo;
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Principal principal) {
@@ -26,16 +32,20 @@ public class HomeController {
 
 	@RequestMapping(value = "activation", method = RequestMethod.GET)
 	public String activation(HttpServletRequest request, RedirectAttributes ra) {
-
+		// get the activation code and the email address
 		String id = request.getParameter("id");
 		String email = request.getParameter("email");
+		// Fetch the account activation info from the database
 		AccountActivation accountActivation = accountActivationRepo
 				.findByEmail(email.trim());
-		
+		// if the same info in the database match, then set the activation
+		// status to "ACCOUNT ACTIVE"
 		if (accountActivation.getCode().equals(id)) {
-			accountActivationRepo.updateActivationStatus(accountActivation, ACTIVE_ACCOUNT_STATUS);
-			MessageHelper.addSuccessAttribute(ra, "email.activate");
+			accountActivationRepo.updateActivationStatus(accountActivation,
+					ACTIVE_ACCOUNT_STATUS);
+
 		}
+		// redirect the user to sign in!
 		return "redirect:/signin";
 	}
 	
