@@ -9,12 +9,15 @@ import com.studentLotto.account.Student;
 
 /**
  * The persistent class for the University database table.
- * 
  */
 @Entity
+@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name")
 public class University implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final String FIND_BY_NAME = "University.findByName";
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -53,8 +56,6 @@ public class University implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
-
-
 
 	public Long getId() {
 		return this.id;

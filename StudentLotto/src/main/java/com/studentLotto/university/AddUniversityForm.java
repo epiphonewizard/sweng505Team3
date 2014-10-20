@@ -20,9 +20,6 @@ public class AddUniversityForm {
 	private String addressState;
 
 	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
-	private String addressCountry = "USA";
-
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
 	private String addressZip;
 
 	public String getName() {
@@ -65,14 +62,6 @@ public class AddUniversityForm {
 		this.addressState = addressState;
 	}
 
-	public String getAddressCountry() {
-		return addressCountry;
-	}
-
-	public void setAddressCountry(String addressCountry) {
-		this.addressCountry = addressCountry;
-	}
-
 	public String getAddressZip() {
 		return addressZip;
 	}
@@ -81,15 +70,6 @@ public class AddUniversityForm {
 		this.addressZip = addressZip;
 	}
 
-	/**
-	 * this.birthdate = birthdate; this.fname = fname; this.lname = lname;
-	 * this.permAddressCity = permAddressCity; this.permAddressLine1 =
-	 * permAddressLine1; this.permAddressLine2 = permAddressLine2;
-	 * this.permAddressState = permAddressState; this.permAddressZip =
-	 * permAddressZip; this.phoneNumber = phoneNumber;
-	 * 
-	 * @return
-	 */
 	public University createUniversity() {
 		return new University(getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
 	}
