@@ -4,19 +4,21 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import com.studentLotto.account.Student;
-
 
 /**
  * The persistent class for the University database table.
  */
 @Entity
-@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name")
+@NamedQueries({
+	@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
+	@NamedQuery(name = University.FIND_ALL_UNIVERSITIES, query = "select u from University u") })
+
 public class University implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	public static final String FIND_BY_NAME = "University.findByName";
+	public static final String FIND_ALL_UNIVERSITIES = "University.findAllUniversities";
 	
 	@Id
 	@GeneratedValue
@@ -38,9 +40,6 @@ public class University implements Serializable {
 	private String state;
 
 	private String zip;
-	
-	@OneToOne(mappedBy="university")
-	private Student student;
 
 	public University() {
 	}

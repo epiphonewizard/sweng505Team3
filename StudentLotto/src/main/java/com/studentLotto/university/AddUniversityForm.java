@@ -1,5 +1,7 @@
 package com.studentLotto.university;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.*;
 
 public class AddUniversityForm {
@@ -20,6 +22,7 @@ public class AddUniversityForm {
 	private String addressState;
 
 	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	@Pattern(regexp = "\\d{5}", message = "Enter a valid zip code!")
 	private String addressZip;
 
 	public String getName() {

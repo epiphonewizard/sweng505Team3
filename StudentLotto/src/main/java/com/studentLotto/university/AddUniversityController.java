@@ -30,12 +30,6 @@ public class AddUniversityController {
 		model.addAttribute(new AddUniversityForm());
 		return principal != null ? ADD_UNIVERSITY_VIEW_NAME : "redirect:/signin";
 	}
-	
-	/*@RequestMapping(value = "addUniversity")
-	public String addUniversity(Model model) {
-		model.addAttribute(new AddUniversityForm());
-		return ADD_UNIVERSITY_VIEW_NAME;
-	}*/
 
 	@RequestMapping(value = "addUniversity", method = RequestMethod.POST)
 	public String addUniversity(@Valid @ModelAttribute AddUniversityForm addUniversityForm,
@@ -43,8 +37,14 @@ public class AddUniversityController {
 		if (errors.hasErrors()) {
 			return ADD_UNIVERSITY_VIEW_NAME;
 		}
-		University university = universityRepository.save(addUniversityForm.createUniversity());
-		MessageHelper.addSuccessAttribute(ra, "addUniversity.success");
-		return "redirect:/";
+		if (universityRepository.findByName(addUniversityForm.getName()) == null)  {
+			University university = universityRepository.save(addUniversityForm.createUniversity());
+			MessageHelper.addSuccessAttribute(ra, "addUniversity.success", addUniversityForm.getName());
+			return "redirect:/addUniversity";
+		} else {
+			addUniversityForm.createUniversity();
+			MessageHelper.addErrorAttribute(ra, "addUniversity.failure", addUniversityForm.getName());
+			return "redirect:/addUniversity";
+		}
 	}
 }

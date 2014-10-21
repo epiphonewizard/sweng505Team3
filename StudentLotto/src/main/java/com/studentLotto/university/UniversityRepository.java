@@ -1,5 +1,7 @@
 package com.studentLotto.university;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -27,6 +29,16 @@ public class UniversityRepository {
 			return entityManager
 					.createNamedQuery(University.FIND_BY_NAME, University.class)
 					.setParameter("name", name).getSingleResult();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
+	
+	public List<University> findAllUniversities() {
+		try {
+			return entityManager
+					.createNamedQuery(University.FIND_ALL_UNIVERSITIES, University.class)
+					.getResultList();
 		} catch (PersistenceException e) {
 			return null;
 		}
