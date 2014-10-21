@@ -10,15 +10,21 @@ import javax.persistence.*;
 import com.studentLotto.account.Student;
 import com.studentLotto.lottery.Lottery;
 
-
 /**
  * The persistent class for the University database table.
- * 
  */
 @Entity
-public class University implements Serializable {
-	private static final long serialVersionUID = 1L;
+@NamedQueries({
+	@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
+	@NamedQuery(name = University.FIND_ALL_UNIVERSITIES, query = "select u from University u") })
 
+public class University implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	public static final String FIND_BY_NAME = "University.findByName";
+	public static final String FIND_ALL_UNIVERSITIES = "University.findAllUniversities";
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -59,8 +65,6 @@ public class University implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
-
-
 
 	public Long getId() {
 		return this.id;
