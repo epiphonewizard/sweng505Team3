@@ -1,10 +1,14 @@
 package com.studentLotto.university;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
 import com.studentLotto.account.Student;
+import com.studentLotto.lottery.Lottery;
 
 
 /**
@@ -25,8 +29,6 @@ public class University implements Serializable {
 
 	private String city;
 
-	private Long lotteryId;
-
 	private String name;
 
 	@Column(columnDefinition="blob")
@@ -38,6 +40,10 @@ public class University implements Serializable {
 	
 	@OneToOne(mappedBy="university")
 	private Student student;
+	
+	//bi-directional many-to-one association to Lottery
+	@OneToMany(mappedBy="university", fetch=FetchType.EAGER)
+	private List<Lottery> lotteries;
 
 	public University() {
 	}
@@ -88,14 +94,6 @@ public class University implements Serializable {
 		this.city = city;
 	}
 
-	public Long getLotteryId() {
-		return this.lotteryId;
-	}
-
-	public void setLotteryId(Long lotteryId) {
-		this.lotteryId = lotteryId;
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -126,6 +124,28 @@ public class University implements Serializable {
 
 	public void setZip(String zip) {
 		this.zip = zip;
+	}
+	
+	public List<Lottery> getLotteries() {
+		return this.lotteries;
+	}
+
+	public void setLotteries(List<Lottery> lotteries) {
+		this.lotteries = lotteries;
+	}
+
+	public Lottery addLottery(Lottery lottery) {
+		getLotteries().add(lottery);
+		lottery.setUniversity(this);
+
+		return lottery;
+	}
+
+	public Lottery removeLottery(Lottery lottery) {
+		getLotteries().remove(lottery);
+		lottery.setUniversity(null);
+
+		return lottery;
 	}
 
 }
