@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studentLotto.account.AccountRepository;
-import com.studentLotto.support.web.MessageHelper;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
 

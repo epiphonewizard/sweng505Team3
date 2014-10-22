@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studentLotto.signup.SignupForm;
 import com.studentLotto.support.web.MessageHelper;
 
 @Controller

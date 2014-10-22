@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.*;
 
-import com.studentLotto.account.Person;
 import com.studentLotto.university.University;
 
 import java.util.Date;
