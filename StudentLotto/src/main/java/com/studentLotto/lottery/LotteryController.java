@@ -11,12 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LotteryController {
 
-	private LotteryRepository lotteryRepository;
-	
 	@Autowired
-	public LotteryController(LotteryRepository lotteryRepository){
-		this.lotteryRepository = lotteryRepository;
-	}
+	private LotteryRepository lotteryRepository;
 	
 	@RequestMapping(value="lottery/create", method=RequestMethod.GET)
 	@Secured("ROLE_ADMIN")

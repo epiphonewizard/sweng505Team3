@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.*;
-import com.studentLotto.support.mail.MailSenderImpl;
-import com.studentLotto.support.mail.MessageCreator;
 import com.studentLotto.support.web.*;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
