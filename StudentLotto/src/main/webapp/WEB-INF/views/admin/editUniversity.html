@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Universities</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+	<div class="form-narrow" id="universityInfo">
+	    <th:block th:each="university : ${universitylist}">
+		    	<legend th:text="${university.name}"></legend>
+		    	
+		    	<label class="col-lg-2 control-label">Street:</label>
+		    	<div class="col-lg-10">
+	                <p th:text="${university.addressLine1}" />
+	                <p th:text="${university.addressLine2}" />
+	            </div>
+		    	
+		    	<label class="col-lg-2 control-label">City:</label>
+		    	<div class="col-lg-10">
+	                <p th:text="${university.city} + ', ' + ${university.state}"/>
+	            </div>
+	            
+	            <label class="col-lg-2 control-label">Zip:</label>
+	            <div class="col-lg-10">
+	                <p th:text="${university.zip}"/>
+	            </div>
+	           
+	            <th:block th:each="lottery : ${university.lotteries}">
+			    	<label  class="col-lg-2 control-label">Lottery:</label>
+			    	<div class="col-lg-10" >
+			    		<p th:text="${lottery.id} + ', $' + ${lottery.maxWinnings}" />
+			    	</div>
+	            </th:block>
+	            
+	            <div class="form-group">
+            		<div class="col-lg-offset-8">
+                		<button type="submit" class="btn btn-default">Edit University</button>
+            		</div>
+        		</div>
+	    </th:block>
+	</div>
+
+</body>
+</html>
