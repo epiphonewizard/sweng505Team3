@@ -1,6 +1,7 @@
 package com.studentLotto.lottery;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.*;
 
@@ -15,7 +16,10 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name="Lottery.findAll", query="SELECT l FROM Lottery l")
+@NamedQueries({
+	@NamedQuery(name="Lottery.findAll", query="SELECT l FROM Lottery l"),
+	@NamedQuery(name="Lottery.getUpcoming", query="SELECT l FROM Lottery l WHERE now() < l.drawingDate"),
+	})
 public class Lottery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +37,10 @@ public class Lottery implements Serializable {
 	private Date purchaseStartDate;
 
 
-	private String winningNumber;
+	private String winningNumber;	
+
+	private BigDecimal maxWinnings;
+	
 	
 	public Lottery() {
 	}
@@ -89,6 +96,14 @@ public class Lottery implements Serializable {
 	
 	public void setUniversity(University university){
 		this.university = university;
+	}
+
+	public BigDecimal getMaxWinnings() {
+		return maxWinnings;
+	}
+
+	public void setMaxWinnings(BigDecimal maxWinnings) {
+		this.maxWinnings = maxWinnings;
 	}
 
 }
