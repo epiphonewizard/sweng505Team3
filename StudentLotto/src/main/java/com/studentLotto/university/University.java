@@ -1,25 +1,29 @@
 package com.studentLotto.university;
 
 import java.io.Serializable;
-
+import java.util.List;
 import javax.persistence.*;
 
 import com.studentLotto.account.Account;
 import com.studentLotto.account.Student;
 import com.studentLotto.utilities.AccountActivation;
+import com.studentLotto.lottery.Lottery;
 
 /**
  * The persistent class for the University database table.
- * 
  */
 @Entity
 @NamedQueries({
+
 		@NamedQuery(name = University.FIND_BY_NAME, query = "select a from University a where a.name = :name"),
 		@NamedQuery(name = University.FIND_LIST, query = "select a from University a") })
 public class University implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	public static final String FIND_BY_NAME = "University.findByName";
+
 	public static final String FIND_LIST = "University.findList";
+	public static final String FIND_BY_NAME = "University.findByName";
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -42,6 +46,10 @@ public class University implements Serializable {
 	@OneToOne(mappedBy = "university")
 	private Student student;
 
+	// bi-directional many-to-one association to Lottery
+	@OneToMany(mappedBy = "university", fetch = FetchType.EAGER)
+	private List<Lottery> lotteries;
+
 	public University() {
 	}
 
@@ -55,7 +63,6 @@ public class University implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
-	
 
 	public Long getId() {
 		return this.id;
@@ -121,7 +128,30 @@ public class University implements Serializable {
 		this.zip = zip;
 	}
 
+	public List<Lottery> getLotteries() {
+		return this.lotteries;
+	}
+
 	public String toString() {
 		return name + " " + addressLine1 + "  " + zip + "  " + state;
 	}
+
+	public void setLotteries(List<Lottery> lotteries) {
+		this.lotteries = lotteries;
+	}
+
+	public Lottery addLottery(Lottery lottery) {
+		getLotteries().add(lottery);
+		lottery.setUniversity(this);
+
+		return lottery;
+	}
+
+	public Lottery removeLottery(Lottery lottery) {
+		getLotteries().remove(lottery);
+		lottery.setUniversity(null);
+
+		return lottery;
+	}
+
 }

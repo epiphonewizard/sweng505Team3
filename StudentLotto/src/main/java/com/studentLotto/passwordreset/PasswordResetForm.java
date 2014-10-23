@@ -1,11 +1,6 @@
 package com.studentLotto.passwordreset;
 
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.*;
-
-import com.studentLotto.account.Account;
-import com.studentLotto.signup.SignupForm;
 
 public class PasswordResetForm { 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";

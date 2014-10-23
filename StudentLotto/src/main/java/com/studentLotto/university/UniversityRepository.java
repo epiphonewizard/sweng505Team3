@@ -11,7 +11,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import com.studentLotto.utilities.AccountActivation;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import com.studentLotto.university.University;
 
 @Repository
 @Transactional(readOnly = true)
@@ -42,7 +49,6 @@ public class UniversityRepository{
 			return entityManager.createNamedQuery(University.FIND_LIST,
 					University.class).getResultList();
 		} catch (PersistenceException e) {
-			System.out.println("D");
 			return null;
 		}
 	}
@@ -60,4 +66,5 @@ public class UniversityRepository{
 		entityManager.flush();
 
 	}
+	
 }

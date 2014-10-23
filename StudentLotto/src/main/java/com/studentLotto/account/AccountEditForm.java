@@ -8,14 +8,12 @@ import java.util.Locale;
 
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 
 public class AccountEditForm {
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String EMAIL_MESSAGE = "{email.message}";
 	
 	public static DateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
 

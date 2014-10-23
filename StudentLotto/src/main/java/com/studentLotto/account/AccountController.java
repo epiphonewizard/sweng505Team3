@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studentLotto.signup.SignupForm;
 import com.studentLotto.support.web.MessageHelper;
 
 @Controller
@@ -29,14 +28,14 @@ import com.studentLotto.support.web.MessageHelper;
 class AccountController {
 
     private AccountRepository accountRepository;
-    private PersonRepository personRepositroy;
+    private PersonRepository personRepository;
     private StudentRepository studentRepository;
 
     @Autowired
     public AccountController(AccountRepository accountRepository, PersonRepository personRepository,
     		StudentRepository studentRepository) {
         this.accountRepository = accountRepository;
-        this.personRepositroy = personRepository;
+        this.personRepository = personRepository;
         this.studentRepository = studentRepository;
     }
 
@@ -53,8 +52,13 @@ class AccountController {
     	Assert.notNull(principal);
     	Account account = accountRepository.findByEmail(principal.getName());
     	Person person =  account.getPerson();
+    	if(person == null){
+    		account = accountRepository.createNewPerson(account);
+    		person = account.getPerson();
+    	}
     	Student student = person.getStudent();
     	model.addAttribute("account", account);
+    	
     	model.addAttribute("person", person);
     	model.addAttribute("student", student);
     	DateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
@@ -89,7 +93,7 @@ class AccountController {
 	    	if(student != null){
 	    		studentRepository.save(student);
 	    	}
-	    	personRepositroy.save(person);
+	    	personRepository.save(person);
     	}
 		MessageHelper.addSuccessAttribute(ra, "account.edit.success");    	
     	return "redirect:/account";
