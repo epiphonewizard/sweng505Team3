@@ -41,9 +41,6 @@ public class University implements Serializable {
 
 	private String zip;
 	
-	@OneToOne(mappedBy="university")
-	private Student student;
-	
 	//bi-directional many-to-one association to Lottery
 	@OneToMany(mappedBy="university", fetch=FetchType.EAGER)
 	private List<Lottery> lotteries;

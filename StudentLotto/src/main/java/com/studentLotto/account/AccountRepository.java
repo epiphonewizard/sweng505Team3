@@ -1,5 +1,7 @@
 package com.studentLotto.account;
 
+import java.util.Date;
+
 import javax.persistence.*;
 import javax.inject.Inject;
 
@@ -36,12 +38,22 @@ public class AccountRepository {
 		entityManager.flush();
 		return account;
 	}
+	
 
 	@Transactional
 	public Account changePassword(Account account, String password){
 		account.setPassword(passwordEncoder.encode(password));
 		entityManager.merge(account);
 		return account;
+	}
+	
+	@Transactional 
+	public Account createNewPerson(Account account){
+		Person person = new Person(new Date(),"","","","","","","", "");
+		person.setAccount(account);
+		person = entityManager.merge(person);
+		account.setPerson(person);
+		return entityManager.merge(account);
 	}
 	
 	public Account findByEmail(String email) {
