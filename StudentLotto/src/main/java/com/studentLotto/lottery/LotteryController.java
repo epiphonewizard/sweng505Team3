@@ -37,7 +37,7 @@ public class LotteryController {
 	@RequestMapping(value="lottery/create", method=RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String create(Principal principal, Model model){
-		model.addAttribute("allSchools", universityRepository.findAllUniversities());
+		model.addAttribute("allSchools", universityRepository.getUniversityList());
 		model.addAttribute(new CreateLotteryForm());
 		
 		return CREATE_LOTTERY_PAGE;
@@ -47,7 +47,7 @@ public class LotteryController {
 	@Secured("ROLE_ADMIN")
 	public String create(@Valid @ModelAttribute CreateLotteryForm createLotteryForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
-			model.addAttribute("allSchools", universityRepository.findAllUniversities());
+			model.addAttribute("allSchools", universityRepository.getUniversityList());
 			return CREATE_LOTTERY_PAGE;
 		}
 		University university = universityRepository.findByID(createLotteryForm.getUniversityID());

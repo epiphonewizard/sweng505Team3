@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import com.studentLotto.account.Account;
 import com.studentLotto.account.Student;
+import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.lottery.Lottery;
 
 /**
@@ -13,17 +15,16 @@ import com.studentLotto.lottery.Lottery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
-	@NamedQuery(name = University.FIND_ALL_UNIVERSITIES, query = "select u from University u"),
-	@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id= :id")})
-
+	@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id= :id"),
+	@NamedQuery(name = University.FIND_LIST, query = "select a from University a") })
 public class University implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
+	public static final String FIND_LIST = "University.findList";
 	public static final String FIND_BY_NAME = "University.findByName";
 	public static final String FIND_BY_ID = "University.findByID";
-	public static final String FIND_ALL_UNIVERSITIES = "University.findAllUniversities";
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -36,23 +37,25 @@ public class University implements Serializable {
 
 	private String name;
 
-	@Column(columnDefinition="blob")
+	@Column(columnDefinition = "blob")
 	private byte[] picture;
 
 	private String state;
 
 	private String zip;
-	
-	//bi-directional many-to-one association to Lottery
-	@OneToMany(mappedBy="university", fetch=FetchType.EAGER)
+
+	@OneToOne(mappedBy = "university")
+	private Student student;
+
+	// bi-directional many-to-one association to Lottery
+	@OneToMany(mappedBy = "university", fetch = FetchType.EAGER)
 	private List<Lottery> lotteries;
 
 	public University() {
 	}
 
-	public University( String addressLine1, String addressLine2,
-			String city, String name,
-			String state, String zip) {
+	public University(String addressLine1, String addressLine2, String city,
+			String name, String state, String zip) {
 		super();
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
@@ -125,9 +128,13 @@ public class University implements Serializable {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
-	
+
 	public List<Lottery> getLotteries() {
 		return this.lotteries;
+	}
+
+	public String toString() {
+		return name + " " + addressLine1 + "  " + zip + "  " + state;
 	}
 
 	public void setLotteries(List<Lottery> lotteries) {
