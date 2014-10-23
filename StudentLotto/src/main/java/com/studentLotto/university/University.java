@@ -4,17 +4,22 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.account.Account;
 import com.studentLotto.account.Student;
-
+import com.studentLotto.utilities.AccountActivation;
 
 /**
  * The persistent class for the University database table.
  * 
  */
 @Entity
+@NamedQueries({
+		@NamedQuery(name = University.FIND_BY_NAME, query = "select a from University a where a.name = :name"),
+		@NamedQuery(name = University.FIND_LIST, query = "select a from University a") })
 public class University implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	public static final String FIND_BY_NAME = "University.findByName";
+	public static final String FIND_LIST = "University.findList";
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -25,26 +30,23 @@ public class University implements Serializable {
 
 	private String city;
 
-	private Long lotteryId;
-
 	private String name;
 
-	@Column(columnDefinition="blob")
+	@Column(columnDefinition = "blob")
 	private byte[] picture;
 
 	private String state;
 
 	private String zip;
-	
-	@OneToOne(mappedBy="university")
+
+	@OneToOne(mappedBy = "university")
 	private Student student;
 
 	public University() {
 	}
 
-	public University( String addressLine1, String addressLine2,
-			String city, String name,
-			String state, String zip) {
+	public University(String addressLine1, String addressLine2, String city,
+			String name, String state, String zip) {
 		super();
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
@@ -53,8 +55,7 @@ public class University implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
-
-
+	
 
 	public Long getId() {
 		return this.id;
@@ -86,14 +87,6 @@ public class University implements Serializable {
 
 	public void setCity(String city) {
 		this.city = city;
-	}
-
-	public Long getLotteryId() {
-		return this.lotteryId;
-	}
-
-	public void setLotteryId(Long lotteryId) {
-		this.lotteryId = lotteryId;
 	}
 
 	public String getName() {
@@ -128,4 +121,7 @@ public class University implements Serializable {
 		this.zip = zip;
 	}
 
+	public String toString() {
+		return name + " " + addressLine1 + "  " + zip + "  " + state;
+	}
 }

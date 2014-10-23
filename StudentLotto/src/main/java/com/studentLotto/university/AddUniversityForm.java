@@ -93,4 +93,18 @@ public class AddUniversityForm {
 	public University createUniversity() {
 		return new University(getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
 	}
+	
+	public AddUniversityForm()
+	{
+		
+	}
+
+	public AddUniversityForm(University university) {
+		this.name = university.getName();
+		this.addressLine1 = university.getAddressLine1();;
+		this.addressLine2 = university.getAddressLine2();
+		this.addressCity = university.getCity();
+		this.addressState = university.getState();
+		this.addressZip = university.getZip();
+	}
 }
