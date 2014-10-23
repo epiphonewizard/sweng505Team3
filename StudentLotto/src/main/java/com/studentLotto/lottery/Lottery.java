@@ -43,6 +43,14 @@ public class Lottery implements Serializable {
 	
 	public Lottery() {
 	}
+	
+	public Lottery(Date drawingDate, Date purchaseStartDate, Date purchaseEndDate, BigDecimal maxWinnings, University university){
+		setDrawingDate(drawingDate);
+		setPurchaseStartDate(purchaseStartDate);
+		setPurchaseEndDate(purchaseEndDate);
+		setMaxWinnings(maxWinnings);
+		setUniversity(university);
+	}
 
 	public int getId() {
 		return this.id;

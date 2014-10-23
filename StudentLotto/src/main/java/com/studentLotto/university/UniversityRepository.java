@@ -1,5 +1,6 @@
 package com.studentLotto.university;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -29,6 +30,16 @@ public class UniversityRepository {
 			return entityManager
 					.createNamedQuery(University.FIND_BY_NAME, University.class)
 					.setParameter("name", name).getSingleResult();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
+	
+	public University findByID(Long id) {
+		try {
+			return entityManager
+					.createNamedQuery(University.FIND_BY_ID, University.class)
+					.setParameter("id", id).getSingleResult();
 		} catch (PersistenceException e) {
 			return null;
 		}

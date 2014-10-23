@@ -1,10 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+    <title>Student Lotto</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    
+    <script>    	
+
+	  $(function() {
+	    $( "#purchaseStartDate, #purchaseEndDate, #drawingDate" ).datepicker({
+	      changeMonth: true,
+	      changeYear: true,
+	      yearRange: "c-100:c"
+	    });
+	  });
+
+	  $(document).ready(function(){
+		  $("#maxWinnings").change(function(){
+			  if(isNaN(parseFloat($("#maxWinnings").val()))){
+				  alert("Maximum Winnings must be a valid number.")
+				  $("#maxWinnings").val("0.0")
+			  }
+		  })
+	  })
+
+	</script>
 </head>
 <body>
+<div th:replace="fragments/header :: header">Header</div>
 
+<form id="createLotteryForm" class="form-narrow form-horizontal" method="post" th:action="@{/lottery/create}" th:object="${createLotteryForm}">
+    <!-- /* Show general error message when form contains errors */ -->
+    <th:block th:if="${#fields.hasErrors('${createLotteryForm.*}')}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    </th:block>
+    <div class="col-lg-10" th:classappend="${#fields.hasErrors('global')}? 'has-error'">
+		<span class="help-block" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
+	</div>
+    <fieldset>
+        <legend>Create New Lottery</legend>
+        <div class="form-narrow" id="loginInfo">
+        
+        	<div class="form-group" th:classappend="${#fields.hasErrors('universityID')}? 'has-error'">
+	            <label for="universityID" class="col-lg-2 control-label">School</label>
+	            <div class="col-lg-10">
+					<select id="universityID" th:field="*{universityID}" >
+						<option th:each="school : ${allSchools}" 
+          						th:value="${school.id}" 
+          						th:text="${school.name}"></option>
+					</select>
+	            </div>
+	        </div>   
+	     <fieldset>   
+		     <legend>Days that tickets may be purchased</legend>
+		       <div class="form-group" th:classappend="${#fields.hasErrors('purchaseStartDate')}? 'has-error'">
+		            <label for="purchaseStartDate" class="col-lg-2 control-label">Start Day</label>
+		            <div class="col-lg-10">
+		                <input type="text" class="form-control" id="purchaseStartDate"  th:field="*{purchaseStartDate}"/>
+		                <span class="help-block" th:if="${#fields.hasErrors('purchaseStartDate')}" th:errors="*{purchaseStartDate}"></span>
+		            </div>
+		        </div>
+		        
+		       <div class="form-group" th:classappend="${#fields.hasErrors('purchaseEndDate')}? 'has-error'">
+		            <label for="purchaseEndDate" class="col-lg-2 control-label">End Day</label>
+		            <div class="col-lg-10">
+		                <input type="text" class="form-control" id="purchaseEndDate"  th:field="*{purchaseEndDate}"/>
+		                <span class="help-block" th:if="${#fields.hasErrors('purchaseEndDate')}" th:errors="*{purchaseEndDate}"></span>
+		            </div>
+		        </div>
+	        </fieldset>
+	        
+	        
+   		    <div class="form-group" th:classappend="${#fields.hasErrors('drawingDate')}? 'has-error'">
+	            <label for="drawingDate" class="col-lg-2 control-label">Day of drawing</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="drawingDate"  th:field="*{drawingDate}"/>
+	                <span class="help-block" th:if="${#fields.hasErrors('drawingDate')}" th:errors="*{drawingDate}"></span>
+	            </div>
+	        </div>
+	        
+	        
+	       <div class="form-group" th:classappend="${#fields.hasErrors('maxWinnings')}? 'has-error'">
+	            <label for="maxWinnings" class="col-lg-2 control-label">Maximum Winnings</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="maxWinnings"  th:field="*{maxWinnings}"/>
+	                <span class="help-block" th:if="${#fields.hasErrors('maxWinnings')}" th:errors="*{maxWinnings}"></span>
+	            </div>
+	        </div>
+	   
+        
+        
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" onclick="window.location.href= window.location.href.replace('/lottery/create','')">Cancel</button>
+            </div>
+        </div>
+     </div>
+    </fieldset>
+</form>
 </body>
 </html>

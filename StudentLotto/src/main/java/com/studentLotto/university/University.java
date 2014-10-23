@@ -13,13 +13,15 @@ import com.studentLotto.lottery.Lottery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
-	@NamedQuery(name = University.FIND_ALL_UNIVERSITIES, query = "select u from University u") })
+	@NamedQuery(name = University.FIND_ALL_UNIVERSITIES, query = "select u from University u"),
+	@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id= :id")})
 
 public class University implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	public static final String FIND_BY_NAME = "University.findByName";
+	public static final String FIND_BY_ID = "University.findByID";
 	public static final String FIND_ALL_UNIVERSITIES = "University.findAllUniversities";
 	
 	@Id
