@@ -47,8 +47,8 @@ public class Person implements Serializable {
 	@OneToOne(mappedBy="person")
 	private Student student;
 
-	@OneToOne(cascade=CascadeType.ALL, optional = false)
-	@JoinColumn(name="accountId")
+	@OneToOne(optional = false)
+	@JoinColumn(name="accountId", referencedColumnName = "id")
 	private Account account;
 
 	public Person() {
@@ -111,6 +111,24 @@ public class Person implements Serializable {
 		this.permAddressZip = permAddressZip;
 		this.phoneNumber = phoneNumber;
 		this.account = account;
+	}
+	
+	public Person(Date birthdate, String fname, String lname,
+			String permAddressCity, String permAddressLine1,
+			String permAddressLine2, String permAddressState,
+			String permAddressZip, String phoneNumber, Account account, Student student) {
+		super();
+		this.birthdate = birthdate;
+		this.fname = fname;
+		this.lname = lname;
+		this.permAddressCity = permAddressCity;
+		this.permAddressLine1 = permAddressLine1;
+		this.permAddressLine2 = permAddressLine2;
+		this.permAddressState = permAddressState;
+		this.permAddressZip = permAddressZip;
+		this.phoneNumber = phoneNumber;
+		this.account = account;
+		this.student = student;
 	}
 
 

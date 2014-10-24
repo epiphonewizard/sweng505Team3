@@ -100,11 +100,11 @@
 	        <div class="form-group">
 	        	<div class="col-lg-10">
 		        	<span>
-			        	<input type="radio" name="userType" id="userTypeStudent" value="Student"  th:field="*{userType}"  />
+			        	<input type="radio" name="userType" id="userTypeStudent" value="Student"   th:field="*{userType}"  />
 			        	<label for="userTypeStudent">Student</label>
 					</span>
 					<span>       	
-			        	<input type="radio" name="userType" id="userTypeDonator" value="Donator" th:field="*{userType}"	/>
+			        	<input type="radio" name="userType" id="userTypeDonator" value="Donator"   th:field="*{userType}"	/>
 			        	<label for="userTypeDonator">Donator</label>
 			        </span> 
 		        </div>
@@ -161,7 +161,8 @@
 	        <div class="form-group" th:classappend="${#fields.hasErrors('homeState')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">State</label>
 	            <div class="col-lg-10">
-					<select id="homeState" th:field="*{homeState}">
+					<select id="homeState" class="form-control" th:field="*{homeState}">
+						<option value="">Please Select</option>
 						<option value="AL">Alabama</option>
 						<option value="AK">Alaska</option>
 						<option value="AZ">Arizona</option>
@@ -234,8 +235,9 @@
         	<div class="form-group" th:classappend="${#fields.hasErrors('school')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">School</label>
 	            <div class="col-lg-10">
-					<select id="school" th:field="*{school}" >
-						<option th:each="school : ${allSchools}" 
+					<select id="school"  class="form-control" th:field="*{school}" >
+					     <option value="">Please Select</option>
+						<option th:each="school : ${schools}" 
           						th:value="${school.id}" 
           						th:text="${school.name}"></option>
 					</select>
@@ -264,7 +266,8 @@
 	        <div class="form-group" th:classappend="${#fields.hasErrors('mailState')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">State</label>
 	            <div class="col-lg-10">
-					<select id="mailState" th:field="*{mailState}">
+					<select id="mailState"  class="form-control" th:field="*{mailState}">
+					    <option value="">Please Select</option>
 						<option value="AL">Alabama</option>
 						<option value="AK">Alaska</option>
 						<option value="AZ">Arizona</option>

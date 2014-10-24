@@ -32,8 +32,8 @@ public class Student implements Serializable {
 	private String uEmailAddress;
 
 	//bi-directional one-to-one association to Person
-	@OneToOne(cascade=CascadeType.ALL, optional = false)
-	@JoinColumn(name="personId")
+	@OneToOne(optional = false)
+	@JoinColumn(name="personId", referencedColumnName = "id")
 	private Person person;
 
 	@OneToOne(optional = false)
@@ -45,7 +45,7 @@ public class Student implements Serializable {
 		
 	public Student(String uAddressCity, String uAddressLine1,
 			String uAddressLine2, String uAddressState, String uAddressZip,
-			String uEmailAddress, Person person, University university) {
+			String uEmailAddress, University university,  Person person) {
 		super();
 		this.uAddressCity = uAddressCity;
 		this.uAddressLine1 = uAddressLine1;
@@ -54,6 +54,19 @@ public class Student implements Serializable {
 		this.uAddressZip = uAddressZip;
 		this.uEmailAddress = uEmailAddress;
 		this.person = person;
+		this.university = university;
+	}
+	
+	public Student(String uAddressCity, String uAddressLine1,
+			String uAddressLine2, String uAddressState, String uAddressZip,
+			String uEmailAddress, University university) {
+		super();
+		this.uAddressCity = uAddressCity;
+		this.uAddressLine1 = uAddressLine1;
+		this.uAddressLine2 = uAddressLine2;
+		this.uAddressState = uAddressState;
+		this.uAddressZip = uAddressZip;
+		this.uEmailAddress = uEmailAddress;
 		this.university = university;
 	}
 
