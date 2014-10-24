@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roles</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+ 	<style>
+ 	  td{
+ 	  	border-bottom: thin dotted #B1B1A8;
+ 	  }
+ 	</style>
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header">Header</div>
+<form id="showadmin" class="form-narrow form-horizontal" method="get">
+	<h3>MANAGE ROLES</h3><br />
+	<strong>Use this to grant or revoke administrative access</strong><br /><br />
+	<table width='100%'>
+		<tr>
+			<td width='50%'><strong>Current Administrators</strong></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr th:each="messageA : ${messageAdmin}">
+			<td th:text="${messageA.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${messageA.id})}" >Update</a></td>
+			
+		
+		</tr>
+	</table><br />
+	<table width='100%'>	
+		<tr>
+			<td width='50%'><strong>Current Users</strong></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr th:each="messageU : ${messageUser}">
+			<td th:text="${messageU.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${messageU.id})}" >Update</a></td>
+			
+		
+		</tr>
+	
+	
+	</table>
+
+</form>
+</body>
+</html>
