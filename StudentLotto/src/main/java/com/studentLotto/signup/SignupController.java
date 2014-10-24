@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.*;
 import com.studentLotto.support.web.*;
+import com.studentLotto.university.UniversityRepository;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
 import com.studentLotto.utilities.AccountUtilities;
@@ -30,6 +31,9 @@ public class SignupController {
 
 	@Autowired
 	private PersonRepository personRepository;
+	
+	@Autowired
+	private UniversityRepository universityRepository;
 
 	@Autowired
 	private UserService userService;
@@ -39,14 +43,16 @@ public class SignupController {
 
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
+		model.addAttribute("allSchools", universityRepository.getUniversityList());
 		model.addAttribute(new SignupForm());
 		return SIGNUP_VIEW_NAME;
 	}
 
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
 	public String signup(@Valid @ModelAttribute SignupForm signupForm,
-			Errors errors, RedirectAttributes ra) {
+			Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
+			model.addAttribute("allSchools", universityRepository.getUniversityList());
 			return SIGNUP_VIEW_NAME;
 		}
 		Account account = accountRepository.save(signupForm.createAccount());
