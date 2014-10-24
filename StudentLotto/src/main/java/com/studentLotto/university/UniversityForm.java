@@ -84,7 +84,7 @@ public class UniversityForm {
 	}
 
 	public University createUniversity() {
-		return new University(getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
+		return new University(getId(), getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
 	}
 	
 	public UniversityForm()

@@ -71,7 +71,7 @@ public class UniversityController {
 			return ADD_UNIVERSITY_VIEW_NAME;
 		}
 		University university = addUniversityForm.createUniversity();	
-		if (university.getName() != null) { 
+		if (university.getId() != null) { 
 			universityRepository.update(university);
 			model.addAttribute(new UniversityForm(university));
 			MessageHelper.addSuccessAttribute(ra, "updateUniversity.success", university.getName());
@@ -109,7 +109,6 @@ public class UniversityController {
 		if (errors.hasErrors()) {
 			return EDIT_UNIVERSITY_VIEW_NAME;
 		}
-		return "redirect:/addUniversity?university="
-				+ selectedUni.getName();
+		return "redirect:/addUniversity?university=" + selectedUni.getName();
 	}
 }

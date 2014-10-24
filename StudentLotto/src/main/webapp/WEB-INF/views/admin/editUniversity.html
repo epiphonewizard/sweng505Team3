@@ -36,11 +36,12 @@
 		<fieldset>
 			<legend>Select a University to Edit</legend>
 
-			<div class="form-narrow" id="universityInfo">
-				<div class="form-group"></div>
-				<select id="university" th:field="${selectedUni.name}">
-					<option th:each="uni : ${universityList}" th:value="${uni.name}" th:text="${uni.name}"></option>
-				</select>
+			<div class="form-group">
+				<div class="col-lg-10">
+					<select id="university" class="form-control" th:field="${selectedUni.name}">
+						<option th:each="uni : ${universityList}" th:value="${uni.name}" th:text="${uni.name}"></option>
+					</select>
+				</div>
 			</div>
 
 			<div class="form-group">

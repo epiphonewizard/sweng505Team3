@@ -3,10 +3,6 @@ package com.studentLotto.university;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
-
-import com.studentLotto.account.Account;
-import com.studentLotto.account.Student;
-import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.lottery.Lottery;
 
 /**
@@ -14,7 +10,7 @@ import com.studentLotto.lottery.Lottery;
  */
 @Entity
 @NamedQueries({
-		@NamedQuery(name = University.FIND_BY_NAME, query = "select a from University a where a.name = :name"),
+		@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
 		@NamedQuery(name = University.FIND_LIST, query = "select u from University u"), 
 		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id") 
 		
@@ -53,9 +49,10 @@ public class University implements Serializable {
 	public University() {
 	}
 
-	public University(String addressLine1, String addressLine2, String city,
+	public University(Long id, String addressLine1, String addressLine2, String city,
 			String name, String state, String zip) {
 		super();
+		this.id = id;
 		this.addressLine1 = addressLine1;
 		this.addressLine2 = addressLine2;
 		this.city = city;
