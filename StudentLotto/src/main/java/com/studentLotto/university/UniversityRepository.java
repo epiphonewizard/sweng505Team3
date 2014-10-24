@@ -37,17 +37,26 @@ public class UniversityRepository{
 		try {
 			return entityManager.find(University.class, id);
 		} catch (PersistenceException e) {
-
 			return null;
 		}
 	}
+	
 	public University findByName(String name) {
 		try {
 			return entityManager
 					.createNamedQuery(University.FIND_BY_NAME, University.class)
 					.setParameter("name", name).getSingleResult();
 		} catch (PersistenceException e) {
-
+			return null;
+		}
+	}
+	
+	public University findById(Long id) {
+		try {
+			return entityManager
+					.createNamedQuery(University.FIND_BY_ID, University.class)
+					.setParameter("id", id).getSingleResult();
+		} catch (PersistenceException e) {
 			return null;
 		}
 	}
@@ -62,17 +71,15 @@ public class UniversityRepository{
 	}
 
 	public void update(University university) {
-		University toUpdate = findByName(university.getName());
+		University toUpdate = findById(university.getId());
 		toUpdate.setZip(university.getZip());
 		toUpdate.setAddressLine1(university.getAddressLine1());
 		toUpdate.setAddressLine2(university.getAddressLine2());
 		toUpdate.setCity(university.getCity());
 		toUpdate.setName(university.getName());
 		toUpdate.setState(university.getState());
-
 		entityManager.merge(toUpdate);
 		entityManager.flush();
-
 	}
 	
 }

@@ -16,13 +16,17 @@ import com.studentLotto.lottery.Lottery;
 @NamedQueries({
 
 		@NamedQuery(name = University.FIND_BY_NAME, query = "select a from University a where a.name = :name"),
-		@NamedQuery(name = University.FIND_LIST, query = "select a from University a") })
+		@NamedQuery(name = University.FIND_LIST, query = "select u from University u"), 
+		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id") 
+		
+})
 public class University implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIND_LIST = "University.findList";
 	public static final String FIND_BY_NAME = "University.findByName";
+	public static final String FIND_BY_ID = "University.findById";
 
 	@Id
 	@GeneratedValue
@@ -42,9 +46,6 @@ public class University implements Serializable {
 	private String state;
 
 	private String zip;
-
-	@OneToOne(mappedBy = "university")
-	private Student student;
 
 	// bi-directional many-to-one association to Lottery
 	@OneToMany(mappedBy = "university", fetch = FetchType.EAGER)

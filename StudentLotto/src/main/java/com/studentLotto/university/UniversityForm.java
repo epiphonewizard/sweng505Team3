@@ -4,27 +4,37 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.*;
 
-public class AddUniversityForm {
+public class UniversityForm {
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	private Long id;
+	
+	@NotBlank(message = UniversityForm.NOT_BLANK_MESSAGE)
 	private String name;
 
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = UniversityForm.NOT_BLANK_MESSAGE)
 	private String addressLine1;
 
 	private String addressLine2;
 	
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = UniversityForm.NOT_BLANK_MESSAGE)
 	private String addressCity;
 
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = UniversityForm.NOT_BLANK_MESSAGE)
 	private String addressState;
 
-	@NotBlank(message = AddUniversityForm.NOT_BLANK_MESSAGE)
+	@NotBlank(message = UniversityForm.NOT_BLANK_MESSAGE)
 	@Pattern(regexp = "\\d{5}", message = "Enter a valid zip code!")
 	private String addressZip;
 
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -77,12 +87,13 @@ public class AddUniversityForm {
 		return new University(getAddressLine1(), getAddressLine2(), getAddressCity(), getName(), getAddressState(), getAddressZip());
 	}
 	
-	public AddUniversityForm()
+	public UniversityForm()
 	{
 		
 	}
 
-	public AddUniversityForm(University university) {
+	public UniversityForm(University university) {
+		this.id = university.getId();
 		this.name = university.getName();
 		this.addressLine1 = university.getAddressLine1();;
 		this.addressLine2 = university.getAddressLine2();
