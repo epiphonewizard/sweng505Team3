@@ -6,10 +6,19 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
-@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
+@NamedQueries({
+	@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email"),
+	@NamedQuery(name = Account.FIND_BY_ROLE, query = "select a from Account a where a.role = :role"),
+	@NamedQuery(name = Account.FIND_BY_ID, query = "select a from Account a where a.id = :id"),
+	@NamedQuery(name = Account.UPDATE_BY_ID, query = "update Account a set a.role = :role where a.id = :id")
+
+})
 public class Account implements java.io.Serializable {
 
 	public static final String FIND_BY_EMAIL = "Account.findByEmail";
+	public static final String FIND_BY_ROLE = "Account.findByRole";
+	public static final String FIND_BY_ID = "Account.findById";
+	public static final String UPDATE_BY_ID = "Account.updateById";
 
 	@Id
 	@GeneratedValue
