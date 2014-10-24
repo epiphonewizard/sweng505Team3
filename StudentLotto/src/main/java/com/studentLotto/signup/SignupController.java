@@ -43,7 +43,7 @@ public class SignupController {
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute(new SignupForm());
-		model.addAttribute("schools", universityRepository.findAll());
+		model.addAttribute("schools", universityRepository.getUniversityList());
 		return SIGNUP_VIEW_NAME;
 	}
 
