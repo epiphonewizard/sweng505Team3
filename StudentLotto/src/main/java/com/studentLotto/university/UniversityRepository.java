@@ -34,6 +34,14 @@ public class UniversityRepository{
 		return university;
 	}
 
+	public University findOne(Long id) {
+		try {
+			return entityManager.find(University.class, id);
+		} catch (PersistenceException e) {
+
+			return null;
+		}
+	}
 	public University findByName(String name) {
 		try {
 			return entityManager

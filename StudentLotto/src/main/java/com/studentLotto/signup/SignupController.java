@@ -1,10 +1,5 @@
 package com.studentLotto.signup;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +28,22 @@ public class SignupController {
 	private PersonRepository personRepository;
 	
 	@Autowired
-	private UniversityRepository universityRepository;
+	private StudentRepository studentRepository;
 
 	@Autowired
 	private UserService userService;
 
 	@Autowired
 	private AccountActivationRepository accountActivationRepo;
+	
+	@Autowired
+	private UniversityRepository universityRepository;
 
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
 		model.addAttribute("allSchools", universityRepository.getUniversityList());
 		model.addAttribute(new SignupForm());
+		model.addAttribute("schools", universityRepository.getUniversityList());
 		return SIGNUP_VIEW_NAME;
 	}
 
@@ -55,12 +54,11 @@ public class SignupController {
 			model.addAttribute("allSchools", universityRepository.getUniversityList());
 			return SIGNUP_VIEW_NAME;
 		}
-		Account account = accountRepository.save(signupForm.createAccount());
+		
+		Account account = createAccount(signupForm);
 		// Person person =personRepository.save(signupForm.createPerson());
 
 		// emailActivation(account.getEmail(), account.getId());
-		// see /WEB-INF/i18n/messages.properties and
-		// /WEB-INF/views/homeSignedIn.html
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
 		AccountUtilities accountUtilities = new AccountUtilities();
 
@@ -74,37 +72,38 @@ public class SignupController {
 		return "redirect:/signin";
 	}
 
-	/**
-	 * refrerence data used in creation of page. This will need to be updated
-	 * for real values once database is completely set up.
-	 * 
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	protected Map referenceData(HttpServletRequest request) throws Exception {
-		Map referenceData = new HashMap();
-
-		Map<String, String> countries = new LinkedHashMap<String, String>();
-		countries.put("US", "United Stated");
-		countries.put("CHINA", "China");
-		countries.put("SG", "Singapore");
-		countries.put("MY", "Malaysia");
-		referenceData.put("countryList", countries);
-
-		Map<String, String> states = new LinkedHashMap<String, String>();
-		states.put("OR", "Oregon");
-		states.put("CA", "California");
-		states.put("PA", "Pennyslvannia");
-		referenceData.put("stateList", states);
-
-		Map<String, String> schools = new LinkedHashMap<String, String>();
-		schools.put("PennState", "Penn State");
-		schools.put("OregonState", "Oregon State");
-		schools.put("USC", "University of Southern California");
-		referenceData.put("schoolList", schools);
-
-		return referenceData;
+	private Account createAccount(SignupForm signupForm) {
+		if(signupForm.getUserType().equals("Donator")) {
+			return personRepository.save(new Person(signupForm.getDateOfBirth(),
+												  	signupForm.getFirstName(),
+												  	signupForm.getLastName(),
+												  	signupForm.getHomeCity(),
+												  	signupForm.getHomeStreetAddress(),
+												  	"",
+												  	signupForm.getHomeState(),
+												  	signupForm.getHomeZip(),
+												  	signupForm.getPhoneNumber(),
+												  	accountRepository.save(new Account(signupForm.getEmail(), 
+															    signupForm.getPassword())))).getAccount();
+		} else {
+			Person person = personRepository.save(new Person(signupForm.getDateOfBirth(),
+				  	signupForm.getFirstName(),
+				  	signupForm.getLastName(),
+				  	signupForm.getHomeCity(),
+				  	signupForm.getHomeStreetAddress(),
+				  	"",
+				  	signupForm.getHomeState(),
+				  	signupForm.getHomeZip(),
+				  	signupForm.getPhoneNumber(),
+				  	accountRepository.save(new Account(signupForm.getEmail(), 
+							    signupForm.getPassword()))));
+			return     studentRepository.save(new Student(signupForm.getMailCity(),
+									 	 signupForm.getMailStreetAddress(),
+									 	 "",
+									 	 signupForm.getMailState(),
+									 	 signupForm.getMailZip(),
+									 	 signupForm.getEmail(),
+									 	 universityRepository.findOne(signupForm.getSchool()),person)).getPerson().getAccount();
+		}
 	}
-
 }

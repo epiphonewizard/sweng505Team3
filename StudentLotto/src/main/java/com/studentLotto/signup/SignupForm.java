@@ -2,9 +2,11 @@ package com.studentLotto.signup;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.studentLotto.account.Account;
 
@@ -27,6 +29,8 @@ public class SignupForm {
 	private String userType = "Student";
 
 	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	@NotNull(message = SignupForm.NOT_BLANK_MESSAGE)
+	@DateTimeFormat(pattern="MM/dd/yyyy")
 	private Date dateOfBirth;
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
@@ -46,8 +50,10 @@ public class SignupForm {
 	private String homeCity;
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String homeState = "PA";
+	private String homeState;
 
+	
+	@Pattern(regexp = "\\d{5}", message = "Enter a valid zip code")
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String homeZip;
 
@@ -55,12 +61,12 @@ public class SignupForm {
 	private String mailStreetAddress;
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String mailCity;
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	private String mailState = "PA";
+	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	private String mailState;
 
 	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String mailZip;
-	//@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+	//@NotNull(message = SignupForm.NOT_BLANK_MESSAGE)
 	private Long school;
 
 	public String getEmail() {
@@ -85,10 +91,6 @@ public class SignupForm {
 
 	public void setConfirm(String confirm) {
 		this.confirm = confirm;
-	}
-
-	public Account createAccount() {
-		return new Account(getEmail(), getPassword(), "ROLE_USER");
 	}
 
 	public String getUserType() {
