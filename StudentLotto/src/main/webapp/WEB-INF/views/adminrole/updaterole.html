@@ -15,10 +15,59 @@
 <body>
 
 <div th:replace="fragments/header :: header">Header</div>
-<form id="updaterole" class="form-narrow form-horizontal" method="post" CommandName="updateform">
+<form id="updaterole" class="form-narrow form-horizontal" method="post" th:action="@{${updaterole}}" th:object="${updateroleForm}">
+	  <!-- /* Show general error message when form contains errors */ -->
+    <th:block th:if="${#fields.hasErrors('${updateroleForm.*}')}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    </th:block>
+    
+    <th:block th:if="${message != null}">
+        <!-- /* The message code is returned from the @Controller */ -->
+	    <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${message.args[0]})})">&nbsp;</div>
+    </th:block>
+   
+    <div class="col-lg-10" th:classappend="${#fields.hasErrors('global')}? 'has-error'">
+		<span class="help-block" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
+	</div>
+	 
 	 <fieldset>
         <legend>Change Role:</legend>
-			<table>
+        
+        <div class="form-group" th:classappend="${#fields.hasErrors('id')}? 'has-error'">
+	            <label for="name" class="col-lg-2 control-label">ID</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="id" th:field="*{id}" />
+	                <span class="help-block" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID Error</span>
+	            </div>
+	        </div>
+	        
+	         <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+	            <label for="name" class="col-lg-2 control-label">ID</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="id" th:field="*{email}" />
+	                <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
+	            </div>
+	        </div>
+	        
+	         <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
+	            <label for="name" class="col-lg-2 control-label">Role</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="id" th:field="*{role}" />
+	                <span class="help-block" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</span>
+	            </div>
+	        </div>
+	        
+	          <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
+	            <label for="addressState" class="col-lg-2 control-label">Role</label>
+	            <div class="col-lg-10">
+					<select id="addressState" th:field="*{role}">
+						<option value="ADMIN_ROLE">ADMIN_ROLE</option>
+						<option value="USER_ROLE">USER_ROLE</option>
+						</select>				
+	            </div>
+	        </div>  
+	        
+			<!--table>
 				<tr>
 					<td><label for="id" class="col-lg-2 control-label">ID:</label></td>
 					<td th:text="${id}" th:field="*{id}" ></td>
@@ -44,7 +93,7 @@
 						</select>
 						</td>					
 				</tr>
-			</table>
+			</table-->
 			<br />
 			 <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">

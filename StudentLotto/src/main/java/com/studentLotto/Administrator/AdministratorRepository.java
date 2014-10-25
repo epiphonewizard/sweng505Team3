@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import antlr.collections.List;
 
 import com.studentLotto.account.Account;
+import com.studentLotto.university.University;
 
 @Repository
 @Transactional(readOnly = true)
@@ -33,11 +34,14 @@ public class AdministratorRepository {
 		} catch (PersistenceException e) {
 			return null;
 		}
-	}
-	public void updatebyId(Long rid, String role){
-			
-			entityManager.createNamedQuery(Account.UPDATE_BY_ID, Account.class)
-				.setParameter("id", rid)
-				.setParameter("role", role).executeUpdate();
 	}	
+	
+	public void update(Account account) {
+		Account toUpdate = findById(account.getId());
+		toUpdate.setEmail(account.getEmail());
+		toUpdate.setRole(account.getRole());
+	
+		entityManager.merge(toUpdate);
+		entityManager.flush();
+	}
 }

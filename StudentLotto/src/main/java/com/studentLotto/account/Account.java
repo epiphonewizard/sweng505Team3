@@ -47,6 +47,14 @@ public class Account implements java.io.Serializable {
 		this.role = role;
 		this.person = person;
 	}
+	
+	public Account(Long id, String email, String role) {
+		this.email = email;
+	
+		this.role = role;
+		this.id = id; 
+	}
+	
 
 	public Account(String email, String password) {
 		super();
