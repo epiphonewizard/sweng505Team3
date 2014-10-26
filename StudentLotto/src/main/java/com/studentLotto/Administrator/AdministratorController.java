@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,8 @@ import com.studentLotto.university.University;
 import com.studentLotto.university.UniversityForm;
 
 @Controller
+@Secured("ROLE_ADMIN")
+
 public class AdministratorController {
 
 	 private AdministratorRepository AdministratorRepository;
@@ -59,7 +62,7 @@ public class AdministratorController {
 		 
 	    	Account account = AdministratorRepository.findById(rid);
 	    	AdministratorEditForm updateroleForm = new AdministratorEditForm(account);
-	    	model.addAttribute("updateroleform",updateroleForm);
+	    	model.addAttribute("updateroleForm",updateroleForm);
 	    	
 		 return principal != null ? UPDATE_VIEW : "redirect:/signin";
 		 
@@ -68,21 +71,21 @@ public class AdministratorController {
 	
 	
 	 
-	/* @RequestMapping(value = "updaterole", method = RequestMethod.POST)
+	 @RequestMapping(value = "updaterole", method = RequestMethod.POST)
 		public String index(@Valid @ModelAttribute AdministratorEditForm updateroleForm,
-				Errors errors, RedirectAttributes ra, Model model) {
+				Errors errors, Model model) {
 		
 		 if (errors.hasErrors()) {
-				model.addAttribute("actionURL", UPDATE_VIEW);
 				return UPDATE_VIEW;
 			}
 		 	Account account = updateroleForm.createAccount();
-				AdministratorRepository.update(account);
+				/*AdministratorRepository.update(account);
 				model.addAttribute(new AdministratorEditForm(account));
-				MessageHelper.addSuccessAttribute(ra, "updateUniversity.success", account.getEmail());
+				MessageHelper.addSuccessAttribute(ra, "updaterole.success", account.getEmail());*/
+				//return "redirect:/updaterole?rid=" + account.getId();
 				return ADMIN_VIEW;
 			
-		}*/
+		}
 	 
 	
 	 

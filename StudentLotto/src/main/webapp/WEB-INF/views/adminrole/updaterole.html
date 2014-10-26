@@ -42,30 +42,24 @@
 	        </div>
 	        
 	         <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
-	            <label for="name" class="col-lg-2 control-label">ID</label>
+	            <label for="name" class="col-lg-2 control-label">Email</label>
 	            <div class="col-lg-10">
 	                <input type="text" class="form-control" id="id" th:field="*{email}" />
 	                <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
 	            </div>
 	        </div>
-	        
-	         <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
-	            <label for="name" class="col-lg-2 control-label">Role</label>
-	            <div class="col-lg-10">
-	                <input type="text" class="form-control" id="id" th:field="*{role}" />
-	                <span class="help-block" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</span>
-	            </div>
-	        </div>
+	       
 	        
 	          <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
-	            <label for="addressState" class="col-lg-2 control-label">Role</label>
+	            <label for="role" class="col-lg-2 control-label">Role</label>
 	            <div class="col-lg-10">
-					<select id="addressState" th:field="*{role}">
-						<option value="ADMIN_ROLE">ADMIN_ROLE</option>
-						<option value="USER_ROLE">USER_ROLE</option>
+					<select id="role" th:field="*{role}">
+						<option value="ROLE_ADMIN">ROLE_ADMIN</option>
+						<option value="ROLE_USER">ROLE_USER</option>
 						</select>				
 	            </div>
 	        </div>  
+	       
 	        
 			<!--table>
 				<tr>
