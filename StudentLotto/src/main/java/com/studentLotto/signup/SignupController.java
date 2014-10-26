@@ -41,7 +41,6 @@ public class SignupController {
 
 	@RequestMapping(value = "signup")
 	public String signup(Model model) {
-		model.addAttribute("allSchools", universityRepository.getUniversityList());
 		model.addAttribute(new SignupForm());
 		model.addAttribute("schools", universityRepository.getUniversityList());
 		return SIGNUP_VIEW_NAME;
@@ -51,14 +50,12 @@ public class SignupController {
 	public String signup(@Valid @ModelAttribute SignupForm signupForm,
 			Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
-			model.addAttribute("allSchools", universityRepository.getUniversityList());
+			model.addAttribute("schools", universityRepository.getUniversityList());
 			return SIGNUP_VIEW_NAME;
 		}
 		
 		Account account = createAccount(signupForm);
-		// Person person =personRepository.save(signupForm.createPerson());
-
-		// emailActivation(account.getEmail(), account.getId());
+		
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
 		AccountUtilities accountUtilities = new AccountUtilities();
 

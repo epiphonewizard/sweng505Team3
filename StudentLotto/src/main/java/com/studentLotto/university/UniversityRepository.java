@@ -10,7 +10,8 @@ import javax.persistence.PersistenceException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.studentLotto.account.Account;
+import com.studentLotto.lottery.Lottery;
+import com.studentLotto.lottery.LotteryRepository;
 import com.studentLotto.university.University;
 
 @Repository
@@ -19,6 +20,8 @@ public class UniversityRepository{
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	private LotteryRepository lotteryRepository;
 
 	@Transactional
 	public University save(University university) {
@@ -69,6 +72,11 @@ public class UniversityRepository{
 	
 	@Transactional
 	public void remove(University university) {
+		for (int i = 0; i < university.getLotteries().size(); i++) {
+			Lottery lottery = university.getLotteries().get(i);
+			lottery.setUniversity(null);
+			lotteryRepository.save(lottery);
+		};
 		entityManager.remove(university);
 	}
 
