@@ -130,7 +130,7 @@ public class University implements Serializable {
 	}
 
 	public String toString() {
-		return name + " " + addressLine1 + "  " + zip + "  " + state;
+		return name + " " + addressLine1 + " " + city + ", " + state + " " + zip;
 	}
 
 	public void setLotteries(List<Lottery> lotteries) {

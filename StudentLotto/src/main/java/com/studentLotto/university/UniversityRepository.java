@@ -2,11 +2,15 @@ package com.studentLotto.university;
 
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.studentLotto.account.Account;
 import com.studentLotto.university.University;
 
 @Repository
@@ -22,6 +26,7 @@ public class UniversityRepository{
 		return university;
 	}
 
+	@Transactional
 	public University findOne(Long id) {
 		try {
 			return entityManager.find(University.class, id);
@@ -30,6 +35,7 @@ public class UniversityRepository{
 		}
 	}
 	
+	@Transactional
 	public University findByName(String name) {
 		try {
 			return entityManager
@@ -40,6 +46,7 @@ public class UniversityRepository{
 		}
 	}
 	
+	@Transactional
 	public University findById(Long id) {
 		try {
 			return entityManager
@@ -50,15 +57,6 @@ public class UniversityRepository{
 		}
 	}
 	
-	public University findByID(Long id) {
-		try {
-			return entityManager
-					.createNamedQuery(University.FIND_BY_ID, University.class)
-					.setParameter("id", id).getSingleResult();
-		} catch (PersistenceException e) {
-			return null;
-		}
-	}
 	
 	public List<University> getUniversityList() {
 		try {
@@ -68,7 +66,13 @@ public class UniversityRepository{
 			return null;
 		}
 	}
+	
+	@Transactional
+	public void remove(University university) {
+		entityManager.remove(university);
+	}
 
+	@Transactional
 	public void update(University university) {
 		University toUpdate = findById(university.getId());
 		toUpdate.setZip(university.getZip());
