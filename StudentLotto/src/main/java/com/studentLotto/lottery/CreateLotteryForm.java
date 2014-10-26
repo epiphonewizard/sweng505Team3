@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.ScriptAssert;
 
 import com.studentLotto.signup.SignupForm;
+import com.studentLotto.university.University;
 @ScriptAssert.List({
 	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate.before(_this.purchaseEndDate)", message = "The Purchase start date must be before the end date."),
 	@ScriptAssert(lang = "javascript", script = "_this.purchaseEndDate.before(_this.drawingDate)", message = "The Purchase period must end before the drawing begins.")
@@ -62,6 +63,13 @@ public class CreateLotteryForm {
 	}
 	public void setUniversityID(long universityID) {
 		this.universityID = universityID;
+	}
+	public Lottery newLottery(University university) {
+		return new Lottery(this.getDrawingDate(),
+				this.getPurchaseStartDate(),
+				this.getPurchaseEndDate(),
+				BigDecimal.valueOf(this.getMaxWinnings()),
+				university);
 	}
 	
 	
