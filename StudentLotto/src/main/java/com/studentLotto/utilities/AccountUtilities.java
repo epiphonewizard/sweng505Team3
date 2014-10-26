@@ -108,6 +108,12 @@ public class AccountUtilities {
 						.registrationValidationEmail(email, activationkey));
 		return accountActivation;
 	}
+	
+	public void emailAccountActivationSuccessful(String email) {
+		new MailSenderImpl().sendMail("sweng505team3@gmail.com", email,
+				"Account Activation Successful", new MessageCreator()
+						.registrationSuccessEmail());
+	}
 
 	public String generateAccountActivationKey(String emailAddress,
 			String password) throws NoSuchAlgorithmException,
