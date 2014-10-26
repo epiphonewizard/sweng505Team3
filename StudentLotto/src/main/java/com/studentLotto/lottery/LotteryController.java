@@ -50,7 +50,7 @@ public class LotteryController {
 			model.addAttribute("allSchools", universityRepository.getUniversityList());
 			return CREATE_LOTTERY_PAGE;
 		}
-		University university = universityRepository.findByID(createLotteryForm.getUniversityID());
+		University university = universityRepository.findById(createLotteryForm.getUniversityID());
 		Lottery lottery = new Lottery(createLotteryForm.getDrawingDate(),
 				createLotteryForm.getPurchaseStartDate(),
 				createLotteryForm.getPurchaseEndDate(),
