@@ -22,6 +22,7 @@ public class UniversityRepository{
 		return university;
 	}
 
+	@Transactional
 	public University findOne(Long id) {
 		try {
 			return entityManager.find(University.class, id);
@@ -30,6 +31,7 @@ public class UniversityRepository{
 		}
 	}
 	
+	@Transactional
 	public University findByName(String name) {
 		try {
 			return entityManager
@@ -40,6 +42,7 @@ public class UniversityRepository{
 		}
 	}
 	
+	@Transactional
 	public University findById(Long id) {
 		try {
 			return entityManager
@@ -50,15 +53,6 @@ public class UniversityRepository{
 		}
 	}
 	
-	public University findByID(Long id) {
-		try {
-			return entityManager
-					.createNamedQuery(University.FIND_BY_ID, University.class)
-					.setParameter("id", id).getSingleResult();
-		} catch (PersistenceException e) {
-			return null;
-		}
-	}
 	
 	public List<University> getUniversityList() {
 		try {
@@ -68,7 +62,14 @@ public class UniversityRepository{
 			return null;
 		}
 	}
+	
+	@Transactional
+	public void remove(University university) {
+		entityManager.remove(entityManager.contains(university) ? university : entityManager.merge(university));
+		entityManager.flush();
+	}
 
+	@Transactional
 	public void update(University university) {
 		University toUpdate = findById(university.getId());
 		toUpdate.setZip(university.getZip());

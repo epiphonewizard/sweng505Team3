@@ -60,6 +60,17 @@ public class University implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
+	
+	public University(String addressLine1, String addressLine2, String city,
+			String name, String state, String zip) {
+		super();
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.city = city;
+		this.name = name;
+		this.state = state;
+		this.zip = zip;
+	}
 
 	public Long getId() {
 		return this.id;
@@ -130,7 +141,7 @@ public class University implements Serializable {
 	}
 
 	public String toString() {
-		return name + " " + addressLine1 + "  " + zip + "  " + state;
+		return name + " " + addressLine1 + " " + city + ", " + state + " " + zip;
 	}
 
 	public void setLotteries(List<Lottery> lotteries) {

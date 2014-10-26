@@ -1,11 +1,16 @@
 package com.studentLotto.Administrator;
 import java.security.Principal;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +26,14 @@ import com.studentLotto.account.Person;
 import com.studentLotto.account.PersonRepository;
 import com.studentLotto.account.Student;
 import com.studentLotto.account.StudentRepository;
+import com.studentLotto.account.UserService;
+import com.studentLotto.support.web.MessageHelper;
+import com.studentLotto.university.University;
+import com.studentLotto.university.UniversityForm;
 
 @Controller
+@Secured("ROLE_ADMIN")
+
 public class AdministratorController {
 
 	 private AdministratorRepository AdministratorRepository;
@@ -34,6 +45,8 @@ public class AdministratorController {
 	        this.AdministratorRepository = AdministratorRepository;
 	     
 	    }
+	 @Autowired
+		private UserService userService;
 	 
 	 @RequestMapping(value= "adminrole")
 	 public String ARole(Model model){
@@ -45,17 +58,35 @@ public class AdministratorController {
 	 
 	
 	 @RequestMapping(value="updaterole", method = RequestMethod.GET)
-	 public String updateAdmin(@RequestParam(value="rid") Long rid, Model model){
+	 public String index(Principal principal, @RequestParam(value="rid") Long rid, Model model){
 		 
 	    	Account account = AdministratorRepository.findById(rid);
-	    	AdministratorEditForm form = new AdministratorEditForm(account);
-	    	model.addAttribute("id", form.getId());
-	    	model.addAttribute("email", form.getEmail());
-	    	model.addAttribute("role", form.getRole());
-		 
-		 return UPDATE_VIEW;
+	    	AdministratorEditForm updateroleForm = new AdministratorEditForm(account);
+	    	model.addAttribute("updateroleForm",updateroleForm);
+	    	
+		 return principal != null ? UPDATE_VIEW : "redirect:/signin";
 		 
 	 }
+	 
+	
+	
+	 
+	 @RequestMapping(value = "updaterole", method = RequestMethod.POST)
+		public String index(@Valid @ModelAttribute AdministratorEditForm updateroleForm,
+				Errors errors, Model model) {
+		
+		 if (errors.hasErrors()) {
+				return UPDATE_VIEW;
+			}
+		 	Account account = updateroleForm.createAccount();
+				/*AdministratorRepository.update(account);
+				model.addAttribute(new AdministratorEditForm(account));
+				MessageHelper.addSuccessAttribute(ra, "updaterole.success", account.getEmail());*/
+				//return "redirect:/updaterole?rid=" + account.getId();
+				return ADMIN_VIEW;
+			
+		}
+	 
 	
 	 
 	 

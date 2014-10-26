@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
+import com.studentLotto.utilities.AccountUtilities;
 
 @Controller
 public class HomeController {
@@ -41,6 +42,8 @@ public class HomeController {
 		if (accountActivation.getCode().equals(id)) {
 			accountActivationRepo.updateActivationStatus(accountActivation,
 					ACTIVE_ACCOUNT_STATUS);
+			AccountUtilities accountUtilities = new AccountUtilities();
+			accountUtilities.emailAccountActivationSuccessful(email);
 
 		}
 		// redirect the user to sign in!

@@ -55,6 +55,31 @@ public class MessageCreator {
 				.replace("${code}", code);
 	}
 	
+	public String registrationSuccessEmail() {
+		String text = "<!DOCTYPE html>\n" +
+	            "<html>\n" +
+	            "<head>\n" +
+	            "\n" +
+	            "    <title>Student Lotto - Home</title>\n" +
+	            "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n" +
+	            "    <link href=\"${root}/StudentLotto/resources/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\" />\n" +
+	            "    <link href=\"${root}/StudentLotto/resources/css/core.css\" rel=\"stylesheet\" media=\"screen\" />\n" +
+	            "    <script src=\"http://code.jquery.com/jquery-latest.js\"></script>\n" +
+	            "    <script src=\"${root}/StudentLotto/resources/js/bootstrap.min.js\"></script>\n" +
+	            "</head>\n" +
+	            "<body>\n" +
+	            "    <h1>\n" +
+	            "        Thank you for registering with Student Lotto\n" +
+	            "    </h1>\n" +
+	            " \t<p class=\"lead\">\n" +
+	            "         Your registration is now complete.\n" +
+	            "    </p>\n" +
+	            "</div>\n" +
+	            "</body>\n" +
+	            "</html>";
+		return text;
+	}
+	
 	public String passwordResetEmail(String emailAddress, String guid){
 		String text = "<!DOCTYPE html>\n" +
 	            "<html>\n" +
