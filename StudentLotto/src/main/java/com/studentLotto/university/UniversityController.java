@@ -119,8 +119,8 @@ public class UniversityController {
 			model.addAttribute("actionURL", UPDATE_UNIVERSITY_URL);
 			return ADD_UNIVERSITY_VIEW_NAME;
 		}
-		University university = addUniversityForm.createUniversity();
-		if (universityRepository.findByName(university.getName()) != null) {
+		University university = universityRepository.findById(addUniversityForm.getId());
+		if (university.getId() != null && university.getLotteries() == null) {
 			universityRepository.remove(university);
 			MessageHelper.addSuccessAttribute(ra, "deleteUniversity.success", university.getName());
 			return "redirect:/addUniversity";

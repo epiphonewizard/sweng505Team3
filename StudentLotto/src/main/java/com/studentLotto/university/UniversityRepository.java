@@ -2,16 +2,11 @@ package com.studentLotto.university;
 
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.studentLotto.lottery.Lottery;
-import com.studentLotto.lottery.LotteryRepository;
 import com.studentLotto.university.University;
 
 @Repository
@@ -20,8 +15,6 @@ public class UniversityRepository{
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	private LotteryRepository lotteryRepository;
 
 	@Transactional
 	public University save(University university) {
@@ -72,12 +65,8 @@ public class UniversityRepository{
 	
 	@Transactional
 	public void remove(University university) {
-		for (int i = 0; i < university.getLotteries().size(); i++) {
-			Lottery lottery = university.getLotteries().get(i);
-			lottery.setUniversity(null);
-			lotteryRepository.save(lottery);
-		};
-		entityManager.remove(university);
+		entityManager.remove(entityManager.contains(university) ? university : entityManager.merge(university));
+		entityManager.flush();
 	}
 
 	@Transactional
