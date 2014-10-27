@@ -1,5 +1,4 @@
 package com.studentLotto.university;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
@@ -60,8 +59,10 @@ public class UniversityTest {
 	public void shouldReturnUniversityList() {
 		
 		//arrange
-		University demoUniversity = new University((long) 1, "testAddress1", null, "testCity", "testUniversity", "NA", "11111");
-		University demoUniversity2 = new University((long) 2, "testAddress1", null, "testCity", "testUniversity", "NA", "11111");
+		University demoUniversity = new University((long) 1, "testAddress1", null, 
+				"testCity", "testUniversity", "NA", "11111");
+		University demoUniversity2 = new University((long) 2, "testAddress1", null, 
+				"testCity", "testUniversity", "NA", "11111");
 		universityListMock.add(demoUniversity);
 		universityListMock.add(demoUniversity2);
 		when(universityRepositoryMock.getUniversityList()).thenReturn(universityListMock);
@@ -77,7 +78,8 @@ public class UniversityTest {
 	public void universityFormTest() {
 		
 		//arrange
-		University demoUniversity = new University((long) 1, "testAddress1", null, "testCity", "testUniversity", "NA", "11111");
+		University demoUniversity = new University((long) 1, "testAddress1", 
+				null, "testCity", "testUniversity", "NA", "11111");
 		UniversityForm universityForm = new UniversityForm(demoUniversity);
 		
 		// act

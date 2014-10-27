@@ -11,7 +11,7 @@ import com.studentLotto.lottery.Lottery;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
-		@NamedQuery(name = University.FIND_LIST, query = "select u from University u"), 
+		@NamedQuery(name = University.FIND_LIST, query = "select u from University u order by name"), 
 		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id") 
 		
 })

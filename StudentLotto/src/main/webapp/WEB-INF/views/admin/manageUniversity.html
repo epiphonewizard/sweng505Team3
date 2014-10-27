@@ -35,6 +35,7 @@
 		<div class="form-group">
 			<div class="col-lg-10">
 				<select id="university" class="form-control" th:field="${selectedUni.name}">
+					<option value="" selected="selected" disabled="disabled">Select a University...</option>
 					<option th:each="uni : ${universityList}" th:value="${uni.name}" th:text="${uni.name}"></option>
 				</select>
 			</div>
