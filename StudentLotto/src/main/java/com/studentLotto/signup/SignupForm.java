@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.studentLotto.account.Account;
 
-@ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.confirm)", message = "Password and Confirm fields must match")
+//@ScriptAssert(lang = "javascript", script = "_this.password.equals(_this.confirm)", message = "Password and Confirm fields must match")
 public class SignupForm {
 
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";

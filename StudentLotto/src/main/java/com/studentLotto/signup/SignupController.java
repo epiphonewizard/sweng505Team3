@@ -54,6 +54,12 @@ public class SignupController {
 			return SIGNUP_VIEW_NAME;
 		}
 		
+		if(accountRepository.findByEmail(signupForm.getEmail()) != null) {
+			errors.reject("exception.duplicateAccount", "The specified email is already tied to another account.");
+			model.addAttribute("schools", universityRepository.getUniversityList());
+			return SIGNUP_VIEW_NAME;
+			   
+		}
 		Account account = createAccount(signupForm);
 		
 		MessageHelper.addSuccessAttribute(ra, "signup.success");
