@@ -23,8 +23,7 @@
                 <li class="dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
                 	<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<b class="caret"></b></a>
                 	<ul class="dropdown-menu">
-                    	<li><a href="#" th:href="@{/addUniversity}">Add a University</a></li>
-                    	<li><a href="#" th:href="@{/editUniversity}">Edit a University</a></li>
+                    	<li><a href="#" th:href="@{/manageUniversity}">Manage Universities</a></li>
                     	<li><a href="#" th:href="@{/lottery/create}">Create new Lottery</a></li>
                     	<li><a href="#" th:href="@{/adminrole}">Manage Roles</a></li>
                     </ul>
