@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Roles</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -27,9 +27,9 @@
 			<td width='50%'><strong>Current Administrators</strong></td>
 			<td>&nbsp;</td>
 		</tr>
-		<tr th:each="messageA : ${messageAdmin}">
-			<td th:text="${messageA.email}"></td>
-			<td><a href="updaterole" th:href="@{/updaterole(rid=${messageA.id})}" >Update</a></td>
+		<tr th:each="adminUser : ${adminUsers}">
+			<td th:text="${adminUser.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${adminUser.id})}" >Update</a></td>
 			
 		
 		</tr>
@@ -39,9 +39,9 @@
 			<td width='50%'><strong>Current Users</strong></td>
 			<td>&nbsp;</td>
 		</tr>
-		<tr th:each="messageU : ${messageUser}">
-			<td th:text="${messageU.email}"></td>
-			<td><a href="updaterole" th:href="@{/updaterole(rid=${messageU.id})}" >Update</a></td>
+		<tr th:each="generalUser : ${generalUsers}">
+			<td th:text="${generalUser.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${generalUser.id})}" >Update</a></td>
 			
 		
 		</tr>

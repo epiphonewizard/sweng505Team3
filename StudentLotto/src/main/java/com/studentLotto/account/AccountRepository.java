@@ -1,6 +1,7 @@
 package com.studentLotto.account;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.inject.Inject;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class AccountRepository {
 
 	@PersistenceContext
@@ -54,6 +55,16 @@ public class AccountRepository {
 		person = entityManager.merge(person);
 		account.setPerson(person);
 		return entityManager.merge(account);
+	}
+	
+	public Account findById(Long id) {
+		return entityManager.find(Account.class, id);
+	}
+	
+	public List<Account> findByRole(String role) {
+		return entityManager
+				.createNamedQuery(Account.FIND_BY_ROLE, Account.class)
+				.setParameter("role", role).getResultList();
 	}
 	
 	public Account findByEmail(String email) {
