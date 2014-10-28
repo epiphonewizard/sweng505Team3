@@ -6,17 +6,21 @@
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
   	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+  	<link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.css" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-sliderAccess.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.js"></script>
     
     <script>    	
 
 	  $(function() {
-	    $( "#purchaseStartDate, #purchaseEndDate, #drawingDate" ).datepicker({
+	    $( "#purchaseStartDate, #purchaseEndDate, #drawingDate" ).datetimepicker({
 	      changeMonth: true,
 	      changeYear: true,
-	      yearRange: "c-100:c"
+	      yearRange: "c-100:c",
+	      timeFormat: "hh:mm tt"
 	    });
 	  });
 
