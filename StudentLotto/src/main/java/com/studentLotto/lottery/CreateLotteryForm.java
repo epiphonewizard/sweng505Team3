@@ -12,8 +12,8 @@ import org.hibernate.validator.constraints.ScriptAssert;
 import com.studentLotto.signup.SignupForm;
 import com.studentLotto.university.University;
 @ScriptAssert.List({
-	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate.before(_this.purchaseEndDate)", message = "The Purchase start date must be before the end date."),
-	@ScriptAssert(lang = "javascript", script = "_this.purchaseEndDate.before(_this.drawingDate)", message = "The Purchase period must end before the drawing begins.")
+	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate != null && _this.purchaseEndDate != null", message = "The Purchase start date must be before the end date."),
+	@ScriptAssert(lang = "javascript", script = "_this.drawingDate != null && _this.purchaseEndDate != null && _this.purchaseEndDate.before(_this.drawingDate)", message = "The Purchase period must end before the drawing begins.")
 })
 public class CreateLotteryForm {
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
