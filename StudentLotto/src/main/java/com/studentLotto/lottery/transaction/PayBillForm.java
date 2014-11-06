@@ -5,11 +5,13 @@ import java.util.Date;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.studentLotto.account.Account;
+import com.studentLotto.signup.SignupForm;
 
 public class PayBillForm {
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	
+	@NotBlank(message = PayBillForm.NOT_BLANK_MESSAGE)
 	private String firstName;
+	@NotBlank(message = PayBillForm.NOT_BLANK_MESSAGE)
 	private String lastName;
 	
 	/**
@@ -28,6 +30,7 @@ public class PayBillForm {
 		this.amount = amount;
 	}
 
+	@NotBlank(message = PayBillForm.NOT_BLANK_MESSAGE)
 	public String getSecurityCode() {
 		return securityCode;
 	}
@@ -36,6 +39,7 @@ public class PayBillForm {
 		this.securityCode = securityCode;
 	}
 
+	@NotBlank(message = PayBillForm.NOT_BLANK_MESSAGE)
 	public String getNumber() {
 		return number;
 	}

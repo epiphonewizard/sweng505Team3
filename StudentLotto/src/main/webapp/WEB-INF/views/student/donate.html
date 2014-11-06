@@ -31,7 +31,8 @@
 				<select id="universityId" th:field="*{universityId}" class="form-control">
 					<option value="-1" selected="selected" disabled="disabled">Select a University...</option>
 					<option th:each="uni : ${universityList}" th:value="${uni.id}" th:text="${uni.name}"></option>
-				</select>
+				</select>				
+                <span class="help-block" th:if="${#fields.hasErrors('universityId')}" th:errors="*{universityId}"></span>
 			</div>
 		</div>
 		

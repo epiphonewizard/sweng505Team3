@@ -1,14 +1,19 @@
 package com.studentLotto.lottery.donation;
 
+import javax.validation.constraints.Min;
+
 public class DonateForm {
+	
 	
 	public DonateForm(){
 		amount = 0.0;
 		universityId = -1;
 	}
 	
+	@Min(value = 1, message="Please Select a University")
 	private long universityId;
 	
+	@Min(value = 1, message="Donations must be at least one dollar")
 	private double amount;
 
 	public long getUniversityId() {
