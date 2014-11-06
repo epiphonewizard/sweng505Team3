@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.account.Account;
 import com.studentLotto.account.Person;
 import com.studentLotto.university.University;
 
@@ -20,7 +21,8 @@ public class CreditCardTransaction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	@GeneratedValue
+	private Long id;
 
 	private double amount;
 
@@ -30,15 +32,19 @@ public class CreditCardTransaction implements Serializable {
 	private String securityCode;
 
 	private Timestamp transactionDate;
+	
+	@ManyToOne
+	@JoinColumn(name="accountId", referencedColumnName="id")
+	private Account account;
 
 	public CreditCardTransaction() {
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -75,16 +81,12 @@ public class CreditCardTransaction implements Serializable {
 		this.transactionDate = transactionDate;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="personID", referencedColumnName="id")
-	private Person person;
-	
-	public Person getPerson(){
-		return this.person;
+	public Account getAccount(){
+		return this.account;
 	}
 	
-	public void setPerson(Person person){
-		this.person = person;
+	public void setPerson(Account account){
+		this.account = account;
 	}
 
 }
