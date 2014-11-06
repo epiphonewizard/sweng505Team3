@@ -1,12 +1,16 @@
 package com.studentLotto.university;
 
 
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.studentLotto.university.University;
 
 @Repository
@@ -58,6 +62,16 @@ public class UniversityRepository{
 		try {
 			return entityManager.createNamedQuery(University.FIND_LIST,
 					University.class).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
+	
+	public List<University> getUniversityListForUpcomingLotteries() {
+		try {
+			return entityManager.createNamedQuery(University.GET_LIST_WITH_UPCOMING_LOTTERY,
+					University.class)
+					.setParameter("date", new Date()).getResultList();
 		} catch (PersistenceException e) {
 			return null;
 		}

@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.account.Account;
 import com.studentLotto.account.Person;
 import com.studentLotto.university.University;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -20,7 +22,8 @@ public class CreditCardTransaction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String id;
+	@GeneratedValue	
+	private Long id;
 
 	private double amount;
 
@@ -29,16 +32,30 @@ public class CreditCardTransaction implements Serializable {
 
 	private String securityCode;
 
-	private Timestamp transactionDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date transactionDate;
+	
+	private String addressCity;
+
+	private String addressLine1;
+
+	private String addressLine2;
+
+	private String addressState;
+
+	private String addressZip;
+	
+	private String firstName;
+	private String lastName;
 
 	public CreditCardTransaction() {
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -67,24 +84,80 @@ public class CreditCardTransaction implements Serializable {
 		this.securityCode = securityCode;
 	}
 
-	public Timestamp getTransactionDate() {
+	public Date getTransactionDate() {
 		return this.transactionDate;
 	}
 
-	public void setTransactionDate(Timestamp transactionDate) {
+	public void setTransactionDate(Date transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 	
 	@ManyToOne
-	@JoinColumn(name="personID", referencedColumnName="id")
-	private Person person;
+	@JoinColumn(name="accountId", referencedColumnName="id")
+	private Account account;
 	
-	public Person getPerson(){
-		return this.person;
+	public Account getAccount(){
+		return this.account;
 	}
 	
-	public void setPerson(Person person){
-		this.person = person;
+	public void setAccount(Account account){
+		this.account = account;
+	}
+
+	public String getAddressCity() {
+		return addressCity;
+	}
+
+	public void setAddressCity(String addressCity) {
+		this.addressCity = addressCity;
+	}
+
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
+	}
+
+	public String getAddressLine2() {
+		return addressLine2;
+	}
+
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
+	}
+
+	public String getAddressState() {
+		return addressState;
+	}
+
+	public void setAddressState(String addressState) {
+		this.addressState = addressState;
+	}
+
+	public String getAddressZip() {
+		return addressZip;
+	}
+
+	public void setAddressZip(String addressZip) {
+		this.addressZip = addressZip;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }

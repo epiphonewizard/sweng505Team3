@@ -12,8 +12,10 @@ import com.studentLotto.lottery.Lottery;
 @NamedQueries({
 		@NamedQuery(name = University.FIND_BY_NAME, query = "select u from University u where u.name = :name"),
 		@NamedQuery(name = University.FIND_LIST, query = "select u from University u order by name"), 
-		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id") 
-		
+		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id"),
+		@NamedQuery(
+				name = University.GET_LIST_WITH_UPCOMING_LOTTERY, 
+				query="select u from University u inner join u.lotteries l where l.drawingDate > :date")
 })
 public class University implements Serializable {
 
@@ -22,6 +24,7 @@ public class University implements Serializable {
 	public static final String FIND_LIST = "University.findList";
 	public static final String FIND_BY_NAME = "University.findByName";
 	public static final String FIND_BY_ID = "University.findById";
+	public static final String GET_LIST_WITH_UPCOMING_LOTTERY = "University.getListWithUpcomingLottery";
 
 	@Id
 	@GeneratedValue

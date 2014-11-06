@@ -16,11 +16,15 @@ import java.util.Date;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Lottery.findAll", query="SELECT l FROM Lottery l"),
+	@NamedQuery(name=Lottery.FIND_ALL, query="SELECT l FROM Lottery l"),
 	@NamedQuery(name="Lottery.getUpcoming", query="SELECT l FROM Lottery l WHERE now() < l.drawingDate"),
+	@NamedQuery(name=Lottery.GET_UPCOMING_FOR_UNIVERSITY, query="SELECT l FROM Lottery l WHERE :now < l.drawingDate and universityId = :universityId")
 	})
 public class Lottery implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static final String GET_UPCOMING_FOR_UNIVERSITY = "Lottery.getUpcomingForUniversity";
+	public static final String FIND_ALL = "Lottery.findAll";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -111,6 +115,10 @@ public class Lottery implements Serializable {
 
 	public void setMaxWinnings(BigDecimal maxWinnings) {
 		this.maxWinnings = maxWinnings;
+	}
+
+	public void addToMaxWinnings(double amount) {
+		this.setMaxWinnings(BigDecimal.valueOf(this.getMaxWinnings().doubleValue() + amount));
 	}
 
 }
