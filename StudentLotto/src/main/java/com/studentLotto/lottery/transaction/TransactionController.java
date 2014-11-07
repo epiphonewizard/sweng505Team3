@@ -21,8 +21,8 @@ import com.studentLotto.account.AccountEditForm;
 import com.studentLotto.account.AccountRepository;
 import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
-import com.studentLotto.lottery.donation.DonateForm;
-import com.studentLotto.lottery.donation.DonateRepository;
+import com.studentLotto.lottery.donation.DonationForm;
+import com.studentLotto.lottery.donation.DonationRepository;
 import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.support.web.MessageHelper;
 import com.studentLotto.university.University;
@@ -30,7 +30,7 @@ import com.studentLotto.university.University;
 @Controller
 public class TransactionController {
 	@Autowired
-	private DonateRepository donationRepository;
+	private DonationRepository donationRepository;
 	
 	@Autowired
 	private AccountRepository accountRepository;

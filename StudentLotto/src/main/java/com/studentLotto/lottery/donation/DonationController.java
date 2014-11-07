@@ -27,7 +27,7 @@ import com.studentLotto.university.UniversityRepository;
 public class DonationController {
 
 	@Autowired
-	private DonateRepository donateRepository;
+	private DonationRepository donateRepository;
 
 	@Autowired
 	private UniversityRepository universityRepository;
@@ -42,13 +42,13 @@ public class DonationController {
 	public String donate(Model model){
 		List<University> unis = universityRepository.getUniversityListForUpcomingLotteries();
 		model.addAttribute("universityList", unis);
-		model.addAttribute("donateForm", new DonateForm());
+		model.addAttribute("donateForm", new DonationForm());
 		
 		return "student/donate";		
 	}
 	
 	@RequestMapping(value="donate", method=RequestMethod.POST)
-	public String donate(Principal principal, @Valid @ModelAttribute DonateForm donateForm, Errors errors, RedirectAttributes ra, Model model){
+	public String donate(Principal principal, @Valid @ModelAttribute DonationForm donateForm, Errors errors, RedirectAttributes ra, Model model){
 		if (errors.hasErrors()) {
 			List<University> unis = universityRepository.getUniversityListForUpcomingLotteries();
 			model.addAttribute("universityList", unis);

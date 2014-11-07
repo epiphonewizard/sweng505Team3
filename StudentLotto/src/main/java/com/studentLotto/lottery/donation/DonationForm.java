@@ -2,10 +2,10 @@ package com.studentLotto.lottery.donation;
 
 import javax.validation.constraints.Min;
 
-public class DonateForm {
+public class DonationForm {
 	
 	
-	public DonateForm(){
+	public DonationForm(){
 		amount = 0.0;
 		universityId = -1;
 	}

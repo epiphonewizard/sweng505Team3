@@ -13,7 +13,7 @@ import com.studentLotto.university.University;
 
 @Repository
 @Transactional(readOnly = true)
-public class DonateRepository{
+public class DonationRepository{
 
 	@PersistenceContext
 	private EntityManager entityManager;
