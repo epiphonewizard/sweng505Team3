@@ -43,8 +43,6 @@ public class DonationControllerIntegrationTests  extends WebAppConfigurationAwar
 	
 	@Test
 	public void submitEmptyForm() throws Exception {
-		java.util.List<University> allSchools = new ArrayList<University>();
-		allSchools.add(new University());
 		mockMvc.perform(
 				post("/donate")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)

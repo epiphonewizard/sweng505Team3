@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import com.studentLotto.account.Account;
 import com.studentLotto.account.AccountEditForm;
@@ -67,7 +68,9 @@ public class TransactionController {
 		String[] idList = payBillForm.getDonationIDs().split(",");
 		List<Donation> donations = new ArrayList<Donation>();
 		for(String id: idList){
-			donations.add(donationRepository.findById(Long.valueOf(id)));
+			if(!StringUtils.isEmptyOrWhitespace(id)){
+				donations.add(donationRepository.findById(Long.valueOf(id)));
+			}
 		}		
 		if (errors.hasErrors()) {
 			model.addAttribute("donations", donations);
