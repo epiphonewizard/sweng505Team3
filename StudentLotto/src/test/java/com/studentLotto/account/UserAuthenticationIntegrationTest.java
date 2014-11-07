@@ -36,8 +36,7 @@ public class UserAuthenticationIntegrationTest extends WebSecurityConfigurationA
             }
         };
         mockMvc.perform(post("/j_spring_security_check").param("j_username", username).param("j_password", "demo"))
-                .andExpect(redirectedUrl("/"))
-                .andExpect(matcher);
+                .andExpect(redirectedUrl("/signin?error=1"));
     }
 
     @Test

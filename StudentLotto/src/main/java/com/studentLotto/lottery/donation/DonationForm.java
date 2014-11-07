@@ -1,6 +1,11 @@
 package com.studentLotto.lottery.donation;
 
+import java.util.Date;
+
 import javax.validation.constraints.Min;
+
+import com.studentLotto.account.Account;
+import com.studentLotto.lottery.Lottery;
 
 public class DonationForm {
 	
@@ -30,6 +35,15 @@ public class DonationForm {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public Donation createDonation(Account account, Lottery lottery) {
+		Donation donation = new Donation();
+		donation.setAccount(account);
+		donation.setAmount(getAmount());
+		donation.setLottery(lottery);
+		donation.setDonationDate(new Date());
+		return donation;
 	}
 
 }

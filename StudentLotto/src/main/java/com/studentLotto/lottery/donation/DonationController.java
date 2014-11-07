@@ -57,15 +57,9 @@ public class DonationController {
 
     	Account account = accountRepository.findByEmail(principal.getName());    	
 		Lottery lottery = lotteryRepository.findUpcomingForUniversity(donateForm.getUniversityId());
-		 
 		
-		Donation donation = new Donation();
-		donation.setAccount(account);
-		donation.setAmount(donateForm.getAmount());
-		donation.setLottery(lottery);
-		donation.setDonationDate(new Date());
-		donateRepository.save(donation);		
-		
+		Donation donation = donateForm.createDonation(account, lottery);
+		donateRepository.save(donation);				
 		
 		return "redirect:/bill/pay";		
 	}

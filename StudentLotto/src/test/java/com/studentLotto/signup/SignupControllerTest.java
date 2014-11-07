@@ -68,7 +68,7 @@ public class SignupControllerTest extends WebAppConfigurationAware {
 	                .param("school", "1")
 	                .param("userType", "Student")
 	                .sessionAttr("signupForm", new SignupForm()).session(makeAuthSession())
-	        ).andExpect(status().is3xxRedirection());
+	        ).andExpect(status().isOk());
     	Account account = accountRepositoryMock.findByEmail("test@test.com");
     	assertTrue(account!=null);    	
     }
