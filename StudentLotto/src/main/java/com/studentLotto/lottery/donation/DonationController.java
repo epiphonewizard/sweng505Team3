@@ -42,7 +42,7 @@ public class DonationController {
 	public String donate(Model model){
 		List<University> unis = universityRepository.getUniversityListForUpcomingLotteries();
 		model.addAttribute("universityList", unis);
-		model.addAttribute("donateForm", new DonationForm());
+		model.addAttribute("donationForm", new DonationForm());
 		
 		return "student/donate";		
 	}

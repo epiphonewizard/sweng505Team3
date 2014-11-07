@@ -16,10 +16,10 @@
 
 <div th:replace="fragments/header :: header">Header</div>
 
-<form id="donateForm" class="form-narrow form-horizontal" method="post" th:action="@{/donate}"  th:object="${donateForm}">
+<form id="donationForm" class="form-narrow form-horizontal" method="post" th:action="@{/donate}"  th:object="${donationForm}">
 
 	<!-- /* Show general error message when form contains errors */ -->
-	<th:block th:if="${#fields.hasErrors('${donateForm.*}')}">
+	<th:block th:if="${#fields.hasErrors('${donationForm.*}')}">
 		<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
 	</th:block>
 
