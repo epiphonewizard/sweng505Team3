@@ -51,22 +51,14 @@ public class TransactionController {
 		
 		model.addAttribute("donations", donations);
 		PayBillForm payBillForm = new PayBillForm();
-		payBillForm.setDonationIDs(getDonationIDs(donations));
-		payBillForm.setAmount( getTotal(donations));
+		payBillForm.setDonationIDs(Donation.getDonationIDs(donations));
+		payBillForm.setAmount( Donation.getTotal(donations));
 		model.addAttribute("payBillForm", payBillForm);
 		
 		return "payments/paybill";		
 	}
 	
-	private String getDonationIDs(List<Donation> donations) {
-		StringBuilder sb = new StringBuilder();
-		for(Donation donation : donations){
-			if(sb.length() > 0) 
-				sb.append(",");
-			sb.append(donation.getId().toString());
-		}
-		return sb.toString();
-	}
+
 
 	@RequestMapping(value="bill/pay", method=RequestMethod.POST)
 	public String payBill(Principal principal, @Valid @ModelAttribute PayBillForm payBillForm,
@@ -79,9 +71,9 @@ public class TransactionController {
 		}		
 		if (errors.hasErrors()) {
 			model.addAttribute("donations", donations);
-			model.addAttribute("donationIDs", getDonationIDs(donations));
+			model.addAttribute("donationIDs", Donation.getDonationIDs(donations));
 			model.addAttribute("payBillForm", payBillForm);
-			model.addAttribute("totalBill", getTotal(donations));
+			model.addAttribute("totalBill", Donation.getTotal(donations));
 			return "payments/paybill";
 		}
     	Account account = accountRepository.findByEmail(principal.getName());    	
@@ -100,11 +92,5 @@ public class TransactionController {
 		return "redirect:/";		
 	}
 
-	private Double getTotal(List<Donation> donations) {
-		Double total = 0.0;
-		for(Donation donation : donations){
-			total = total + donation.getAmount();
-		}
-		return total;
-	}
+	
 }

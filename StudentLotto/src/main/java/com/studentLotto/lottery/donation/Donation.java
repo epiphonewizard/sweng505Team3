@@ -14,6 +14,7 @@ import com.studentLotto.university.University;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -46,6 +47,10 @@ public class Donation implements Serializable {
 
 
 	public Donation() {
+	}
+	
+	public Donation(double amount) {
+		setAmount(amount);
 	}
 
 	public Long getId() {
@@ -118,6 +123,24 @@ public class Donation implements Serializable {
 	
 	public void setCreditCardTransaction(CreditCardTransaction ccTransaction){
 		this.ccTransaction = ccTransaction;
+	}
+	
+	public static Double getTotal(List<Donation> donations) {
+		Double total = 0.0;
+		for(Donation donation : donations){
+			total = total + donation.getAmount();
+		}
+		return total;
+	}
+	
+	public static String getDonationIDs(List<Donation> donations) {
+		StringBuilder sb = new StringBuilder();
+		for(Donation donation : donations){
+			if(sb.length() > 0) 
+				sb.append(",");
+			sb.append(donation.getId().toString());
+		}
+		return sb.toString();
 	}
 
 }
