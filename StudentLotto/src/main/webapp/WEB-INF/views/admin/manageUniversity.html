@@ -16,26 +16,14 @@
 
 <div th:replace="fragments/header :: header">Header</div>
 
-<form id="editUniversityForm" class="form-narrow form-horizontal" method="post" th:action="@{/editUniversity}" th:object="${universityList}">
-
-	<!-- /* Show general error message when form contains errors */ -->
-	<th:block th:if="${#fields.hasErrors('${universityList.*}')}">
-		<div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
-	</th:block>
-
-	<div class="col-lg-10"
-		th:classappend="${#fields.hasErrors('global')}? 'has-error'">
-		<span class="help-block" th:if="${#fields.hasErrors('global')}"
-			th:errors="*{global}"></span>
-	</div>
-
+<form id="editUniversityForm" class="form-narrow form-horizontal" method="post" th:action="@{/editUniversity}">
 	<fieldset>
 		<legend>Select a University to Edit</legend>
 
 		<div class="form-group">
 			<div class="col-lg-10">
 				<select id="university" class="form-control" th:field="${selectedUni.name}">
-					<option value="" selected="selected" disabled="disabled">Select a University...</option>
+					<option value="" selected="selected">Select a University...</option>
 					<option th:each="uni : ${universityList}" th:value="${uni.name}" th:text="${uni.name}"></option>
 				</select>
 			</div>
@@ -116,6 +104,7 @@
 	            <label for="addressState" class="col-lg-2 control-label">State</label>
 	            <div class="col-lg-10">
 					<select id="addressState" th:field="*{addressState}" class="form-control">
+						<option value="">Please Select...</option>
 						<option value="AL">Alabama</option>
 						<option value="AK">Alaska</option>
 						<option value="AZ">Arizona</option>

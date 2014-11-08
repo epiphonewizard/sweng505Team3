@@ -39,7 +39,6 @@ public class Lottery implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date purchaseStartDate;
 
-
 	private String winningNumber;	
 
 	private BigDecimal maxWinnings;

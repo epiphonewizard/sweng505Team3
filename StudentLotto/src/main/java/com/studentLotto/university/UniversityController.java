@@ -32,6 +32,7 @@ public class UniversityController {
 	@Autowired
 	private UserService userService;
 	
+	//initialize page
 	@RequestMapping(value = MANAGE_UNIVERSITY_URL, method = RequestMethod.GET)
 	public String index(Principal principal, Model model, HttpServletRequest request) {
 		
@@ -53,6 +54,7 @@ public class UniversityController {
 		return principal != null ? MANAGE_UNIVERSITY_VIEW_NAME : "redirect:/signin";
 	}
 	
+	//select university to edit
 	@RequestMapping(value = EDIT_UNIVERSITY_URL, method = RequestMethod.POST)
 	public String editUniversity(
 			Model model,
@@ -60,17 +62,22 @@ public class UniversityController {
 			Errors errors,
 			RedirectAttributes ra) {
 		// if no errors were found
-		if (errors.hasErrors()) {
-			return MANAGE_UNIVERSITY_VIEW_NAME;
+		if (errors.hasErrors() || selectedUni.getName().isEmpty()) {
+			return "redirect:/manageUniversity";
 		}
 		return "redirect:/manageUniversity?university=" + selectedUni.getName();
 	}
 
+	//add a new university
 	@RequestMapping(value = ADD_UNIVERSITY_URL, method = RequestMethod.POST)
 	public String addUniversity(@Valid @ModelAttribute UniversityForm addUniversityForm,
 			Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute("actionURL", ADD_UNIVERSITY_URL);
+			University selectedUni = new University();
+			model.addAttribute("selectedUni", selectedUni);
+			List<University> universityList = universityRepository.getUniversityList();
+			model.addAttribute("universityList", universityList);
 			return MANAGE_UNIVERSITY_VIEW_NAME;
 		}
 		University university = addUniversityForm.createUniversity();
@@ -84,11 +91,16 @@ public class UniversityController {
 		}
 	}
 	
+	//update an existing university
 	@RequestMapping(value = UPDATE_UNIVERSITY_URL, method = RequestMethod.POST)
 	public String updateUniversity(@Valid @ModelAttribute UniversityForm addUniversityForm,
 			Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute("actionURL", UPDATE_UNIVERSITY_URL);
+			University selectedUni = new University();
+			model.addAttribute("selectedUni", selectedUni);
+			List<University> universityList = universityRepository.getUniversityList();
+			model.addAttribute("universityList", universityList);
 			return MANAGE_UNIVERSITY_VIEW_NAME;
 		}
 		University university = addUniversityForm.createUniversity();	
@@ -101,7 +113,8 @@ public class UniversityController {
 			return "redirect:/manageUniversity?university=" + university.getName();
 		}
 	}
-
+	
+	//delete a university
 	@RequestMapping(value = DELETE_UNIVERSITY_URL, method = RequestMethod.POST)
 	public String deleteUniversity(@Valid @ModelAttribute UniversityForm addUniversityForm,
 			Errors errors, RedirectAttributes ra, Model model) {
