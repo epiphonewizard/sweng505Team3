@@ -6,15 +6,16 @@ import javax.persistence.*;
 
 import com.studentLotto.university.University;
 
-
 /**
  * The persistent class for the student database table.
  * 
  */
+
 @Entity
+@NamedQueries({ @NamedQuery(name = Student.FIND_BY_EMAIL, query = "select a from Student a where a.uEmailAddress = :uEmailAddress") })
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	public static final String FIND_BY_EMAIL = "Student.findByEmail";
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -31,21 +32,21 @@ public class Student implements Serializable {
 
 	private String uEmailAddress;
 
-	//bi-directional one-to-one association to Person
+	// bi-directional one-to-one association to Person
 	@OneToOne(optional = false)
-	@JoinColumn(name="personId", referencedColumnName = "id")
+	@JoinColumn(name = "personId", referencedColumnName = "id")
 	private Person person;
 
 	@OneToOne(optional = false)
-	@JoinColumn(name="uId")
+	@JoinColumn(name = "uId")
 	private University university;
-	
+
 	public Student() {
 	}
-		
+
 	public Student(String uAddressCity, String uAddressLine1,
 			String uAddressLine2, String uAddressState, String uAddressZip,
-			String uEmailAddress, University university,  Person person) {
+			String uEmailAddress, University university, Person person) {
 		super();
 		this.uAddressCity = uAddressCity;
 		this.uAddressLine1 = uAddressLine1;
@@ -56,7 +57,7 @@ public class Student implements Serializable {
 		this.person = person;
 		this.university = university;
 	}
-	
+
 	public Student(String uAddressCity, String uAddressLine1,
 			String uAddressLine2, String uAddressState, String uAddressZip,
 			String uEmailAddress, University university) {
@@ -141,7 +142,5 @@ public class Student implements Serializable {
 	public void setUniversity(University university) {
 		this.university = university;
 	}
-	
-	
 
 }
