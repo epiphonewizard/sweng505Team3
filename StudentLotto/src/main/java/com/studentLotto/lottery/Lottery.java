@@ -1,9 +1,10 @@
 package com.studentLotto.lottery;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Type;
 
 import com.studentLotto.university.University;
 
@@ -27,11 +28,24 @@ public class Lottery implements Serializable {
 	public static final String FIND_ALL = "Lottery.findAll";
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue
 	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date drawingDate;
+
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	private Boolean fullMatchGuaranteed;
+
+	private double lotteryTicketCost;
+
+	private int maxTicketsAllowedToPurchase;
+
+	private double maxWinnings;
+
+	private int numberOfBallsAvailable;
+
+	private int numberOfBallsPicked;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date purchaseEndDate;
@@ -39,20 +53,35 @@ public class Lottery implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date purchaseStartDate;
 
-	private String winningNumber;	
+	private double studentWinningPercentage;
+ 
+	private String winningNumber;
+	
+	@ManyToOne
+	@JoinColumn(name="universityID", referencedColumnName="id")
+	private University university;
 
-	private BigDecimal maxWinnings;
-	
-	
 	public Lottery() {
 	}
 	
-	public Lottery(Date drawingDate, Date purchaseStartDate, Date purchaseEndDate, BigDecimal maxWinnings, University university){
-		setDrawingDate(drawingDate);
-		setPurchaseStartDate(purchaseStartDate);
-		setPurchaseEndDate(purchaseEndDate);
-		setMaxWinnings(maxWinnings);
-		setUniversity(university);
+	public Lottery(Date drawingDate, Boolean fullMatchGuaranteed,
+			double lotteryTicketCost, int maxTicketsAllowedToPurchase,
+			double maxWinnings, int numberOfBallsAvailable,
+			int numberOfBallsPicked, Date purchaseEndDate,
+			Date purchaseStartDate, double studentWinningPercentage,
+			University university) {
+		super();
+		this.drawingDate = drawingDate;
+		this.fullMatchGuaranteed = fullMatchGuaranteed;
+		this.lotteryTicketCost = lotteryTicketCost;
+		this.maxTicketsAllowedToPurchase = maxTicketsAllowedToPurchase;
+		this.maxWinnings = maxWinnings;
+		this.numberOfBallsAvailable = numberOfBallsAvailable;
+		this.numberOfBallsPicked = numberOfBallsPicked;
+		this.purchaseEndDate = purchaseEndDate;
+		this.purchaseStartDate = purchaseStartDate;
+		this.studentWinningPercentage = studentWinningPercentage;
+		this.university = university;
 	}
 
 	public int getId() {
@@ -71,6 +100,54 @@ public class Lottery implements Serializable {
 		this.drawingDate = drawingDate;
 	}
 
+	public Boolean getFullMatchGuaranteed() {
+		return this.fullMatchGuaranteed;
+	}
+
+	public void setFullMatchGuaranteed(Boolean fullMatchGuaranteed) {
+		this.fullMatchGuaranteed = fullMatchGuaranteed;
+	}
+
+	public double getLotteryTicketCost() {
+		return this.lotteryTicketCost;
+	}
+
+	public void setLotteryTicketCost(double lotteryTicketCost) {
+		this.lotteryTicketCost = lotteryTicketCost;
+	}
+
+	public int getMaxTicketsAllowedToPurchase() {
+		return this.maxTicketsAllowedToPurchase;
+	}
+
+	public void setMaxTicketsAllowedToPurchase(int maxTicketsAllowedToPurchase) {
+		this.maxTicketsAllowedToPurchase = maxTicketsAllowedToPurchase;
+	}
+
+	public double getMaxWinnings() {
+		return this.maxWinnings;
+	}
+
+	public void setMaxWinnings(double maxWinnings) {
+		this.maxWinnings = maxWinnings;
+	}
+
+	public int getNumberOfBallsAvailable() {
+		return this.numberOfBallsAvailable;
+	}
+
+	public void setNumberOfBallsAvailable(int numberOfBallsAvailable) {
+		this.numberOfBallsAvailable = numberOfBallsAvailable;
+	}
+
+	public int getNumberOfBallsPicked() {
+		return this.numberOfBallsPicked;
+	}
+
+	public void setNumberOfBallsPicked(int numberOfBallsPicked) {
+		this.numberOfBallsPicked = numberOfBallsPicked;
+	}
+
 	public Date getPurchaseEndDate() {
 		return this.purchaseEndDate;
 	}
@@ -87,6 +164,13 @@ public class Lottery implements Serializable {
 		this.purchaseStartDate = purchaseStartDate;
 	}
 
+	public double getStudentWinningPercentage() {
+		return this.studentWinningPercentage;
+	}
+
+	public void setStudentWinningPercentage(double studentWinningPercentage) {
+		this.studentWinningPercentage = studentWinningPercentage;
+	}
 
 	public String getWinningNumber() {
 		return this.winningNumber;
@@ -95,29 +179,19 @@ public class Lottery implements Serializable {
 	public void setWinningNumber(String winningNumber) {
 		this.winningNumber = winningNumber;
 	}
-	
-	@ManyToOne
-	@JoinColumn(name="universityID", referencedColumnName="id")
-	private University university;
-	
-	public University getUniversity(){
-		return this.university;
+
+	public University getUniversity() {
+		return university;
 	}
-	
-	public void setUniversity(University university){
+
+	public void setUniversity(University university) {
 		this.university = university;
 	}
-
-	public BigDecimal getMaxWinnings() {
-		return maxWinnings;
+	
+	public void addToMaxWinnings(double donation) {
+		setMaxWinnings(getMaxWinnings() + donation);
 	}
-
-	public void setMaxWinnings(BigDecimal maxWinnings) {
-		this.maxWinnings = maxWinnings;
-	}
-
-	public void addToMaxWinnings(double amount) {
-		this.setMaxWinnings(BigDecimal.valueOf(this.getMaxWinnings().doubleValue() + amount));
-	}
+	
+	
 
 }

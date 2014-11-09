@@ -1,15 +1,12 @@
 package com.studentLotto.lottery;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.ScriptAssert;
 
-import com.studentLotto.signup.SignupForm;
 import com.studentLotto.university.University;
 @ScriptAssert.List({
 	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate != null && _this.purchaseEndDate != null", message = "The Purchase start date must be before the end date."),
@@ -17,10 +14,6 @@ import com.studentLotto.university.University;
 })
 public class CreateLotteryForm {
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	
-	public CreateLotteryForm(){
-		this.setMaxWinnings(0.0);
-	}
 	
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
 	private Date drawingDate;
@@ -31,8 +24,24 @@ public class CreateLotteryForm {
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
 	private Date purchaseStartDate;
 	
-	private Double maxWinnings;
+	private double maxWinnings;
 	
+	private Boolean fullMatchGuaranteed;
+
+	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
+	private double lotteryTicketCost;
+
+	private int maxTicketsAllowedToPurchase;
+
+	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
+	private int numberOfBallsAvailable;
+
+	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
+	private int numberOfBallsPicked;
+
+	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
+	private double studentWinningPercentage;
+
 	private long universityID;
 	public Date getDrawingDate() {
 		return drawingDate;
@@ -52,10 +61,10 @@ public class CreateLotteryForm {
 	public void setPurchaseEndDate(Date purchaseEndDate) {
 		this.purchaseEndDate = purchaseEndDate;
 	}
-	public Double getMaxWinnings() {
+	public double getMaxWinnings() {
 		return maxWinnings;
 	}
-	public void setMaxWinnings(Double maxWinnings) {
+	public void setMaxWinnings(double maxWinnings) {
 		this.maxWinnings = maxWinnings;
 	}
 	public long getUniversityID() {
@@ -64,13 +73,50 @@ public class CreateLotteryForm {
 	public void setUniversityID(long universityID) {
 		this.universityID = universityID;
 	}
-	public Lottery newLottery(University university) {
-		return new Lottery(this.getDrawingDate(),
-				this.getPurchaseStartDate(),
-				this.getPurchaseEndDate(),
-				BigDecimal.valueOf(this.getMaxWinnings()),
-				university);
+	public Boolean getFullMatchGuaranteed() {
+		return fullMatchGuaranteed;
+	}
+	public void setFullMatchGuaranteed(Boolean fullMatchGuaranteed) {
+		this.fullMatchGuaranteed = fullMatchGuaranteed;
+	}
+	public double getLotteryTicketCost() {
+		return lotteryTicketCost;
+	}
+	public void setLotteryTicketCost(double lotteryTicketCost) {
+		this.lotteryTicketCost = lotteryTicketCost;
+	}
+	public int getMaxTicketsAllowedToPurchase() {
+		return maxTicketsAllowedToPurchase;
+	}
+	public void setMaxTicketsAllowedToPurchase(int maxTicketsAllowedToPurchase) {
+		this.maxTicketsAllowedToPurchase = maxTicketsAllowedToPurchase;
+	}
+	public int getNumberOfBallsAvailable() {
+		return numberOfBallsAvailable;
+	}
+	public void setNumberOfBallsAvailable(int numberOfBallsAvailable) {
+		this.numberOfBallsAvailable = numberOfBallsAvailable;
+	}
+	public int getNumberOfBallsPicked() {
+		return numberOfBallsPicked;
+	}
+	public void setNumberOfBallsPicked(int numberOfBallsPicked) {
+		this.numberOfBallsPicked = numberOfBallsPicked;
+	}
+	public double getStudentWinningPercentage() {
+		return studentWinningPercentage;
+	}
+	public void setStudentWinningPercentage(double studentWinningPercentage) {
+		this.studentWinningPercentage = studentWinningPercentage;
 	}
 	
+	public Lottery createLottery(University university) {
+		return new Lottery(getDrawingDate(), getFullMatchGuaranteed(),
+				getLotteryTicketCost(), getMaxTicketsAllowedToPurchase(),
+				getMaxWinnings(), getNumberOfBallsAvailable(),
+				getNumberOfBallsPicked(), getPurchaseEndDate(),
+				getPurchaseStartDate(), getStudentWinningPercentage(),
+				university);
+	}
 	
 }
