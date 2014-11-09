@@ -40,7 +40,12 @@
 	        $( "#numberOfBallsAvailable" ).val( ui.value );
 	      }
 	    });
-	  $( "#numberOfBallsAvailable" ).val( $( "#numberOfBallsAvailableSlider" ).slider( "value" ) );
+  
+	  if($( "#numberOfBallsAvailable" ).val() == null) {
+		  $( "#numberOfBallsAvailable" ).val( $( "#numberOfBallsAvailableSlider" ).slider( "value" ) );
+	  } else {
+		  $( "#numberOfBallsAvailableSlider" ).slider( "value", $( "#numberOfBallsAvailable" ).val());
+	  }
 	  
 	  $( "#numberOfBallsPickedSlider" ).slider({
 	      range: "max",
@@ -51,7 +56,12 @@
 	        $( "#numberOfBallsPicked" ).val( ui.value );
 	      }
 	    });
-	  $( "#numberOfBallsPicked" ).val( $( "#numberOfBallsPickedSlider" ).slider( "value" ) );
+	  
+	  if($( "#numberOfBallsPicked" ).val() == null) {
+		  $( "#numberOfBallsPicked" ).val( $( "#numberOfBallsPickedSlider" ).slider( "value" ) );
+	  } else {
+		  $( "#numberOfBallsPickedSlider" ).slider( "value", $( "#numberOfBallsPicked" ).val());
+	  }
 	  
 	  $( "#studentWinningPercentageSlider" ).slider({
 	      range: "max",
@@ -62,7 +72,13 @@
 	        $( "#studentWinningPercentage" ).val( ui.value );
 	      }
 	    });
-	  $( "#studentWinningPercentage" ).val( $( "#studentWinningPercentageSlider" ).slider( "value" ) );
+	  
+	  if($( "#studentWinningPercentage" ).val() == null) {
+		  $( "#studentWinningPercentage" ).val( $( "#studentWinningPercentageSlider" ).slider( "value" ) );
+	  } else {
+		  $( "#studentWinningPercentageSlider" ).slider( "value", $( "#studentWinningPercentage" ).val());
+	  }
+	 
 	  
 	  
 	  });
@@ -71,28 +87,19 @@
 <body>
 <div th:replace="fragments/header :: header">Header</div>
 
-<form id="createLotteryForm" class="form-narrow form-horizontal" method="post" th:action="@{/lottery/create}" th:object="${createLotteryForm}">
+<form id="editLotteryForm" class="form-narrow form-horizontal" method="post" th:action="@{/lottery/edit}" th:object="${editLotteryForm}">
     <!-- /* Show general error message when form contains errors */ -->
-    <th:block th:if="${#fields.hasErrors('${createLotteryForm.*}')}">
+    <th:block th:if="${#fields.hasErrors('${editLotteryForm.*}')}">
         <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
     </th:block>
     <div class="col-lg-10" th:classappend="${#fields.hasErrors('global')}? 'has-error'">
 		<span class="help-block" th:if="${#fields.hasErrors('global')}" th:errors="*{global}"></span>
 	</div>
     <fieldset>
-        <legend>Create New Lottery</legend>
+        <legend>Edit Lottery</legend>
         <div class="form-narrow" id="loginInfo">
         
-        	<div class="form-group" th:classappend="${#fields.hasErrors('universityID')}? 'has-error'">
-	            <label for="universityID" class="col-lg-2 control-label">School</label>
-	            <div class="col-lg-10">
-					<select id="universityID" th:field="*{universityID}" >
-						<option th:each="school : ${allSchools}" 
-          						th:value="${school.id}" 
-          						th:text="${school.name}"></option>
-					</select>
-	            </div>
-	        </div>   
+        	
 	     <fieldset>   
 		     <legend>Days that tickets may be purchased</legend>
 		       <div class="form-group" th:classappend="${#fields.hasErrors('purchaseStartDate')}? 'has-error'">
@@ -185,12 +192,13 @@
 	            
 	        </div>
 	   </fieldset>
-        
+        <input type="hidden" id="id"  th:field="*{id}"/>
+	                
         
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
                 <button type="submit" class="btn btn-default">Save</button>
-                <button type="button" class="btn btn-default" onclick="window.location.href= window.location.href.replace('/lottery/create','')">Cancel</button>
+                <button type="button" class="btn btn-default" onclick="window.location.href= window.location.href.replace('/lottery/edit','')">Cancel</button>
             </div>
         </div>
      </div>

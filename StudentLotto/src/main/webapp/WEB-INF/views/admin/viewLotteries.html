@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Lotto</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+  	<link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-sliderAccess.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.js"></script>
+    
+    <script>    	
+
+	  $(function() {
+	  });
+	</script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+
+
+    <fieldset>
+        <legend>View Lotteries</legend>
+        <div class="form-narrow">
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>University</th>
+							<th>Start Time</th>
+							<th>Stop Time</th>
+							<th>Draw Time</th>
+							<th></th>
+							<!-- <th></th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="lottery : ${allLotteries}">
+							<td th:text="${{lottery.university.name}}"></td>
+							<td th:text="${{lottery.purchaseStartDate}}"></td>
+							<td th:text="${{lottery.purchaseEndDate}}"></td>
+							<td th:text="${{lottery.drawingDate}}"></td>
+							<td><a th:href="@{/lottery/edit(id=${lottery.id})}" >Edit</a></td>
+							<!-- <td><a th:href="@{/lottery/delete(id=${lottery.id})}" >Delete</a></td> -->
+						</tr>
+					</tbody>
+				</table>
+
+
+			</div>
+    </fieldset>
+</body>
+</html>

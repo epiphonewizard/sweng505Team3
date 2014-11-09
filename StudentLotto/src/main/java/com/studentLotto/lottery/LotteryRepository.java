@@ -15,7 +15,7 @@ import com.studentLotto.university.University;
 
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class LotteryRepository {
 
 	@PersistenceContext
@@ -53,6 +53,24 @@ public class LotteryRepository {
 			return entityManager.createNamedQuery(Lottery.FIND_ALL, Lottery.class).getResultList();
 		}catch(PersistenceException e){
 			return null;
+		}
+	}
+	
+	@Transactional
+	public Lottery findOne(int id) {
+		try {
+			return entityManager.find(Lottery.class, id);
+		}catch(PersistenceException e){
+			return null;
+		}
+	}
+	
+	@Transactional
+	public void remove(Lottery lottery) {
+		try {
+			entityManager.remove(lottery);
+		}catch(PersistenceException e){
+		
 		}
 	}
 }
