@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Student Purchase Ticket</title>
+<title>Student Lotto</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"
 	media="screen" th:href="@{/resources/css/bootstrap.min.css}" />
@@ -14,15 +14,149 @@
 <script src="../../../resources/js/bootstrap.min.js"
 	th:src="@{/resources/js/bootstrap.min.js}"></script>
 
+
+<script th:inline="javascript">
+	$(document).ready(function() {
+
+		//<![CDATA[ 
+		//This is how to get the model attribute from thymeleaf
+		//the commented out code is dynamic and runs when server is running
+		//the 5 afterwards is used as a default value when we load t he page statically
+		
+		
+		var maxTickets = /*[[${maxNumTickets}]]*/5;
+
+		var ballCount = /*[[${maxCountBalls}]]*/4;
+		var count = 1;
+		//$("#second").hide();
+		//var a = $("#second").clone();
+		//var b = $("#second").clone();
+	
+		//a.appendTo($('#first'));
+		//b.appendTo($('#first'));
+		//array to store detached elements
+		var detachedElements = [];
+		var j = 0;
+
+		//Remove all tickets except 1 , as an initial purchase option
+		while (j < (maxTickets)) {
+			$("#mainFrame Table:last #firstNumber").val(1);
+			$("#mainFrame Table:last #secondNumber").val(2);
+			$("#mainFrame Table:last #thirdNumber").val(3);
+			$("#mainFrame Table:last #fourthNumber").val(4);
+			$("#mainFrame Table:last #fifthNumber").val(5);
+			$("#mainFrame Table:last #sixthNumber").val(6);
+			$("#mainFrame Table:last #ticketErrorMessage").hide();
+			if (ballCount == 4) {
+				$("#mainFrame Table:last #fifthNumber").remove();
+				$("#mainFrame Table:last #fifthLabel").remove();
+				$("#mainFrame Table:last #sixthNumber").remove();
+				$("#mainFrame Table:last #sixthLabel").remove();
+			}
+			if (ballCount == 5) {
+				$("#mainFrame Table:last #sixthNumber").remove();
+				$("#mainFrame Table:last #sixthLabel").remove();
+			}
+			if (j != maxTickets - 1) {
+				detachedElements[j + 1] = $("#mainFrame Table:last").detach();
+			}
+			j++;
+		}
+
+		//initially we have 1 ticket show hide the removeTicket button
+		//because we dont want to display 0 tickets
+		$("#removeTicket").hide();
+
+		$("#addTicket").click(function() {
+
+			if (count < maxTickets) {
+				//alert(count);
+				
+
+				detachedElements[count].appendTo($('#mainFrame'));
+				 $("#mainFrame Table:last").on("change", testit);
+				$("#removeTicket").show();
+				count += 1;
+			}
+			if (count == maxTickets) {
+				$("#addTicket").hide();
+			}
+
+		});
+
+		$("#removeTicket").click(function() {
+			$("#addTicket").show();
+			//alert(count);
+			detachedElements[count - 1] = $("#mainFrame Table:last").detach();
+			count -= 1;
+
+			if (count == 1) {
+				$("#removeTicket").hide();
+				count = 1;
+			}
+		});
+
+		$('#firstNumber, #secondNumber, #thirdNumber, #fourthNumber, #fifthNumber, #sixthNumber').change(function() {
+			//alert("ZZ");
+			if (($('#firstNumber').val() == $('#secondNumber').val()) 
+			  ||($('#firstNumber').val() == $('#thirdNumber').val()) 
+			  ||($('#firstNumber').val() == $('#fourthNumber').val()) 
+			  ||($('#firstNumber').val() == $('#fifthNumber').val()) 
+			  ||($('#firstNumber').val() == $('#sixthNumber').val()) 
+			  
+			  ||($('#secondNumber').val() == $('#thirdNumber').val()) 
+			  ||($('#secondNumber').val() == $('#fourthNumber').val()) 
+			  ||($('#secondNumber').val() == $('#fifthNumber').val()) 
+			  ||($('#secondNumber').val() == $('#sixthNumber').val()) 
+			  
+			  ||($('#thirdNumber').val() == $('#fourthNumber').val()) 
+			  ||($('#secondNumber').val() == $('#fifthNumber').val()) 
+			  ||($('#secondNumber').val() == $('#sixthNumber').val()) 
+			  
+			  ||($('#fourthNumber').val() == $('#fifthNumber').val()) 
+			  ||($('#secondNumber').val() == $('#sixthNumber').val()) 
+			  
+			  ||($('#fifthNumber').val() == $('#sixthNumber').val()) 
+			)
+			{
+				$('#ticketErrorMessage').show();
+				$('#purchaseTicketSubmitButton').prop('disabled', true);​​​​​​​​​​​​​
+			}
+			else
+			{
+			    $('#ticketErrorMessage').hide();
+			   $('#purchaseTicketSubmitButton').prop('disabled', true);​​​​​​​​​​​​​
+			}
+		});
+
+	});
+	
+	function testit()
+	{
+		//alert("test");
+		
+		var table = document.getElementById("tableNum");
+		
+		$("#tableNum td").each(function() {
+  		  var id = $(this).attr("id");
+		 // alert(id);
+   		 // compare id to what you want
+		});
+		
+	}
+	//]]>
+</script>
+
 </head>
 <body>
+
 	<div th:replace="fragments/header :: header">Header</div>
 
 	<form id="purchaseTicketForm" class="form-narrow form-horizontal"
-		method="post" th:action="@{/studentt/purchaseTicket}"
-		th:object="${accountEditForm}">
+		method="post" th:action="@{/processTicketPurchase}"
+		th:object="${ticketList}">
 		<!-- /* Show general error message when form contains errors */ -->
-		<th:block th:if="${#fields.hasErrors('${purchaseTicketForm.*}')}">
+		<th:block th:if="${#fields.hasErrors('ticketList.*')}">
 			<div
 				th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
 		</th:block>
@@ -31,305 +165,93 @@
 			<span class="help-block" th:if="${#fields.hasErrors('global')}"
 				th:errors="*{global}"></span>
 		</div>
+
 		<fieldset>
 			<legend>Purchase Ticket</legend>
+			<div>
+				<a id="addTicket" href="#" class="btn btn-info btn-lg"><span
+					class="glyphicon glyphicon-plus"></span> Add Ticket</a> <a
+					id="removeTicket" href="#" class="btn btn-info btn-lg"><span
+					class="glyphicon glyphicon-minus"></span> Remove Ticket</a>
+			</div>
+			<div id="mainFrame" class="form-narrow">
+				<label>Please select your lottery numbers</label>
 
+				<div id="numbers" class="form-group"
+					th:classappend="${#fields.hasErrors('ticketList.*')}? 'has-error'"
+					th:each="ltz,stat : *{ticketList}"
+					th:class="${stat.even ? 'even' : 'odd'}">
 
-			<th:block th:if="${accountEditForm.getMailStreetAddress() != 'N/A'}">
-				<div class="form-narrow" id="studentInfo">
-					<label>Please choose your 4 lottery numbers</label>
+					<span class="help-block"
+						th:if="${#fields.hasErrors('ticketList.*')}" th:errors="*{valid}">Bad
+						Ticket: cannot choose the same number twice within the same
+						ticket.</span>
 
-
-
-					<div class="form-group"
-						th:classappend="${#fields.hasErrors('mailState')}? 'has-error'">
-						<label for="email" class="col-lg-2 control-label">First
-							Number</label>
-						<div class="col-lg-10">
-							<select id="mailState" th:field="*{mailState}">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-								<option value="13">13</option>
-								<option value="14">14</option>
-								<option value="15">15</option>
-								<option value="16">16</option>
-								<option value="17">17</option>
-								<option value="18">18</option>
-								<option value="19">19</option>
-								<option value="20">20</option>
-								<option value="21">21</option>
-								<option value="22">22</option>
-								<option value="23">23</option>
-								<option value="24">24</option>
-								<option value="25">25</option>
-								<option value="26">26</option>
-								<option value="27">27</option>
-								<option value="28">28</option>
-								<option value="29">29</option>
-								<option value="30">30</option>
-								<option value="31">31</option>
-								<option value="32">32</option>
-								<option value="33">33</option>
-								<option value="34">34</option>
-								<option value="35">35</option>
-								<option value="36">36</option>
-								<option value="37">37</option>
-								<option value="38">38</option>
-								<option value="39">39</option>
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
-								<option value="45">45</option>
-								<option value="46">46</option>
-								<option value="47">47</option>
-								<option value="48">48</option>
-								<option value="49">49</option>
-								<option value="50">50</option>
-								<option value="51">51</option>
-								<option value="52">52</option>
-								<option value="53">53</option>
-								<option value="54">54</option>
-								<option value="55">55</option>
-								<option value="56">56</option>
-								<option value="57">57</option>
-								<option value="58">58</option>
-								<option value="59">59</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="form-group"
-						th:classappend="${#fields.hasErrors('mailState')}? 'has-error'">
-						<label for="email" class="col-lg-2 control-label">Second
-							Number</label>
-						<div class="col-lg-10">
-							<select id="mailState" th:field="*{mailState}">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-								<option value="13">13</option>
-								<option value="14">14</option>
-								<option value="15">15</option>
-								<option value="16">16</option>
-								<option value="17">17</option>
-								<option value="18">18</option>
-								<option value="19">19</option>
-								<option value="20">20</option>
-								<option value="21">21</option>
-								<option value="22">22</option>
-								<option value="23">23</option>
-								<option value="24">24</option>
-								<option value="25">25</option>
-								<option value="26">26</option>
-								<option value="27">27</option>
-								<option value="28">28</option>
-								<option value="29">29</option>
-								<option value="30">30</option>
-								<option value="31">31</option>
-								<option value="32">32</option>
-								<option value="33">33</option>
-								<option value="34">34</option>
-								<option value="35">35</option>
-								<option value="36">36</option>
-								<option value="37">37</option>
-								<option value="38">38</option>
-								<option value="39">39</option>
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
-								<option value="45">45</option>
-								<option value="46">46</option>
-								<option value="47">47</option>
-								<option value="48">48</option>
-								<option value="49">49</option>
-								<option value="50">50</option>
-								<option value="51">51</option>
-								<option value="52">52</option>
-								<option value="53">53</option>
-								<option value="54">54</option>
-								<option value="55">55</option>
-								<option value="56">56</option>
-								<option value="57">57</option>
-								<option value="58">58</option>
-								<option value="59">59</option>
-							</select>
-						</div>
-					</div>
-
-
-					<div class="form-group"
-						th:classappend="${#fields.hasErrors('mailState')}? 'has-error'">
-						<label for="email" class="col-lg-2 control-label">Third
-							Number</label>
-						<div class="col-lg-10">
-							<select id="mailState" th:field="*{mailState}">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-								<option value="13">13</option>
-								<option value="14">14</option>
-								<option value="15">15</option>
-								<option value="16">16</option>
-								<option value="17">17</option>
-								<option value="18">18</option>
-								<option value="19">19</option>
-								<option value="20">20</option>
-								<option value="21">21</option>
-								<option value="22">22</option>
-								<option value="23">23</option>
-								<option value="24">24</option>
-								<option value="25">25</option>
-								<option value="26">26</option>
-								<option value="27">27</option>
-								<option value="28">28</option>
-								<option value="29">29</option>
-								<option value="30">30</option>
-								<option value="31">31</option>
-								<option value="32">32</option>
-								<option value="33">33</option>
-								<option value="34">34</option>
-								<option value="35">35</option>
-								<option value="36">36</option>
-								<option value="37">37</option>
-								<option value="38">38</option>
-								<option value="39">39</option>
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
-								<option value="45">45</option>
-								<option value="46">46</option>
-								<option value="47">47</option>
-								<option value="48">48</option>
-								<option value="49">49</option>
-								<option value="50">50</option>
-								<option value="51">51</option>
-								<option value="52">52</option>
-								<option value="53">53</option>
-								<option value="54">54</option>
-								<option value="55">55</option>
-								<option value="56">56</option>
-								<option value="57">57</option>
-								<option value="58">58</option>
-								<option value="59">59</option>
-							</select>
-						</div>
-					</div>
-
-
-					<div class="form-group"
-						th:classappend="${#fields.hasErrors('mailState')}? 'has-error'">
-						<label for="email" class="col-lg-2 control-label">Fourth
-							Number</label>
-						<div class="col-lg-10">
-							<select id="mailState" th:field="*{mailState}">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
-								<option value="7">7</option>
-								<option value="8">8</option>
-								<option value="9">9</option>
-								<option value="10">10</option>
-								<option value="11">11</option>
-								<option value="12">12</option>
-								<option value="13">13</option>
-								<option value="14">14</option>
-								<option value="15">15</option>
-								<option value="16">16</option>
-								<option value="17">17</option>
-								<option value="18">18</option>
-								<option value="19">19</option>
-								<option value="20">20</option>
-								<option value="21">21</option>
-								<option value="22">22</option>
-								<option value="23">23</option>
-								<option value="24">24</option>
-								<option value="25">25</option>
-								<option value="26">26</option>
-								<option value="27">27</option>
-								<option value="28">28</option>
-								<option value="29">29</option>
-								<option value="30">30</option>
-								<option value="31">31</option>
-								<option value="32">32</option>
-								<option value="33">33</option>
-								<option value="34">34</option>
-								<option value="35">35</option>
-								<option value="36">36</option>
-								<option value="37">37</option>
-								<option value="38">38</option>
-								<option value="39">39</option>
-								<option value="40">40</option>
-								<option value="41">41</option>
-								<option value="42">42</option>
-								<option value="43">43</option>
-								<option value="44">44</option>
-								<option value="45">45</option>
-								<option value="46">46</option>
-								<option value="47">47</option>
-								<option value="48">48</option>
-								<option value="49">49</option>
-								<option value="50">50</option>
-								<option value="51">51</option>
-								<option value="52">52</option>
-								<option value="53">53</option>
-								<option value="54">54</option>
-								<option value="55">55</option>
-								<option value="56">56</option>
-								<option value="57">57</option>
-								<option value="58">58</option>
-								<option value="59">59</option>
-							</select>
-						</div>
-					</div>
-
-
-
-
-					<div class="form-group">
-						<div class="col-lg-offset-2 col-lg-10">
-							<button type="submit" class="btn btn-default">Purchase
-								Ticket</button>
-							<button type="button" class="btn btn-default"
-								onclick="window.location.href= window.location.href.replace('/edit','')">Cancel</button>
-						</div>
-					</div>
+					<table id="tableNum">
+						<tr>
+							<td><label for="firstNum" class="col-lg-2 control-label">First
+									Number</label></td>
+							<td><label for="secondNum" class="col-lg-2 control-label">Second
+									Number</label></td>
+							<td><label for="thirdNum" class="col-lg-2 control-label">Third
+									Number</label></td>
+							<td><label for="fourthNum" class="col-lg-2 control-label">Fourth
+									Number</label></td>
+							<td><label id="fifthLabel" for="fifthNum"
+								class="col-lg-2 control-label">Fifth Number</label></td>
+							<td><label id="sixthLabel" for="sixthNum"
+								class="col-lg-2 control-label">Sixth Number</label></td>
+						</tr>
+						<tr>
+							<td id="firstData"><select id="firstNumber"
+								th:field="*{ticketList[__${stat.index}__].firstNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="secondData"><select id="secondNumber"
+								th:field="*{ticketList[__${stat.index}__].secondNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="thirdData"><select id="thirdNumber"
+								th:field="*{ticketList[__${stat.index}__].thirdNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="fourthData"><select id="fourthNumber"
+								th:field="*{ticketList[__${stat.index}__].fourthNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="fifthData"><select id="fifthNumber"
+								th:field="*{ticketList[__${stat.index}__].fifthNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="sixthData"><select id="sixthNumber"
+								th:field="*{ticketList[__${stat.index}__].sixthNumber}"
+								style="width: 50px;">
+									<option th:each="number : ${numberRangeArr}"
+										th:value="${number}" th:text="${number}"></option>
+							</select></td>
+							<td id="ticketErrorMessage">ERROR</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div id="submit" class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+					<button id="purchaseTicketSubmitButton" type="submit"
+						class="btn btn-default">Purchase Ticket</button>
+					<button type="button" class="btn btn-default"
+						onclick="window.location.href= window.location.href.replace('/signin','')">Cancel</button>
+				</div>
+			</div>
 		</fieldset>
 	</form>
 </body>
