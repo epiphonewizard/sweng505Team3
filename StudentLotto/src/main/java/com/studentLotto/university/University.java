@@ -15,7 +15,7 @@ import com.studentLotto.lottery.Lottery;
 		@NamedQuery(name = University.FIND_BY_ID, query = "select u from University u where u.id = :id"),
 		@NamedQuery(
 				name = University.GET_LIST_WITH_UPCOMING_LOTTERY, 
-				query="select u from University u inner join u.lotteries l where l.drawingDate > :date")
+				query="select distinct u from University u inner join u.lotteries l where l.drawingDate > :date")
 })
 public class University implements Serializable {
 

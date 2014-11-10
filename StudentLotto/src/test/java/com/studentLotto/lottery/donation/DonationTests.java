@@ -40,10 +40,9 @@ public class DonationTests {
 		form.setAmount(100.5);
 		Donation donation = form.createDonation(
 				new Account("test@gmail.com", "password"), 
-				new Lottery(new Date(), new Date(), new Date(), BigDecimal.valueOf(100), null));
+				new Lottery(new Date(), null, 0, 0, 0, 0, 0, new Date(), new Date(), 100.0, null));
 		assertEquals(form.getAmount(), donation.getAmount(), 0.1);
 		assertEquals("test@gmail.com", donation.getAccount().getEmail());
-		assertEquals(100, donation.getLottery().getMaxWinnings().doubleValue(), 0.1);
 		assertEquals(null, donation.getLottery().getUniversity());
 	}
 	

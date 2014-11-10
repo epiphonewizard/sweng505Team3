@@ -86,9 +86,6 @@ public class TransactionController {
 			donation.setPaymentComplete(true);	
 			donation.setCreditCardTransaction(transaction);
 			Donation updatedDonation = donationRepository.update(donation);
-			Lottery lottery = updatedDonation.getLottery();
-			lottery.addToMaxWinnings(updatedDonation.getAmount());
-			lotteryRepository.update(lottery);
 		}	
 		MessageHelper.addSuccessAttribute(ra, "payment.successful");    			
 		

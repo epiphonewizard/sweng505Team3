@@ -1,6 +1,5 @@
 package com.studentLotto.lottery;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.junit.Test;
@@ -14,7 +13,7 @@ public class CreateLotteryFormTest {
 	@Test
 	public void constructorTests(){
 		CreateLotteryForm form = new CreateLotteryForm();
-		assertEquals(Double.valueOf(0), form.getMaxWinnings());		
+		assertEquals(0, form.getMaxWinnings(), 0.1);		
 	}
 	
 	@Test
@@ -28,10 +27,10 @@ public class CreateLotteryFormTest {
 		form.setPurchaseEndDate(endDate);
 		University uni = new University();
 		
-		Lottery lottery = form.newLottery(uni);
+		Lottery lottery = form.createLottery(uni);
 		assertEquals(uni, lottery.getUniversity());
 		assertEquals(drawingDate, lottery.getDrawingDate());
 		assertEquals(endDate, lottery.getPurchaseEndDate());
-		assertEquals(BigDecimal.valueOf(0.0), lottery.getMaxWinnings());
+		assertEquals(0.0, lottery.getMaxWinnings(), 0.1);
 	}
 }
