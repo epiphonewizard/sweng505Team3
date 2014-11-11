@@ -41,6 +41,7 @@ public class LotteryRepository {
 					.createNamedQuery(Lottery.GET_UPCOMING_FOR_UNIVERSITY, Lottery.class)
 					.setParameter("universityId", universityId)
 					.setParameter("now", new Date())
+					.setMaxResults(1)
 					.getSingleResult();
 		} catch (PersistenceException e) {
 			return null;
