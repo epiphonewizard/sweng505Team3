@@ -9,12 +9,53 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    
+    <script th:inline="javascript">
+		function deleteDonation(id){
+			var path= /*[[@{/donate/delete}]]*/
+			var row = $("#donationRow" + id)
+			var rowAmount = row.find(".amount").text()
+			var rowSchool = row.find(".school").text()
+			
+			if(confirm("Would you like to cancel the donation of $" + rowAmount + " to the school " + rowSchool + "?")){
+				$.get(path, {"id":id}, function(data){
+					if(data.success){
+						var amount = parseFloat($("#amountText").text()) - parseFloat(rowAmount)	
+						$("#amountText").text(amount)
+						row.remove()
+						if(amount == 0){
+							alert("All pending donations have been cancelled")
+							window.location.href = /*[[@{/}]]*/
+						}
+					}
+				})
+			}
+		}
+	</script>
 
 </head>
 
 <body>
 
 <div th:replace="fragments/header :: header">Header</div>
+
+<div id="donations" class="form-narrow form-horizontal">
+	<fieldset>
+		<legend>Donations</legend>
+		<table id="donationTable" class="form-table">
+			<tr>
+				<th>School</th>
+				<th>Amount</th>
+				<th>&nbsp;</th>
+			</tr>
+			<tr th:each="donation: ${donations}" th:id="'donationRow' + ${donation.id}">
+				<td class="school" th:text="${donation.lottery.university.name}">School</td>
+				<td class="amount" th:text="${donation.amount}">Amount</td>
+				<td><button th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel Donation</button></td>
+			</tr>
+		</table>
+	</fieldset>
+</div>
 
 <form id="payBillForm" class="form-narrow form-horizontal" method="post" th:action="@{/bill/pay}"  th:object="${payBillForm}">
 
@@ -33,7 +74,7 @@
 		<div class="form-group" th:classappend="${#fields.hasErrors('amount')}? 'has-error'">
             <label class="col-lg-2 control-label">Donation Amount</label>
             <div class="col-lg-10">
-                <span th:text="*{amount}"></span>
+                <span id="amountText" th:text="*{amount}"></span>
             </div>
         </div>
         

@@ -5,15 +5,18 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.Account;
@@ -62,6 +65,19 @@ public class DonationController {
 		donateRepository.save(donation);				
 		
 		return "redirect:/bill/pay";		
+	}
+	
+	@RequestMapping(value="donate/delete", method=RequestMethod.GET, produces="application/json")
+	public @ResponseBody String deleteDonation(Principal principal, HttpServletRequest request){
+		Assert.notNull(principal, "Invalid Permissions");
+		Long donationId = Long.valueOf(request.getParameter("id"));
+		Donation donation = donateRepository.findById(donationId);
+		Assert.isTrue(donation.getAccount().getEmail().equals(principal.getName()), "Invalid Permissions");
+		
+		//If it gets to this point it is a valid request
+		donateRepository.delete(donation);
+		return "{\"success\": true}"; 
+		
 	}
 	
 }

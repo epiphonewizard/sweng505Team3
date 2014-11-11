@@ -69,7 +69,10 @@ public class TransactionController {
 		List<Donation> donations = new ArrayList<Donation>();
 		for(String id: idList){
 			if(!StringUtils.isEmptyOrWhitespace(id)){
-				donations.add(donationRepository.findById(Long.valueOf(id)));
+				Donation donation = donationRepository.findById(Long.valueOf(id));
+				if(donation != null){
+					donations.add(donation);
+				}
 			}
 		}		
 		if (errors.hasErrors()) {

@@ -49,5 +49,9 @@ public class DonationRepository{
 		}
 	}
 	
+	@Transactional
+	public void delete(Donation donation){
+		entityManager.remove( entityManager.contains(donation) ? donation : entityManager.merge(donation));
+	}
 
 }
