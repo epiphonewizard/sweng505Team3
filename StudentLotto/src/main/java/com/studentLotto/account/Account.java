@@ -1,8 +1,13 @@
 package com.studentLotto.account;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+
+import com.studentLotto.lottery.Lottery;
+import com.studentLotto.lottery.donation.Donation;
 
 @SuppressWarnings("serial")
 @Entity
@@ -34,8 +39,6 @@ public class Account implements java.io.Serializable {
 	private Person person;
 
 	private String role = "ROLE_USER";
-	
-
 	
     protected Account() {
 
