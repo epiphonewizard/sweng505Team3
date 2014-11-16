@@ -31,7 +31,26 @@
 				})
 			}
 		}
+		
+
 	</script>
+	
+	<th:block th:if="${person}">
+    	<script th:inline="javascript">	
+			function setToPermenantAddress(){
+				var city = /*[[${person.permAddressCity}]]*/
+				var address =  /*[[${person.permAddressLine1}]]*/
+				var state =  /*[[${person.permAddressState}]]*/
+				var zip =  /*[[${person.permAddressZip}]]*/
+				
+				
+				$("#billingCity").val(city)	
+				$("#billingStreetAddress").val(address)
+				$("#billingState").val(state)
+				$("#billingZip").val(zip)
+			}
+    	</script>
+	</th:block>
 
 </head>
 
@@ -113,7 +132,9 @@
         </fieldset>      
 	       <fieldset>
         	<label>Billing Address</label> 
-        	
+        		<th:block th:if="${person}">
+        			<button type="button" onclick="setToPermenantAddress()">Set to your permanent address.</button>
+				</th:block>
      	    <div class="form-group" th:classappend="${#fields.hasErrors('billingStreetAddress')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">Street Address</label>
 	            <div class="col-lg-10">

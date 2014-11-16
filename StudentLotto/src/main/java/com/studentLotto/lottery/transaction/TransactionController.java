@@ -55,6 +55,7 @@ public class TransactionController {
 		payBillForm.setDonationIDs(Donation.getDonationIDs(donations));
 		payBillForm.setAmount( Donation.getTotal(donations));
 		model.addAttribute("payBillForm", payBillForm);
+		model.addAttribute("person", account.getPerson());
 		
 		return "payments/paybill";		
 	}
