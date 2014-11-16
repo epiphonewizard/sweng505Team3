@@ -49,5 +49,20 @@ public class DonationRepository{
 		}
 	}
 	
+	@Transactional
+	public List<Donation> findForAccount(Long accountId) {
+		try {
+			return entityManager
+					.createNamedQuery(Donation.GET_FOR_ACCOUNT, Donation.class)
+					.setParameter("accountId", accountId).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+	}
+		
+	@Transactional
+	public void delete(Donation donation){
+		entityManager.remove( entityManager.contains(donation) ? donation : entityManager.merge(donation));
+	}
 
 }

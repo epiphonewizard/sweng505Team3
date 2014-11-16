@@ -19,7 +19,7 @@ import java.util.Date;
 @NamedQueries({
 	@NamedQuery(name=Lottery.FIND_ALL, query="SELECT l FROM Lottery l"),
 	@NamedQuery(name="Lottery.getUpcoming", query="SELECT l FROM Lottery l WHERE now() < l.drawingDate"),
-	@NamedQuery(name=Lottery.GET_UPCOMING_FOR_UNIVERSITY, query="SELECT l FROM Lottery l WHERE :now < l.drawingDate and universityId = :universityId")
+	@NamedQuery(name=Lottery.GET_UPCOMING_FOR_UNIVERSITY, query="SELECT l FROM Lottery l WHERE :now < l.drawingDate and universityId = :universityId ORDER BY l.drawingDate")
 	})
 public class Lottery implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -190,6 +190,17 @@ public class Lottery implements Serializable {
 	
 	public void addToMaxWinnings(double donation) {
 		setMaxWinnings(getMaxWinnings() + donation);
+	}
+
+	public String canPurchase() {
+		Date now = new Date();
+		if(now.after(purchaseStartDate) && now.before(purchaseEndDate))
+			return "yes";
+		else if(now.after(purchaseEndDate))
+			return "late";
+		else if(now.before(purchaseStartDate))
+			return "early";
+		return "no";
 	}
 	
 	

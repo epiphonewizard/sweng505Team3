@@ -15,7 +15,7 @@ import com.studentLotto.university.University;
 
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class LotteryRepository {
 
 	@PersistenceContext
@@ -41,6 +41,7 @@ public class LotteryRepository {
 					.createNamedQuery(Lottery.GET_UPCOMING_FOR_UNIVERSITY, Lottery.class)
 					.setParameter("universityId", universityId)
 					.setParameter("now", new Date())
+					.setMaxResults(1)
 					.getSingleResult();
 		} catch (PersistenceException e) {
 			return null;
@@ -53,6 +54,24 @@ public class LotteryRepository {
 			return entityManager.createNamedQuery(Lottery.FIND_ALL, Lottery.class).getResultList();
 		}catch(PersistenceException e){
 			return null;
+		}
+	}
+	
+	@Transactional
+	public Lottery findOne(int id) {
+		try {
+			return entityManager.find(Lottery.class, id);
+		}catch(PersistenceException e){
+			return null;
+		}
+	}
+	
+	@Transactional
+	public void remove(Lottery lottery) {
+		try {
+			entityManager.remove(lottery);
+		}catch(PersistenceException e){
+		
 		}
 	}
 }

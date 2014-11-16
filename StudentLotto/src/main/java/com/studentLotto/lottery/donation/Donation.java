@@ -26,11 +26,13 @@ import java.util.List;
 @NamedQueries({
 	@NamedQuery(name="Donation.findAll", query="SELECT d FROM Donation d"),
 	@NamedQuery(name = Donation.GET_UNPAID_FOR_ACCOUNT, query = "select d from Donation d WHERE accountId = :accountId and paymentComplete = 0"),
+	@NamedQuery(name = Donation.GET_FOR_ACCOUNT, query = "select d from Donation d WHERE accountId = :accountId"),
 })
 public class Donation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String GET_UNPAID_FOR_ACCOUNT = "Donation.GET_UNPAID_FOR_ACCOUNT";
+	public static final String GET_FOR_ACCOUNT = "Donation.GET_FOR_ACCOUNT";
 
 	@Id
 	@GeneratedValue
@@ -115,14 +117,14 @@ public class Donation implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name="ccTransactionId", referencedColumnName="id")
-	private CreditCardTransaction ccTransaction;
+	private CreditCardTransaction creditCardTransaction;
 	
 	public CreditCardTransaction getCreditCardTransaction(){
-		return this.ccTransaction;
+		return this.creditCardTransaction;
 	}
 	
 	public void setCreditCardTransaction(CreditCardTransaction ccTransaction){
-		this.ccTransaction = ccTransaction;
+		this.creditCardTransaction = ccTransaction;
 	}
 	
 	public static Double getTotal(List<Donation> donations) {

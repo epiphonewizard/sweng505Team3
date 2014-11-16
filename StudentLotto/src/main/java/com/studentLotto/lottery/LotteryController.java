@@ -27,6 +27,9 @@ import com.studentLotto.university.UniversityRepository;
 public class LotteryController {
 	
 	private static final String CREATE_LOTTERY_PAGE = "admin/createLottery";
+	private static final String VIEW_LOTTERY_PAGE = "admin/viewLotteries";
+	private static final String EDIT_LOTTERY_PAGE = "admin/editLottery";
+	
 
 	@Autowired
 	private LotteryRepository lotteryRepository;
@@ -34,15 +37,18 @@ public class LotteryController {
 	@Autowired
 	private UniversityRepository universityRepository;
 	
+	@Autowired
+	private LotteryService lotteryService;
+	
 	@RequestMapping(value="lottery/create", method=RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String create(Principal principal, Model model){
 		model.addAttribute("allSchools", universityRepository.getUniversityList());
-		model.addAttribute(new CreateLotteryForm());
+		model.addAttribute(new CreateLotteryForm()); 
 		
 		return CREATE_LOTTERY_PAGE;
 	}
-	
+	 
 	@RequestMapping(value = "lottery/create", method = RequestMethod.POST)
 	@Secured("ROLE_ADMIN")
 	public String create(@Valid @ModelAttribute CreateLotteryForm createLotteryForm, Errors errors, RedirectAttributes ra, Model model) {
@@ -56,6 +62,40 @@ public class LotteryController {
 
         MessageHelper.addSuccessAttribute(ra, "lottery.create.successful");
 		return "redirect:/"; 
+	}
+	
+	@RequestMapping(value = "lottery/view", method = RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public String view(Principal principal, Model model) {
+		model.addAttribute("allLotteries", lotteryRepository.findAll());
+		return VIEW_LOTTERY_PAGE; 
+	}
+	
+	@RequestMapping(value="lottery/edit", method=RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public String edit(int id, Principal principal, Model model){
+		model.addAttribute("allSchools", universityRepository.getUniversityList());
+		model.addAttribute(new EditLotteryForm(lotteryRepository.findOne(id))); 
+		
+		return EDIT_LOTTERY_PAGE;
+	}
+	
+	@RequestMapping(value = "lottery/edit", method = RequestMethod.POST)
+	@Secured("ROLE_ADMIN")
+	public String edit(@Valid @ModelAttribute EditLotteryForm editLotteryForm, Errors errors, RedirectAttributes ra, Model model) {
+		if (errors.hasErrors()) {
+			return EDIT_LOTTERY_PAGE;
+		}
+		lotteryService.editLottery(editLotteryForm);
+        MessageHelper.addSuccessAttribute(ra, "lottery.create.successful");
+		return "redirect:/lottery/view"; 
+	}
+	
+	@RequestMapping(value="lottery/delete", method=RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public String delete(int id, Principal principal, Model model){
+		lotteryService.deleteLottery(id);
+		return "redirect:/lottery/view"; 
 	}
 	
 	
