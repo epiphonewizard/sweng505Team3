@@ -27,13 +27,12 @@ public class TicketList {
 
 	@AssertTrue(message = "Can't choose the same number twice for the same ticket")
 	private boolean isValid() {
-		System.out.println(" LIST ABCDDDDDDDDDDDDDDDDDDDDD");
+
 		Iterator<LotteryTicketForm> it = ticketList.iterator();
 		valid = true;
 		while (it.hasNext()) {
 			LotteryTicketForm form = it.next();
-			System.out.println(form.getFirstNumber() + "  "
-					+ form.getSecondNumber());
+
 			// ticket is not configured!
 			if (form.getFirstNumber() == 0) {
 				continue;

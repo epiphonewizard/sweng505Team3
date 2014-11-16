@@ -2,6 +2,7 @@ package com.studentLotto.student;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,10 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.Student;
 import com.studentLotto.account.StudentRepository;
-import com.studentLotto.account.UserService;
+import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
 import com.studentLotto.support.web.MessageHelper;
-import com.studentLotto.university.UniversityForm;
 
 @Controller
 @Secured("ROLE_ADMIN")
@@ -43,12 +43,53 @@ public class PurchaseTicketController {
 	@Autowired
 	private LotteryRepository lotteryRepo;
 
+	private static Student currStudent;
+	private static Lottery currentLottery;
+	private static int maxNumTickets;
+
 	@RequestMapping(value = DISPLAY_PURCHASE_TICKET, method = RequestMethod.GET)
 	public String displayPurchaseTicket(Principal principal, Model model,
-			ModelAndView modelAndView, HttpServletRequest request) {
-		final int maxNumTickets = 5;
-		int maxCountBalls = 5;
-		int maxNumberRange = 20;
+			ModelAndView modelAndView, RedirectAttributes ra) {
+
+		currStudent = getStudent();
+
+		if (currStudent == null) {
+			MessageHelper.addErrorAttribute(ra, "ticket.edit.anonymousStudent");
+			return "redirect:/";
+		}
+		// get student id
+		long studentId = currStudent.getId();
+		// get university id
+		long universityId = currStudent.getUniversity().getId();
+
+		currentLottery = lotteryRepo.findUpcomingForUniversity(universityId);
+
+		if (currentLottery == null) {
+			// exit because there is no lottery set up for this student
+			// university within the given date
+			MessageHelper.addErrorAttribute(ra,
+					"ticket.edit.unavailableLottery");
+			return "redirect:/";
+		}
+
+		int lotteryId = currentLottery.getId();
+		maxNumTickets = currentLottery.getMaxTicketsAllowedToPurchase();
+		final int maxCountBalls = currentLottery.getNumberOfBallsPicked();
+		final int maxNumberRange = currentLottery.getNumberOfBallsAvailable();
+
+		// find out if the students already purchased tickets for that lottery
+		// update the max number of tickets the student can purchase
+		maxNumTickets = maxNumTickets
+				- ticketRepo.findStudentPurchasedticketForLotteryCount(
+						studentId, lotteryId);
+		if (maxNumTickets <= 0) {
+			// exit because the student already purchased the max allowable
+			// tickets
+			MessageHelper.addSuccessAttribute(ra,
+					"ticket.edit.maxNumTicketExceeded");
+			return "redirect:/";
+		}
+
 		List<LotteryTicketForm> lotteryTicketFormList = new LinkedList<LotteryTicketForm>();
 		// LotteryTicketForm[] lotteryTicketFormList = new
 		// LotteryTicketForm[maxNumTickets];
@@ -56,40 +97,80 @@ public class PurchaseTicketController {
 			lotteryTicketFormList.add(new LotteryTicketForm());
 			// lotteryTicketFormList[i]=new LotteryTicketForm();
 		}
-
+		// manufacture the number range for example the ball range is 1-55 in
+		// power ball
 		int[] numberRangeArr = new int[maxNumberRange];
 		for (int i = 0; i < maxNumberRange; i++) {
 			numberRangeArr[i] = i + 1;
 		}
-		// System.out.println(lotteryTicketFormList.size()+"Z");
-		// modelAndView.addObject(maxNumTickets);
+		// add ticket attributes
 		TicketList ticketList = new TicketList(lotteryTicketFormList);
 		model.addAttribute("maxNumTickets", maxNumTickets);
 		model.addAttribute("maxCountBalls", maxCountBalls);
 		model.addAttribute("numberRangeArr", numberRangeArr);
-
 		model.addAttribute("lotteryTicketForm", new LotteryTicketForm());
 		model.addAttribute("ticketList", ticketList);
 
-		return principal != null ? PURCHASE_TICKET_VIEW_NAME
-				: "redirect:/signin";
+		return principal != null ? PURCHASE_TICKET_VIEW_NAME : "redirect:/";
 	}
 
 	@RequestMapping(value = PROCESS_TICKET_PURCHASE, method = RequestMethod.POST)
-	public String processTicketPurchase(Model model,
-			@Valid @ModelAttribute TicketList ticketList, Errors errors,
-			RedirectAttributes ra) {
-
+	public String processTicketPurchase(HttpServletRequest request,
+			Model model, @Valid @ModelAttribute TicketList ticketList,
+			Errors errors, RedirectAttributes ra) {
+		if (maxNumTickets <= 0) {
+			// exit because the student already purchased the max allowable
+			// tickets
+			MessageHelper.addSuccessAttribute(ra,
+					"ticket.edit.maxNumTicketExceeded");
+			return "redirect:/";
+		}
 		ArrayList<LotteryTicketForm> arrayTicketList = (ArrayList<LotteryTicketForm>) ticketList
 				.getTicketList();
-		System.out.println("XXXXX" + arrayTicketList.size());
-		for (int i = 0; i < arrayTicketList.size(); i++) {
-			System.out.println(arrayTicketList.get(i).toString());
-		}
+
 		if (errors.hasErrors()) {
-			System.out.println("ERROR FOUND");
+			MessageHelper.addErrorAttribute(ra,
+					"ticket.edit.errorDetected");
 			return "redirect:/displayPurchaseTicket";
 		}
+		if (currStudent == null) {
+			// exit student error!
+			MessageHelper.addSuccessAttribute(ra,
+					"ticket.edit.anonymousStudent");
+			return "redirect:/";
+		}
+
+		// currStudent = getStudent();
+		long studentId = currStudent.getId();
+
+		if (currentLottery == null) {
+			// exit because there is no lottery set up for this student
+			// university within the given date
+			MessageHelper.addSuccessAttribute(ra,
+					"ticket.edit.unavailableLottery");
+			return "redirect:/";
+		}
+
+		int lotteryId = currentLottery.getId();
+		Iterator<LotteryTicketForm> it = arrayTicketList.iterator();
+		int i = 0;
+		while (it.hasNext()) {
+			LotteryTicketForm form = it.next();
+
+			// it means that this ticket was not configured
+			if (form.getFirstNumber() == 0) {
+				continue;
+			}
+			LotteryTicket persistentTicket = new LotteryTicket(form, studentId,
+					currentLottery);
+
+			ticketRepo.save(persistentTicket);
+			i++;
+		}
+		return "redirect:/bill/payTicket";
+	}
+
+	private Student getStudent() {
 
 		Object myPrincipal = SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
@@ -98,32 +179,9 @@ public class PurchaseTicketController {
 			userDetails = (UserDetails) myPrincipal;
 		}
 		String studentEmail = userDetails.getUsername();
-		System.out.println(studentEmail + "   " + studentRepo);
-
 		Student currentStudent = studentRepo.findByUEmailAddress(studentEmail);
-		System.out.println(currentStudent);
-		long studentId = currentStudent.getId();
-		System.out.println(studentId);
-		// Lottery upcomingLottery = lotteryRepo.getNextLottery();
+		return currentStudent;
 
-		int lotteryId = 12;
-		Iterator<LotteryTicketForm> it = arrayTicketList.iterator();
-		int i = 0;
-		while (it.hasNext()) {
-			LotteryTicketForm form = it.next();
-			System.out.println(form.getFirstNumber() + "   X" + i);
-			// it means that this ticket was not configured
-			if (form.getFirstNumber() == 0) {
-				continue;
-			}
-			LotteryTicket persistentTicket = new LotteryTicket(form, studentId,
-					lotteryId);
-			System.out.println(persistentTicket.getFirstNumber() + "   X"
-					+ ticketRepo);
-			ticketRepo.save(persistentTicket);
-			i++;
-		}
-		return "redirect:/signin";
 	}
 
 }

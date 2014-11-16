@@ -4,7 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.lottery.Lottery;
+import com.studentLotto.lottery.donation.Donation;
+import com.studentLotto.lottery.transaction.CreditCardTransaction;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the LotteryTicket database table.
@@ -12,9 +17,16 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "LotteryTicket")
-@NamedQuery(name = "LotteryTicket.findAll", query = "SELECT l FROM LotteryTicket l")
+@NamedQueries({
+		@NamedQuery(name = LotteryTicket.FIND_ALL, query = "SELECT l FROM LotteryTicket l"),
+		@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query =        "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId"), 
+		@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId  AND paymentComplete = 0")		
+})
 public class LotteryTicket implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public static final String FIND_ALL = "LotteryTicket.findAll";
+	public static final String FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY = "LotteryTicket.findStudentReservedTicketForLottery";
+	public static final String FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY = "LotteryTicket.getUnpaidStudentTicket";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,8 +42,6 @@ public class LotteryTicket implements Serializable {
 	@Column(nullable = false)
 	private int fourthNumber;
 
-	@Column(nullable = false)
-	private int lotteryId;
 
 	@Column(nullable = false)
 	private double payout;
@@ -58,10 +68,46 @@ public class LotteryTicket implements Serializable {
 	@Column(nullable = false)
 	private int winFlag;
 
+	@Column(nullable = false)
+	private int paymentComplete;
+
+	@Column(nullable = false)
+	private long ccTransactionId;
+
+	//@ManyToOne
+	//@JoinColumn(name="ccTransactionId", referencedColumnName="id")
+
+	//private CreditCardTransaction ccTransaction;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="lotteryID", referencedColumnName="id")
+	private Lottery lottery;
+	
+	
+	//@Column(nullable = false)
+	//private int  lotteryId;
+	
+	public Lottery getLottery() {
+		return lottery;
+	}
+
+	public void setLottery(Lottery lottery) {
+		this.lottery = lottery;
+	}
+
+	//public CreditCardTransaction getCcTransaction() {
+	//	return ccTransaction;
+	//}
+
+	//public void setCcTransaction(CreditCardTransaction ccTransaction) {
+	//	this.ccTransaction = ccTransaction;
+	//}
+
 	public LotteryTicket() {
 	}
 
-	public LotteryTicket(LotteryTicketForm form, long studentId, int lotteryId) {
+	public LotteryTicket(LotteryTicketForm form, long studentId, Lottery lottery) {
 		this.firstNumber = form.getFirstNumber();
 		this.secondNumber = form.getSecondNumber();
 		this.thirdNumber = form.getThirdNumber();
@@ -74,8 +120,27 @@ public class LotteryTicket implements Serializable {
 				- (24 * 60 * 60 * 1000));
 		this.winDescription = "Ticket just purchased. Results pending";
 		this.studentId = studentId;
-		this.lotteryId = lotteryId;
+	//	this.lotteryId = lotteryId;
+		setLottery(lottery);
+		this.paymentComplete = 0;
+		//this.ccTransactionId = 0;
 
+	}
+
+	public long getCcTransactionId() {
+		return ccTransactionId;
+	}
+
+	public void setCcTransactionId(long ccTransactionId) {
+		this.ccTransactionId = ccTransactionId;
+	}
+
+	public int getPaymentComplete() {
+		return paymentComplete;
+	}
+
+	public void setPaymentComplete(int paymentComplete) {
+		this.paymentComplete = paymentComplete;
 	}
 
 	public long getId() {
@@ -110,13 +175,13 @@ public class LotteryTicket implements Serializable {
 		this.fourthNumber = fourthNumber;
 	}
 
-	public int getLotteryId() {
+	/*public int getLotteryId() {
 		return this.lotteryId;
 	}
 
 	public void setLotteryId(int lotteryId) {
 		this.lotteryId = lotteryId;
-	}
+	}*/
 
 	public double getPayout() {
 		return this.payout;
@@ -181,5 +246,28 @@ public class LotteryTicket implements Serializable {
 	public void setWinFlag(int winFlag) {
 		this.winFlag = winFlag;
 	}
+	public static String getTicketIDs(List<LotteryTicket> tickets) {
+		StringBuilder sb = new StringBuilder();
+		for(LotteryTicket ticket : tickets){
+			if(sb.length() > 0) 
+				sb.append(",");
+			sb.append(String.valueOf(ticket.getId()));
+		}
+		return sb.toString();
+	}
+	
+	public double getAmount(){
+		return lottery.getLotteryTicketCost();
+	}
+	
+	public static Double getTotal(List<LotteryTicket> tickets) {
+		Double total = 0.0;
+		for(LotteryTicket ticket : tickets){
+			total = total + ticket.getAmount();
+		}
+		return total;
+	}
+	
+
 
 }

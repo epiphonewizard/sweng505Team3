@@ -21,6 +21,18 @@
 	    <th:block th:if="${message.message == 'editUniversity.success'}">
 	      	<h1>University Successfully Updated</h1>
 	    </th:block>
+	     <th:block th:if="${message.message == 'ticket.edit.anonymousStudent'}">
+	   <div th:replace="fragments/alert :: alert (type='danger', message='Your session had expired. Please sign in and try again.')">Alert</div>
+	    </th:block>
+	    <th:block th:if="${message.message == 'ticket.edit.maxNumTicketExceeded'}">
+	    <div th:replace="fragments/alert :: alert (type='info', message='You have purchased the maximum allowable number of tickets for this lottery.')">Alert</div>
+	    </th:block>
+	    <th:block th:if="${message.message == 'ticket.edit.unavailableLottery'}">
+	    <div th:replace="fragments/alert :: alert (type='info', message='There is currently no available lottery for your university. Please check back again soon.')">Alert</div>
+	    </th:block>
+	        <th:block th:if="${message.message == 'payment.successful'}">
+	    <div th:replace="fragments/alert :: alert (type='success', message='We have successfully processed your payments.')">Alert</div>
+	    </th:block>
     </th:block>
     <p>
         Welcome to the Student Lotto application!

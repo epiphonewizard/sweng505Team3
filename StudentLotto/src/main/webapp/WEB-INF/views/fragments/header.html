@@ -19,6 +19,7 @@
                 <li class="active"><a href="#" th:href="@{/}">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a  href="/account" th:href="@{/account}">Account</a></li>
+                <li><a href="/displayPurchaseTicket" th:href="@{/displayPurchaseTicket}">Purchase Ticket</a></li>
                 <li><a href="/donate" th:href="@{/donate}">Donate</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li class="dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
@@ -26,7 +27,6 @@
                 	<ul class="dropdown-menu">
                     	<li><a href="#" th:href="@{/manageUniversity}">Manage Universities</a></li>
                     	<li><a href="#" th:href="@{/lottery/create}">Create new Lottery</a></li>
-                    	<li><a href="#" th:href="@{/displayPurchaseTicket}">Purchase Ticket</a></li>
                     	<li><a href="#" th:href="@{/adminrole}">Manage Roles</a></li>
                     </ul>
                 </li>

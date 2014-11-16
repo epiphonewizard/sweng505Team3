@@ -126,7 +126,6 @@ public class LotteryTicketForm {
 
 	@AssertTrue(message = "Can't choose the same number in the same ticket")
 	private boolean isValid() {
-		System.out.println(" FORM ABCDDDDDDDDDDDDDDDDDDDDD");
 		if (firstNumber == secondNumber) {
 			valid = false;
 		} else {
