@@ -9,10 +9,10 @@
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
-
-
-<script>
-	$(document).ready(
+    
+    <script th:inline="javascript">
+    
+    	$(document).ready(
 			function() {
 			
 					$("#processMessage").hide();
@@ -22,12 +22,73 @@
                    		$("#processMessage").show();
                		} );
 			});
-</script>
+    
+		function deleteDonation(id){
+			var path= /*[[@{/donate/delete}]]*/
+			var row = $("#donationRow" + id)
+			var rowAmount = row.find(".amount").text()
+			var rowSchool = row.find(".school").text()
+			
+			if(confirm("Would you like to cancel the donation of $" + rowAmount + " to the school " + rowSchool + "?")){
+				$.get(path, {"id":id}, function(data){
+					if(data.success){
+						var amount = parseFloat($("#amountText").text()) - parseFloat(rowAmount)	
+						$("#amountText").text(amount)
+						row.remove()
+						if(amount == 0){
+							alert("All pending donations have been cancelled")
+							window.location.href = /*[[@{/}]]*/
+						}
+					}
+				})
+			}
+		}
+		
+
+	</script>
+	
+	<th:block th:if="${person}">
+    	<script th:inline="javascript">	
+			function setToPermenantAddress(){
+				var city = /*[[${person.permAddressCity}]]*/
+				var address =  /*[[${person.permAddressLine1}]]*/
+				var state =  /*[[${person.permAddressState}]]*/
+				var zip =  /*[[${person.permAddressZip}]]*/
+				
+				
+				$("#billingCity").val(city)	
+				$("#billingStreetAddress").val(address)
+				$("#billingState").val(state)
+				$("#billingZip").val(zip)
+			}
+    	</script>
+	</th:block>
+
+
+
 </head>
 
 <body>
 
 <div th:replace="fragments/header :: header">Header</div>
+
+<div id="donations" class="form-narrow form-horizontal">
+	<fieldset>
+		<legend>Donations</legend>
+		<table id="donationTable" class="form-table">
+			<tr>
+				<th>School</th>
+				<th>Amount</th>
+				<th>&nbsp;</th>
+			</tr>
+			<tr th:each="donation: ${donations}" th:id="'donationRow' + ${donation.id}">
+				<td class="school" th:text="${donation.lottery.university.name}">School</td>
+				<td class="amount" th:text="${donation.amount}">Amount</td>
+				<td><button th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel Donation</button></td>
+			</tr>
+		</table>
+	</fieldset>
+</div>
 
 <form id="payBillForm" class="form-narrow form-horizontal" method="post" th:action="@{/bill/pay}"  th:object="${payBillForm}">
 
@@ -46,7 +107,7 @@
 		<div class="form-group" th:classappend="${#fields.hasErrors('amount')}? 'has-error'">
             <label class="col-lg-2 control-label">Amount</label>
             <div class="col-lg-10">
-                <span th:text="*{amount}"></span>
+                <span id="amountText" th:text="*{amount}"></span>
             </div>
         </div>
         
@@ -85,7 +146,9 @@
         </fieldset>      
 	       <fieldset>
         	<label>Billing Address</label> 
-        	
+        		<th:block th:if="${person}">
+        			<button type="button" onclick="setToPermenantAddress()">Set to your permanent address.</button>
+				</th:block>
      	    <div class="form-group" th:classappend="${#fields.hasErrors('billingStreetAddress')}? 'has-error'">
 	            <label for="email" class="col-lg-2 control-label">Street Address</label>
 	            <div class="col-lg-10">

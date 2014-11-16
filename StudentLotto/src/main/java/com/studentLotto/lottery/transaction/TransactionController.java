@@ -66,6 +66,7 @@ public class TransactionController {
 		payBillForm.setAmount(Donation.getTotal(donations));
 		model.addAttribute("payBillForm", payBillForm);
 
+		model.addAttribute("person", account.getPerson());
 		return "payments/paybill";
 	}
 
@@ -106,10 +107,12 @@ public class TransactionController {
 				lotteryRepository.update(lottery);
 			}
 			MessageHelper.addSuccessAttribute(ra, "payment.successful");
-			new MailSenderImpl().sendMail("sweng505team3@gmail.com", account.getPerson().getStudent().getUEmailAddress(),
+			new MailSenderImpl().sendMail("sweng505team3@gmail.com", account
+					.getPerson().getStudent().getUEmailAddress(),
 					"Payment Confirmation", new MessageCreator()
-							.purchaseTicketSuccessEmail(transaction.getId(), tickets, tickets.get(0).getAmount()));
-			
+							.purchaseTicketSuccessEmail(transaction.getId(),
+									tickets, tickets.get(0).getAmount()));
+
 			return "redirect:/";
 		} else {
 			System.out.println("A--2");
@@ -118,8 +121,13 @@ public class TransactionController {
 			List<Donation> donations = new ArrayList<Donation>();
 			for (String id : idList) {
 				if (!StringUtils.isEmptyOrWhitespace(id)) {
-					donations
-							.add(donationRepository.findById(Long.valueOf(id)));
+					Donation donation = donationRepository.findById(Long
+							.valueOf(id));
+					if (donation != null) {
+						donations.add(donation);
+
+					}
+
 				}
 			}
 			if (errors.hasErrors()) {
@@ -143,6 +151,7 @@ public class TransactionController {
 				lottery.addToMaxWinnings(updatedDonation.getAmount());
 				lotteryRepository.update(lottery);
 			}
+
 			MessageHelper.addSuccessAttribute(ra, "payment.successful");
 		}
 
