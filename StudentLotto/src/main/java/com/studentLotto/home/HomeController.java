@@ -1,6 +1,7 @@
 package com.studentLotto.home;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.studentLotto.account.Account;
 import com.studentLotto.account.AccountRepository;
+import com.studentLotto.account.Person;
+import com.studentLotto.account.Student;
+import com.studentLotto.lottery.Lottery;
+import com.studentLotto.lottery.LotteryRepository;
+import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.lottery.donation.DonationRepository;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
@@ -24,12 +30,15 @@ public class HomeController {
 	private AccountActivationRepository accountActivationRepo;
 	private AccountRepository accountRepository;
 	private DonationRepository donationRepository;
+	private LotteryRepository lotteryRepository;
 
 	@Autowired
-	public HomeController(AccountActivationRepository accountActivationRepo, AccountRepository accountRepository, DonationRepository donationRepository) {
+	public HomeController(AccountActivationRepository accountActivationRepo, AccountRepository accountRepository, DonationRepository donationRepository,
+			LotteryRepository lotteryRepository) {
 		this.accountActivationRepo = accountActivationRepo;
 		this.accountRepository = accountRepository;
 		this.donationRepository = donationRepository;
+		this.lotteryRepository = lotteryRepository;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -38,7 +47,19 @@ public class HomeController {
 			return "redirect:/signin";
 		else {
 			Account account = accountRepository.findByEmail(principal.getName());
-			model.addAttribute("donations", donationRepository.findForAccount(account.getId()));
+			List<Donation> donations = donationRepository.findForAccount(account.getId());
+			if(donations.size() > 0)
+				model.addAttribute("donations", donations);
+			Person person = account.getPerson();
+			if(person != null){
+				Student student = person.getStudent();
+				model.addAttribute("student", student);
+				if(student != null){
+					Lottery lottery = lotteryRepository.findUpcomingForUniversity(person.getStudent().getUniversity().getId());
+					model.addAttribute("lottery", lottery);
+					model.addAttribute("canPurchase", lottery.canPurchase());
+				}
+			}
 			return "home/homeSignedIn";
 		}
 	}

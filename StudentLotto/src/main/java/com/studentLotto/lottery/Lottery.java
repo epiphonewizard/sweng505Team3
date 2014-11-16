@@ -191,6 +191,17 @@ public class Lottery implements Serializable {
 	public void addToMaxWinnings(double donation) {
 		setMaxWinnings(getMaxWinnings() + donation);
 	}
+
+	public String canPurchase() {
+		Date now = new Date();
+		if(now.after(purchaseStartDate) && now.before(purchaseEndDate))
+			return "yes";
+		else if(now.after(purchaseEndDate))
+			return "late";
+		else if(now.before(purchaseStartDate))
+			return "early";
+		return "no";
+	}
 	
 	
 

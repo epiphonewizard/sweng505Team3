@@ -39,41 +39,76 @@
 	      	<h1>University Successfully Updated</h1>
 	    </th:block>
     </th:block>
-    <p>
-        Welcome to the Student Lotto application!
-    </p>
+    
+    <th:block th:if="${student}">
+	    <div id="University" class="form-narrow form-horizontal">
+	    	<fieldset>
+	    		<legend>My Lotteries</legend>
+	    		<p>
+					<th:block th:if="${lottery}">
+						The next lottery for <span th:text="${student.university.name}">SchoolName</span> is scheduled for 
+						<span th:text="${lottery.drawingDate}">SchoolName</span>.
+						<th:block th:if="${canPurchase} == 'yes'">
+							<p> 
+								Tickets are available until <span th:text="${lottery.purchaseEndDate}">endDate</span>.
+							</p>
+							<button th:onclick="'window.location.href=\'' + @{/displayPurchaseTicket}+ '\''">Purchase Ticket</button>
+						</th:block>
+						<th:block th:if="${canPurchase} == 'early'">
+							<p>
+								Please come back after <span th:text="${lottery.purchaseStartDate}">startDate</span> to purchase your ticket.
+							</p>						
+						</th:block>
+						<th:block th:if="${canPurchase} == 'late'">
+							<p>Tickets are no longer available</p>
+						</th:block>
+					</th:block>
+		    		<th:block th:unless="${lottery}">
+						There are no upcoming lotteries for <span th:text="${student.university.name}">SchoolName</span>. Please check back later.
+					</th:block>
+				</p>
+			</fieldset>
+		</div>
+    </th:block>
     
     <div id="donations" class="form-narrow form-horizontal">
 	<fieldset>
-		<legend>Donations</legend>
-		<table id="donationTable" class="form-table">
-			<tr>
-				<th>School</th>
-				<th>Amount</th>
-				<th>Status</th>
-				<th>&nbsp;</th>
-			</tr>
-			<tr th:each="donation: ${donations}" th:id="'donationRow' + ${donation.id}">
-				<td class="school" th:text="${donation.lottery.university.name}">School</td>
-				<td class="amount" th:text="${donation.amount}">Amount</td>
-				<th:block th:if="${donation.creditCardTransaction == null}">
-					<td class="status">Pending</td>
-					<td class="actions">
-						<button th:onclick="'window.location.href=\'' + @{/bill/pay}+ '\''">Complete</button>
-						<button th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel</button>
-					</td>
-				</th:block>
-				<th:block th:unless="${donation.creditCardTransaction == null}">
-					<td class="status">Complete</td>
-					<td class="actions"></td>
-				</th:block>
-			</tr>
-			<tr></tr>
-			<tr>
-			<td><button th:onclick="'window.location.href=\'' + @{/donate}+ '\''">Make Donation</button></td>
-			</tr>
-		</table>
-		
+		<legend>My Donations</legend>
+		<th:block th:if="${donations}">
+			<table id="donationTable" class="form-table">
+				<tr>
+					<th>School</th>
+					<th>Amount</th>
+					<th>Status</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tr th:each="donation: ${donations}" th:id="'donationRow' + ${donation.id}">
+					<td class="school" th:text="${donation.lottery.university.name}">School</td>
+					<td class="amount" th:text="${donation.amount}">Amount</td>
+					<th:block th:if="${donation.creditCardTransaction == null}">
+						<td class="status">Pending</td>
+						<td class="actions">
+							<button th:onclick="'window.location.href=\'' + @{/bill/pay}+ '\''">Complete</button>
+							<button th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel</button>
+						</td>
+					</th:block>
+					<th:block th:unless="${donation.creditCardTransaction == null}">
+						<td class="status">Complete</td>
+						<td class="actions"></td>
+					</th:block>
+				</tr>
+				<tr></tr>
+				<tr>
+				<td><button th:onclick="'window.location.href=\'' + @{/donate}+ '\''">Make Donation</button></td>
+				</tr>
+			</table>
+		</th:block>
+		<th:block th:unless="${donations}">
+			<p>
+				You have not made any donations. Feel free to donate to a participating school.
+				<button th:onclick="'window.location.href=\'' + @{/donate}+ '\''">Make Donation</button>
+			</p>
+		</th:block>		
 	</fieldset>
 </div>
     
