@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.6" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="com.studentLotto.university.University" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/university/University.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="910" y="378"/>    
+  <class id="1" language="java" name="com.studentLotto.lottery.CreateLotteryForm" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/lottery/CreateLotteryForm.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="435" y="203"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.studentLotto.university.UniversityRepository" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/university/UniversityRepository.java" binary="false" 
+  <class id="2" language="java" name="com.studentLotto.lottery.EditLotteryForm" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/lottery/EditLotteryForm.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="590" y="499"/>    
+    <position height="-1" width="-1" x="149" y="220"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -22,7 +23,7 @@
   </class>  
   <class id="3" language="java" name="com.studentLotto.lottery.Lottery" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/lottery/Lottery.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="247" y="284"/>    
+    <position height="-1" width="-1" x="779" y="780"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -32,27 +33,26 @@
   <class id="4" language="java" name="com.studentLotto.lottery.LotteryController" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/lottery/LotteryController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="550" y="791"/>    
+    <position height="-1" width="-1" x="764" y="-39"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="5" language="java" name="com.studentLotto.lottery.LotteryRepository" project="StudentLotto" 
+  <class id="5" language="java" name="com.studentLotto.lottery.LotteryRepository" project="StudentLotto" 
     file="/StudentLotto/src/main/java/com/studentLotto/lottery/LotteryRepository.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="904" y="790"/>    
+    <position height="-1" width="-1" x="1095" y="220"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </interface>  
-  <class id="6" language="java" name="com.studentLotto.lottery.CreateLotteryForm" project="StudentLotto" 
-    file="/StudentLotto/src/main/java/com/studentLotto/lottery/CreateLotteryForm.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="208" y="733"/>    
+  </class>  
+  <class id="6" language="java" name="com.studentLotto.lottery.LotteryService" project="StudentLotto" 
+    file="/StudentLotto/src/main/java/com/studentLotto/lottery/LotteryService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="776" y="219"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -60,23 +60,27 @@
     </display>  
   </class>  
   <dependency id="7">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
   </dependency>  
   <dependency id="8">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="6"/>  
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
   </dependency>  
-  <association id="9">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="10" name="universityRepository"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
   <association id="12">    
-    <end type="SOURCE" refId="4" navigable="false">      
+    <end type="SOURCE" refId="6" navigable="false">      
       <attribute id="13" name="lotteryRepository"/>      
       <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
@@ -84,24 +88,31 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="15">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="16" name="university"/>      
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="16" name="lotteryService"/>      
       <multiplicity id="17" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <dependency id="18">    
     <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="3"/>  
   </dependency>  
-  <association id="19">    
-    <bendpoint x="763" y="308"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="20" name="lotteries"/>      
-      <multiplicity id="21" minimum="0" maximum="2147483647"/>    
+  <association id="21">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="22" name="lotteryRepository"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
