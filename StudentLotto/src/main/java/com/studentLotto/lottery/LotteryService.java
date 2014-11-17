@@ -17,7 +17,6 @@ public class LotteryService {
 		lottery.setFullMatchGuaranteed(editLotteryForm.getFullMatchGuaranteed());
 		lottery.setLotteryTicketCost(editLotteryForm.getLotteryTicketCost());
 		lottery.setMaxTicketsAllowedToPurchase(editLotteryForm.getMaxTicketsAllowedToPurchase());
-		lottery.setMaxWinnings(editLotteryForm.getMaxWinnings());
 		lottery.setNumberOfBallsAvailable(editLotteryForm.getNumberOfBallsAvailable());
 		lottery.setNumberOfBallsPicked(editLotteryForm.getNumberOfBallsPicked());
 		lottery.setPurchaseEndDate(editLotteryForm.getPurchaseEndDate());

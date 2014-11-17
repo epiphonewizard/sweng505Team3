@@ -10,11 +10,6 @@ import static org.junit.Assert.*;
 
 public class CreateLotteryFormTest {
 
-	@Test
-	public void constructorTests(){
-		CreateLotteryForm form = new CreateLotteryForm();
-		assertEquals(0, form.getMaxWinnings(), 0.1);		
-	}
 	
 	@Test
 	public void createNewLottery(){
@@ -31,6 +26,5 @@ public class CreateLotteryFormTest {
 		assertEquals(uni, lottery.getUniversity());
 		assertEquals(drawingDate, lottery.getDrawingDate());
 		assertEquals(endDate, lottery.getPurchaseEndDate());
-		assertEquals(0.0, lottery.getMaxWinnings(), 0.1);
 	}
 }

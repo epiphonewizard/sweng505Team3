@@ -41,8 +41,6 @@ public class Lottery implements Serializable {
 
 	private int maxTicketsAllowedToPurchase;
 
-	private double maxWinnings;
-
 	private int numberOfBallsAvailable;
 
 	private int numberOfBallsPicked;
@@ -66,7 +64,7 @@ public class Lottery implements Serializable {
 	
 	public Lottery(Date drawingDate, Boolean fullMatchGuaranteed,
 			double lotteryTicketCost, int maxTicketsAllowedToPurchase,
-			double maxWinnings, int numberOfBallsAvailable,
+			int numberOfBallsAvailable,
 			int numberOfBallsPicked, Date purchaseEndDate,
 			Date purchaseStartDate, double studentWinningPercentage,
 			University university) {
@@ -75,7 +73,6 @@ public class Lottery implements Serializable {
 		this.fullMatchGuaranteed = fullMatchGuaranteed;
 		this.lotteryTicketCost = lotteryTicketCost;
 		this.maxTicketsAllowedToPurchase = maxTicketsAllowedToPurchase;
-		this.maxWinnings = maxWinnings;
 		this.numberOfBallsAvailable = numberOfBallsAvailable;
 		this.numberOfBallsPicked = numberOfBallsPicked;
 		this.purchaseEndDate = purchaseEndDate;
@@ -122,14 +119,6 @@ public class Lottery implements Serializable {
 
 	public void setMaxTicketsAllowedToPurchase(int maxTicketsAllowedToPurchase) {
 		this.maxTicketsAllowedToPurchase = maxTicketsAllowedToPurchase;
-	}
-
-	public double getMaxWinnings() {
-		return this.maxWinnings;
-	}
-
-	public void setMaxWinnings(double maxWinnings) {
-		this.maxWinnings = maxWinnings;
 	}
 
 	public int getNumberOfBallsAvailable() {
@@ -188,10 +177,6 @@ public class Lottery implements Serializable {
 		this.university = university;
 	}
 	
-	public void addToMaxWinnings(double donation) {
-		setMaxWinnings(getMaxWinnings() + donation);
-	}
-
 	public String canPurchase() {
 		Date now = new Date();
 		if(now.after(purchaseStartDate) && now.before(purchaseEndDate))

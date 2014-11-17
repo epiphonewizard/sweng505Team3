@@ -101,10 +101,7 @@ public class TransactionController {
 			for (LotteryTicket ticket : tickets) {
 				ticket.setPaymentComplete(1);
 				ticket.setCcTransactionId(transaction.getId());
-				LotteryTicket updatedTicket = ticketRepo.update(ticket);
-				Lottery lottery = updatedTicket.getLottery();
-				lottery.addToMaxWinnings(updatedTicket.getAmount());
-				lotteryRepository.update(lottery);
+				ticketRepo.update(ticket);
 			}
 			MessageHelper.addSuccessAttribute(ra, "payment.successful");
 			new MailSenderImpl().sendMail("sweng505team3@gmail.com", account
@@ -146,10 +143,7 @@ public class TransactionController {
 			for (Donation donation : donations) {
 				donation.setPaymentComplete(true);
 				donation.setCreditCardTransaction(transaction);
-				Donation updatedDonation = donationRepository.update(donation);
-				Lottery lottery = updatedDonation.getLottery();
-				lottery.addToMaxWinnings(updatedDonation.getAmount());
-				lotteryRepository.update(lottery);
+				donationRepository.update(donation);
 			}
 
 			MessageHelper.addSuccessAttribute(ra, "payment.successful");

@@ -1,6 +1,5 @@
 package com.studentLotto.lottery.donation;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,7 @@ public class DonationTests {
 		form.setAmount(100.5);
 		Donation donation = form.createDonation(
 				new Account("test@gmail.com", "password"), 
-				new Lottery(new Date(), null, 0, 0, 0, 0, 0, new Date(), new Date(), 100.0, null));
+				new Lottery(new Date(), null, 0, 0, 0, 0, new Date(), new Date(), 100.0, null));
 		assertEquals(form.getAmount(), donation.getAmount(), 0.1);
 		assertEquals("test@gmail.com", donation.getAccount().getEmail());
 		assertEquals(null, donation.getLottery().getUniversity());

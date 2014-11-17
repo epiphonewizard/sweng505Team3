@@ -30,8 +30,7 @@ public class EditLotteryForm {
 	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
 	private Date purchaseStartDate;
 	
-	private double maxWinnings;
-	
+
 	private Boolean fullMatchGuaranteed;
 
 	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
@@ -58,7 +57,6 @@ public class EditLotteryForm {
 		this.drawingDate = lottery.getDrawingDate();
 		this.purchaseEndDate = lottery.getPurchaseEndDate();
 		this.purchaseStartDate = lottery.getPurchaseStartDate();
-		this.maxWinnings = lottery.getMaxWinnings();
 		this.fullMatchGuaranteed = lottery.getFullMatchGuaranteed();
 		this.lotteryTicketCost = lottery.getLotteryTicketCost();
 		this.maxTicketsAllowedToPurchase = lottery.getMaxTicketsAllowedToPurchase();
@@ -95,12 +93,6 @@ public class EditLotteryForm {
 	}
 	public void setPurchaseEndDate(Date purchaseEndDate) {
 		this.purchaseEndDate = purchaseEndDate;
-	}
-	public double getMaxWinnings() {
-		return maxWinnings;
-	}
-	public void setMaxWinnings(double maxWinnings) {
-		this.maxWinnings = maxWinnings;
 	}
 	public long getUniversityID() {
 		return universityID;

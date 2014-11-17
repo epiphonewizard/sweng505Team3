@@ -1,6 +1,11 @@
 package com.studentLotto.lottery;
 
-import java.awt.List;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import java.util.ArrayList;
 
 import org.junit.Test;
@@ -11,17 +16,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.studentLotto.config.WebAppConfigurationAware;
 import com.studentLotto.university.University;
-
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 
 public class LotteryControllerIntegrationTest extends WebAppConfigurationAware  {
@@ -33,7 +30,7 @@ public class LotteryControllerIntegrationTest extends WebAppConfigurationAware  
 	public void submitEmptyForm() throws Exception {
 		java.util.List<University> allSchools = new ArrayList<University>();
 		allSchools.add(new University());
-		ResultActions actions = mockMvc.perform(
+		mockMvc.perform(
 				post("/lottery/create")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(makeAuthSession())
@@ -53,7 +50,7 @@ public class LotteryControllerIntegrationTest extends WebAppConfigurationAware  
 	public void purchaseStartDateAfterEndDate() throws Exception {
 		java.util.List<University> allSchools = new ArrayList<University>();
 		allSchools.add(new University());
-		ResultActions actions = mockMvc.perform(
+		mockMvc.perform(
 				post("/lottery/create")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(makeAuthSession())
@@ -71,7 +68,7 @@ public class LotteryControllerIntegrationTest extends WebAppConfigurationAware  
 	public void drawingDateBeforeEndDate() throws Exception {
 		java.util.List<University> allSchools = new ArrayList<University>();
 		allSchools.add(new University());
-		ResultActions actions = mockMvc.perform(
+		mockMvc.perform(
 				post("/lottery/create")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(makeAuthSession())

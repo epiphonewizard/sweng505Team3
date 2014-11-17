@@ -24,8 +24,6 @@ public class CreateLotteryForm {
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
 	private Date purchaseStartDate;
 	
-	private double maxWinnings;
-	
 	private Boolean fullMatchGuaranteed;
 
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
@@ -60,12 +58,6 @@ public class CreateLotteryForm {
 	}
 	public void setPurchaseEndDate(Date purchaseEndDate) {
 		this.purchaseEndDate = purchaseEndDate;
-	}
-	public double getMaxWinnings() {
-		return maxWinnings;
-	}
-	public void setMaxWinnings(double maxWinnings) {
-		this.maxWinnings = maxWinnings;
 	}
 	public long getUniversityID() {
 		return universityID;
@@ -113,7 +105,7 @@ public class CreateLotteryForm {
 	public Lottery createLottery(University university) {
 		return new Lottery(getDrawingDate(), getFullMatchGuaranteed(),
 				getLotteryTicketCost(), getMaxTicketsAllowedToPurchase(),
-				getMaxWinnings(), getNumberOfBallsAvailable(),
+				 getNumberOfBallsAvailable(),
 				getNumberOfBallsPicked(), getPurchaseEndDate(),
 				getPurchaseStartDate(), getStudentWinningPercentage(),
 				university);
