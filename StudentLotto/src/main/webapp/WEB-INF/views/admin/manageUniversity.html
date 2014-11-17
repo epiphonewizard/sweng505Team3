@@ -10,6 +10,16 @@
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 
+	<script>
+		$(document).ready(function(){
+			$('.navbar-nav').on('click', 'li', function() {
+			    $('.navbar-nav li.active').removeClass('active');
+			    $(this).addClass('active');
+			});
+			
+			$('#adminLink').addClass('active');
+		});
+	</script>
 </head>
 
 <body>
