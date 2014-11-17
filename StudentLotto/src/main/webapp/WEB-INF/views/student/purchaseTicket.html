@@ -16,131 +16,209 @@
 
 
 <style>
-
-table {display:inline;}
+table {display:inline-table;}
 </style>
 
 <script th:inline="javascript">
-	$(document).ready(
-			function() {
-				
-				//<![CDATA[ 
-				//if we only have 1 ticket availabe to be purchased, then hide the add ticket
-					
-				$("#errorDesc").hide();
-				$(".control-label").not(":first").remove();
-				$(".control-label2").not(":first").remove();
-				$(".control-label3").not(":first").remove();
-				$(".control-label4").not(":first").remove();
-				$(".control-label5").not(":first").remove();
-				$(".control-label6").not(":first").remove();
-				jQuery(".ballRow").on(
-						"change",
-						function() {
+	$(document)
+			.ready(
+					function() {
 
-							if ((jQuery(this).find("#firstNumber").val() == jQuery(this).find("#secondNumber").val())
-							||(jQuery(this).find("#firstNumber").val() == jQuery(this).find("#thirdNumber").val()) 
-							||(jQuery(this).find("#firstNumber").val() == jQuery(this).find("#fourthNumber").val()) 
-							||(jQuery(this).find("#firstNumber").val() == jQuery(this).find("#fifthNumber").val()) 
-							||(jQuery(this).find("#firstNumber").val() == jQuery(this).find("#sixthNumber").val()) 
-							
-							||(jQuery(this).find("#secondNumber").val() == jQuery(this).find("#thirdNumber").val()) 
-							||(jQuery(this).find("#secondNumber").val() == jQuery(this).find("#fourthNumber").val()) 
-							||(jQuery(this).find("#secondNumber").val() == jQuery(this).find("#fifthNumber").val()) 
-							||(jQuery(this).find("#secondNumber").val() == jQuery(this).find("#sixthNumber").val()) 
-							
-							||(jQuery(this).find("#thirdNumber").val() == jQuery(this).find("#fourthNumber").val()) 
-							||(jQuery(this).find("#thirdNumber").val() == jQuery(this).find("#fifthNumber").val()) 
-							||(jQuery(this).find("#thirdNumber").val() == jQuery(this).find("#sixthNumber").val()) 
-							
-							||(jQuery(this).find("#fourthNumber").val() == jQuery(this).find("#fifthNumber").val()) 
-							||(jQuery(this).find("#fourthNumber").val() == jQuery(this).find("#sixthNumber").val()) 
-							//handle if fifth was removed
-							||((jQuery(this).find("#fifthNumber").val()!=null) && (jQuery(this).find("#fifthNumber").val() == jQuery(this).find("#sixthNumber").val()))
-							 ){
-								jQuery(this).find("#errorMsg").show();
-								$("#errorDesc").show();
-							} 
-							else {
-								jQuery(this).find("#errorMsg").hide();
-								$("#errorDesc").hide();
+						//<![CDATA[ 
+						//if we only have 1 ticket availabe to be purchased, then hide the add ticket
+
+						$("#errorDesc").hide();
+						$(".control-label").not(":first").remove();
+						$(".control-label2").not(":first").remove();
+						$(".control-label3").not(":first").remove();
+						$(".control-label4").not(":first").remove();
+						$(".control-label5").not(":first").remove();
+						$(".control-label6").not(":first").remove();
+						jQuery(".ballRow")
+								.on(
+										"change",
+										function() {
+
+											if ((jQuery(this).find(
+													"#firstNumber").val() == jQuery(
+													this).find("#secondNumber")
+													.val())
+													|| (jQuery(this).find(
+															"#firstNumber")
+															.val() == jQuery(
+															this).find(
+															"#thirdNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#firstNumber")
+															.val() == jQuery(
+															this).find(
+															"#fourthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#firstNumber")
+															.val() == jQuery(
+															this).find(
+															"#fifthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#firstNumber")
+															.val() == jQuery(
+															this).find(
+															"#sixthNumber")
+															.val())
+
+													|| (jQuery(this).find(
+															"#secondNumber")
+															.val() == jQuery(
+															this).find(
+															"#thirdNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#secondNumber")
+															.val() == jQuery(
+															this).find(
+															"#fourthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#secondNumber")
+															.val() == jQuery(
+															this).find(
+															"#fifthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#secondNumber")
+															.val() == jQuery(
+															this).find(
+															"#sixthNumber")
+															.val())
+
+													|| (jQuery(this).find(
+															"#thirdNumber")
+															.val() == jQuery(
+															this).find(
+															"#fourthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#thirdNumber")
+															.val() == jQuery(
+															this).find(
+															"#fifthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#thirdNumber")
+															.val() == jQuery(
+															this).find(
+															"#sixthNumber")
+															.val())
+
+													|| (jQuery(this).find(
+															"#fourthNumber")
+															.val() == jQuery(
+															this).find(
+															"#fifthNumber")
+															.val())
+													|| (jQuery(this).find(
+															"#fourthNumber")
+															.val() == jQuery(
+															this).find(
+															"#sixthNumber")
+															.val())
+													//handle if fifth was removed
+													|| ((jQuery(this).find(
+															"#fifthNumber")
+															.val() != null) && (jQuery(
+															this).find(
+															"#fifthNumber")
+															.val() == jQuery(
+															this).find(
+															"#sixthNumber")
+															.val()))) {
+												jQuery(this).find("#errorMsg")
+														.show();
+												$("#errorDesc").show();
+											} else {
+												jQuery(this).find("#errorMsg")
+														.hide();
+												$("#errorDesc").hide();
+											}
+										});
+
+						//This is how to get the model attribute from thymeleaf
+						//the commented out code is dynamic and runs when server is running
+						//the 5 afterwards is used as a default value when we load t he page statically
+
+						var maxTickets = /*[[${maxNumTickets}]]*/5;
+						if (maxTickets == 1) {
+							$("#addTicket").hide();
+						}
+						var ele;
+						var ballCount = /*[[${maxCountBalls}]]*/4;
+						var count = 1;
+
+						//array to store detached elements
+						var detachedElements = [];
+						var j = 0;
+
+						//Remove all tickets except 1 , as an initial purchase option
+						$(".form-narrow  #firstNumber").val(1);
+						$(".form-narrow  #secondNumber").val(2);
+						$(".form-narrow  #thirdNumber").val(3);
+						$(".form-narrow  #fourthNumber").val(4);
+						$(".form-narrow  #fifthNumber").val(5);
+						$(".form-narrow #sixthNumber").val(6);
+						$(".form-narrow  #errorMsg").hide();
+						if (ballCount == 4) {
+							$(".form-narrow #fifthNumber").remove();
+							$(".form-narrow #fifthLabel").remove();
+							$(".form-narrow #sixthNumber").remove();
+							$(".form-narrow #sixthLabel").remove();
+						}
+						if (ballCount == 5) {
+							$(".form-narrow #sixthNumber").remove();
+							$(".form-narrow #sixthLabel").remove();
+						}
+						while (j < (maxTickets)) {
+
+							if (j != maxTickets - 1) {
+								detachedElements[j + 1] = $(
+										".form-narrow Table:last").detach();
 							}
-						});
-	
-				//This is how to get the model attribute from thymeleaf
-				//the commented out code is dynamic and runs when server is running
-				//the 5 afterwards is used as a default value when we load t he page statically
-				
-				var maxTickets = /*[[${maxNumTickets}]]*/5;
-				if (maxTickets==1 ) {
-						$("#addTicket").hide();
-				}
-				var ele;
-				var ballCount = /*[[${maxCountBalls}]]*/4;
-				var count = 1;
+							j++;
+						}
 
-				//array to store detached elements
-				var detachedElements = [];
-				var j = 0;
+						//initially we have 1 ticket show hide the removeTicket button
+						//because we dont want to display 0 tickets
+						$("#removeTicket").hide();
 
-				//Remove all tickets except 1 , as an initial purchase option
-			    $(".form-narrow  #firstNumber").val(1);
-				$(".form-narrow  #secondNumber").val(2);
-				$(".form-narrow  #thirdNumber").val(3);
-				$(".form-narrow  #fourthNumber").val(4);
-				$(".form-narrow  #fifthNumber").val(5);
-				$(".form-narrow #sixthNumber").val(6);
-				$(".form-narrow  #errorMsg").hide();
-				if (ballCount == 4) {
-					$(".form-narrow #fifthNumber").remove();
-						$(".form-narrow #fifthLabel").remove();
-						$(".form-narrow #sixthNumber").remove();
-						$(".form-narrow #sixthLabel").remove();
-					}
-					if (ballCount == 5) {
-						$(".form-narrow #sixthNumber").remove();
-						$(".form-narrow #sixthLabel").remove();
-					}
-				while (j < (maxTickets)) {
-	
-					if (j != maxTickets - 1) {
-					detachedElements[j + 1] = $(".form-narrow Table:last")
-								.detach();
-					}
-					j++;				
-				}
+						$("#addTicket").click(
+								function() {
 
+									if (count < maxTickets) {
+										detachedElements[count]
+												.appendTo($('#mainFrame'));
+										$("#removeTicket").show();
+										count += 1;
+									}
+									if (count == maxTickets) {
+										$("#addTicket").hide();
+									}
+								});
 
-				//initially we have 1 ticket show hide the removeTicket button
-				//because we dont want to display 0 tickets
-				$("#removeTicket").hide();
+						$("#removeTicket").click(
+								function() {
+									$("#addTicket").show();
 
-				$("#addTicket").click(function() {
+									detachedElements[count - 1] = $(
+											"#mainFrame Table:last").detach();
+									count -= 1;
 
-					if (count < maxTickets) {
-						detachedElements[count].appendTo($('#mainFrame'));
-						$("#removeTicket").show();
-						count += 1;
-								}
-					    if (count == maxTickets) {
-						  $("#addTicket").hide();
-					    }
-				});
-
-				$("#removeTicket").click(
-						function() {
-							$("#addTicket").show();
-	
-							detachedElements[count - 1] = $(
-									"#mainFrame Table:last").detach();
-							count -= 1;
-
-							if (count == 1) {
-								$("#removeTicket").hide();
-								count = 1;
-							}
-						});
-			});
+									if (count == 1) {
+										$("#removeTicket").hide();
+										count = 1;
+									}
+								});
+					});
 
 	//]]>
 </script>
@@ -160,26 +238,29 @@ table {display:inline;}
 				th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
 		</th:block>
 		<th:block th:if="${message != null}">
-			    <th:block th:if="${message.message == 'ticket.edit.errorDetected'}">
-	       		<div th:replace="fragments/alert :: alert (type='danger', message='Your request was not processed. Please make sure you select unique numbers within a list.')">Alert</div>
-	    		</th:block>
-	    	</th:block>
+			<th:block th:if="${message.message == 'ticket.edit.errorDetected'}">
+				<div
+					th:replace="fragments/alert :: alert (type='danger', message='Your request was not processed. Please make sure you select unique numbers within a list.')">Alert</div>
+			</th:block>
+		</th:block>
 		<div class="col-lg-10"
 			th:classappend="${#fields.hasErrors('global')}? 'has-error'">
 			<span class="help-block" th:if="${#fields.hasErrors('global')}"
 				th:errors="*{global}"></span>
+				
 		</div>
 
+<legend>Purchase Ticket</legend>
 		<fieldset>
-			<legend>Purchase Ticket</legend>
+						
 			<div>
 				<a id="addTicket" href="#" class="btn btn-info btn-lg"><span
 					class="glyphicon glyphicon-plus"></span> Add Ticket</a> <a
 					id="removeTicket" href="#" class="btn btn-info btn-lg"><span
 					class="glyphicon glyphicon-minus"></span> Remove Ticket</a>
 			</div>
-				<div style="background-color:#f2dede" id="errorDesc"> Ticket Error: cannot choose the same number twice within the same
-						ticket.</div>
+			<div style="background-color: #f2dede" id="errorDesc">Ticket
+				Error: cannot choose the same number twice within the same ticket.</div>
 			<div id="mainFrame" class="form-narrow">
 				<label>Please select your lottery numbers</label>
 
@@ -188,29 +269,36 @@ table {display:inline;}
 					th:each="ltz,stat : *{ticketList}"
 					th:class="${stat.even ? 'even' : 'odd'}">
 
-					<span class="help-block" 
+					<span class="help-block"
 						th:if="${#fields.hasErrors('ticketList.*')}" th:errors="*{valid}">
 					</span>
-				
-					<table id="tableNum" width="100%">
-						<thead class="numHeader" align="right" width="100%">
-							<td><label for="firstNum" class="col-lg-2 control-label" align="center">First Number</label></td>
-							<td><label for="secondNum" class="col-lg-2 control-label2" align="center">Second Number</label></td>
-							<td><label for="thirdNum" class="col-lg-2 control-label3" align="center" >Third Number</label></td>
-							<td><label for="fourthNum" class="col-lg-2 control-label4" align="center">Fourth Number</label></td>
-							<td><label id="fifthLabel" for="fifthNum"
-								class="col-lg-2 control-label5" align="center">Fifth Number</label></td>
-							<td><label id="sixthLabel" for="sixthNum"
-								class="col-lg-2 control-label6" align="center" >Sixth Number</label></td>
+
+					<table id="tableNum" style="width: 100%;">
+						<thead class="numHeader" style="width: 100%;">
+							<tr>
+								<th><label for="firstNum" class="col-lg-2 control-label">First
+										Number</label></th>
+								<th><label for="secondNum" class="col-lg-2 control-label2">Second
+										Number</label></th>
+								<th><label for="thirdNum" class="col-lg-2 control-label3">Third
+										Number</label></th>
+								<th><label for="fourthNum" class="col-lg-2 control-label4">Fourth
+										Number</label></th>
+								<th><label id="fifthLabel" for="fifthNum"
+									class="col-lg-2 control-label5">Fifth Number</label></th>
+								<th><label id="sixthLabel" for="sixthNum"
+									class="col-lg-2 control-label6">Sixth Number</label></th>
+							</tr>
 						</thead>
-						<tr class="ballRow" width="100%">
-							<td align="center"  id="firstData"><select id="firstNumber"
+
+						<tr class="ballRow" align="left" width= "100%">
+							<td align="center" id="firstData"><select id="firstNumber"
 								th:field="*{ticketList[__${stat.index}__].firstNumber}"
 								style="width: 50px;">
 									<option th:each="number : ${numberRangeArr}"
 										th:value="${number}" th:text="${number}"></option>
 							</select></td>
-							<td align="center"  id="secondData"><select id="secondNumber"
+							<td align="center" id="secondData"><select id="secondNumber"
 								th:field="*{ticketList[__${stat.index}__].secondNumber}"
 								style="width: 50px;">
 									<option th:each="number : ${numberRangeArr}"
@@ -222,26 +310,27 @@ table {display:inline;}
 									<option th:each="number : ${numberRangeArr}"
 										th:value="${number}" th:text="${number}"></option>
 							</select></td>
-							<td align="center"  id="fourthData"><select id="fourthNumber"
+							<td align="center" id="fourthData"><select id="fourthNumber"
 								th:field="*{ticketList[__${stat.index}__].fourthNumber}"
 								style="width: 50px;">
 									<option th:each="number : ${numberRangeArr}"
 										th:value="${number}" th:text="${number}"></option>
 							</select></td>
-							<td align="center"  id="fifthData"><select id="fifthNumber"
+							<td align="center" id="fifthData"><select id="fifthNumber"
 								th:field="*{ticketList[__${stat.index}__].fifthNumber}"
 								style="width: 50px;">
 									<option th:each="number : ${numberRangeArr}"
 										th:value="${number}" th:text="${number}"></option>
 							</select></td>
-							<td align="right"  id="sixthData"><select id="sixthNumber"
+							<td align="right" id="sixthData"><select id="sixthNumber"
 								th:field="*{ticketList[__${stat.index}__].sixthNumber}"
 								style="width: 50px;">
 									<option th:each="number : ${numberRangeArr}"
 										th:value="${number}" th:text="${number}"></option>
 							</select></td>
-							<td style="background-color:#f2dede" id="errorMsg">Error</td>
+							<td style="background-color: #f2dede" id="errorMsg">Error</td>
 						</tr>
+
 					</table>
 				</div>
 			</div>
