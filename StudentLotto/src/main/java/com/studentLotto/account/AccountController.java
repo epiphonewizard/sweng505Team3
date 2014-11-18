@@ -91,7 +91,7 @@ class AccountController {
     	if(person != null){
 	    	Student student = accountEditForm.getUpdatedStudent(person.getStudent());
 	    	if(student != null){
-	    		studentRepository.save(student);
+	    		studentRepository.update(student);
 	    	}
 	    	personRepository.save(person);
     	}

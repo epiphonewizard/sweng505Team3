@@ -259,7 +259,12 @@
 		        </div>   	
 	        </div>
 	    </th:block>
-        
+	     <th:block th:unless="${accountEditForm.getMailStreetAddress() != 'N/A'}">
+		     <input type="hidden" class="form-control" id="mailStreetAddress"  th:field="*{mailStreetAddress}" />
+		     <input type="hidden" class="form-control" id="mailCity"  th:field="*{mailCity}" />
+		     <input type="hidden" class="form-control" id="mailState"  th:field="*{mailState}" />
+        	<input type="hidden" class="form-control" id="mailZip"  th:field="*{mailZip}" />
+        </th:block>
         
         
         <div class="form-group">

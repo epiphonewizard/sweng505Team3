@@ -32,4 +32,10 @@ public class StudentRepository {
 		entityManager.persist(student);
 		return student;
 	}
+	
+	@Transactional
+	public Student update(Student student) {
+		entityManager.merge(student);
+		return student;
+	}
 }
