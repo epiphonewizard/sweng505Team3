@@ -67,7 +67,7 @@ public class PurchaseTicketController {
 		if (currentLottery == null) {
 			// exit because there is no lottery set up for this student
 			// university within the given date
-			MessageHelper.addErrorAttribute(ra,
+			MessageHelper.addInfoAttribute(ra,
 					"ticket.edit.unavailableLottery");
 			return "redirect:/";
 		}
@@ -85,7 +85,7 @@ public class PurchaseTicketController {
 		if (maxNumTickets <= 0) {
 			// exit because the student already purchased the max allowable
 			// tickets
-			MessageHelper.addSuccessAttribute(ra,
+			MessageHelper.addInfoAttribute(ra,
 					"ticket.edit.maxNumTicketExceeded");
 			return "redirect:/";
 		}
@@ -121,7 +121,7 @@ public class PurchaseTicketController {
 		if (maxNumTickets <= 0) {
 			// exit because the student already purchased the max allowable
 			// tickets
-			MessageHelper.addSuccessAttribute(ra,
+			MessageHelper.addInfoAttribute(ra,
 					"ticket.edit.maxNumTicketExceeded");
 			return "redirect:/";
 		}
@@ -135,7 +135,7 @@ public class PurchaseTicketController {
 		}
 		if (currStudent == null) {
 			// exit student error!
-			MessageHelper.addSuccessAttribute(ra,
+			MessageHelper.addErrorAttribute(ra,
 					"ticket.edit.anonymousStudent");
 			return "redirect:/";
 		}
@@ -146,7 +146,7 @@ public class PurchaseTicketController {
 		if (currentLottery == null) {
 			// exit because there is no lottery set up for this student
 			// university within the given date
-			MessageHelper.addSuccessAttribute(ra,
+			MessageHelper.addInfoAttribute(ra,
 					"ticket.edit.unavailableLottery");
 			return "redirect:/";
 		}
