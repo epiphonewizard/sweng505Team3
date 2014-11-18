@@ -11,17 +11,7 @@
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     
     <script th:inline="javascript">
-    
-    	$(document).ready(
-			function() {
-			
-					$("#processMessage").hide();
-					$("#submitButton").click(function() {
-							
-                   		$("#submitButton").prop('disabled', true);
-                   		$("#processMessage").show();
-               		} );
-			});
+
     
 		function deleteDonation(id){
 			var path= /*[[@{/donate/delete}]]*/
@@ -237,7 +227,6 @@
 			<div class="col-lg-offset-2 col-lg-10">
 				<button id="submitButton" type="submit" class="btn btn-default">Submit</button>
 				<button type="button" class="btn btn-default" onclick="window.location = window.location.pathname">Cancel</button>
-				<i id="processMessage" style="background-color:#f2dede"> Please wait while we process your request.</i>
 			</div>
 		</div>
 </form>
