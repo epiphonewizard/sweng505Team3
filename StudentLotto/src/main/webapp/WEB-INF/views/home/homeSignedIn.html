@@ -24,6 +24,23 @@
 			}
 		}
 		
+		function deleteTicket(id){
+			var path= /*[[@{/ticket/delete}]]*/
+			var row = $("#ticketRow" + id)
+			var rowAmount = row.find(".amount").text()
+			var rowTicket = row.find(".purchasedTicket").text()
+			
+			if(confirm("Would you like to cancel the transaction of $" + rowAmount + " for the ticket " + rowTicket + "?")){
+				$.get(path, {"id":id}, function(data){
+					if(data.success){
+						var amount = parseFloat($("#amountText").text()) - parseFloat(rowAmount)	
+						$("#amountText").text(amount)
+						row.remove()
+					}
+				})
+			}
+		}
+		
 		$(document).ready(function(){
 			$('.navbar-nav').on('click', 'li', function() {
 			    $('.navbar-nav li.active').removeClass('active');
@@ -64,16 +81,18 @@
 							<table class="form-table">
 								<tr>
 									<th> Number </th>
+									<th> Amount </th>
 									<th> Status </th>
 									<th> &nbsp; </th>
 								</tr>
 								<tr th:each="ticket: ${tickets}" th:id="'ticketRow' + ${ticket.id}">
-									<td class="number" th:text="${ticket.firstNumber.toString()} + ' - ' +  ${ticket.secondNumber.toString()}  + ' - ' +  ${ticket.thirdNumber.toString()} + ' - ' +  ${ticket.fourthNumber.toString()} + ' - ' +  ${ticket.fifthNumber.toString()} + ' - ' +  ${ticket.sixthNumber.toString()}"></td>
+									<td class="purchasedTicket" th:text="${ticket.stringRepresentation}"></td>
+									<td class="amount" th:text="${ticket.amount}">Amount</td>
 									<th:block th:if="${ticket.paymentComplete == 0}">
 										<td class="status">Pending</td>
 										<td class="actions">
-											<button th:onclick="'window.location.href=\'' + @{/bill/pay}+ '\''">Complete</button>
-											<button th:onclick="'deleteDonation(' +${ticket.id} + ')'">Cancel</button>
+											<button th:onclick="'window.location.href=\'' + @{/bill/payTicket}+ '\''">Complete</button>
+											<button th:onclick="'deleteTicket(' +${ticket.id} + ')'">Cancel</button>
 										</td>
 									</th:block>
 									<th:block th:unless="${ticket.paymentComplete == 0}">
