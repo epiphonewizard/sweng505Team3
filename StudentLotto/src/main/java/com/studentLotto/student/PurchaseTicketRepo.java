@@ -75,5 +75,11 @@ public class PurchaseTicketRepo {
 		}
 
 	}
+	
+	
+	@Transactional
+	public void delete(LotteryTicket ticket){
+		entityManager.remove( entityManager.contains(ticket) ? ticket : entityManager.merge(ticket));
+	}
 
 }

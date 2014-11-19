@@ -12,14 +12,26 @@
     
     <script th:inline="javascript">
 
-    
+    	$(document).ready(function() {
+    	//<![CDATA[ 
+    	var isTicket = /*[[${ticketTransaction}]]*/5;
+    	if(isTicket == 1)
+    	{
+    		$("#legendHeader").html("Lottery Tickets");
+        	$("#transactionType").html("Ticket");
+    		//$(".cancelButton").text("Cancel Ticket");
+    	
+    	}
+    	//]]>
+    	});
+    	
 		function deleteDonation(id){
 			var path= /*[[@{/donate/delete}]]*/
 			var row = $("#donationRow" + id)
 			var rowAmount = row.find(".amount").text()
 			var rowSchool = row.find(".school").text()
 			
-			if(confirm("Would you like to cancel the donation of $" + rowAmount + " to the school " + rowSchool + "?")){
+			if(confirm("Would you like to cancel the transaction of $" + rowAmount + " to the school " + rowSchool + "?")){
 				$.get(path, {"id":id}, function(data){
 					if(data.success){
 						var amount = parseFloat($("#amountText").text()) - parseFloat(rowAmount)	
@@ -34,6 +46,26 @@
 			}
 		}
 		
+		function deleteTicket(id){
+			var path= /*[[@{/ticket/delete}]]*/
+			var row = $("#donationRow" + id)
+			var rowAmount = row.find(".amount").text()
+			var rowTicket = row.find(".purchasedTicket").text()
+			
+			if(confirm("Would you like to cancel the transaction of $" + rowAmount + " to the school " + rowTicket + "?")){
+				$.get(path, {"id":id}, function(data){
+					if(data.success){
+						var amount = parseFloat($("#amountText").text()) - parseFloat(rowAmount)	
+						$("#amountText").text(amount)
+						row.remove()
+						if(amount == 0){
+							alert("All pending donations have been cancelled")
+							window.location.href = /*[[@{/}]]*/
+						}
+					}
+				})
+			}
+		}
 
 	</script>
 	
@@ -64,17 +96,19 @@
 
 <div id="donations" class="form-narrow form-horizontal">
 	<fieldset>
-		<legend>Donations</legend>
+		<legend id="legendHeader">Donations</legend>
 		<table id="donationTable" class="form-table">
 			<tr>
-				<th>School</th>
+				<th id="transactionType">School</th>
 				<th>Amount</th>
 				<th>&nbsp;</th>
 			</tr>
-			<tr th:each="donation: ${donations}" th:id="'donationRow' + ${donation.id}">
-				<td class="school" th:text="${donation.lottery.university.name}">School</td>
+			<tr th:each="donation: ${donations}"  th:id="'donationRow' + ${donation.id}">
+				<td class="purchasedTicket" th:if="${ticketTransaction == 1}" th:text="${donation.stringRepresentation}">School</td>
+				<td class="school" th:if="${ticketTransaction != 1}" th:text="${donation.lottery.university.name}">School</td>
 				<td class="amount" th:text="${donation.amount}">Amount</td>
-				<td><button th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel Donation</button></td>
+				<td><button class="cancelButton" th:if="${ticketTransaction != 1}" th:onclick="'deleteDonation(' +${donation.id} + ')'">Cancel Donation</button></td>
+				<td><button  class="cancelTicketButton"  th:onclick="'deleteTicket(' +${donation.id} + ')'">Cancel Ticket</button></td>
 			</tr>
 		</table>
 	</fieldset>

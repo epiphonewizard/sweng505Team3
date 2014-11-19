@@ -2,6 +2,7 @@ package com.studentLotto.lottery.transaction;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -155,7 +156,8 @@ public class TransactionController {
 	@RequestMapping(value = "bill/payTicket", method = RequestMethod.GET)
 	public String payTicket(Principal principal, Model model) {
 		Assert.notNull(principal);
-
+		int ticketTransaction = 1;
+		model.addAttribute("ticketTransaction", ticketTransaction);
 		// set isPayTicket to true in order to process ticket payment instead of
 		// donation
 		isPayTicket = true;
@@ -169,6 +171,14 @@ public class TransactionController {
 		List<LotteryTicket> tickets = ticketRepo
 				.findStudentUnpaidTicketForUpcomingLottery(account.getPerson()
 						.getStudent().getId(), studentLottery.getId());
+
+		List<String> ticketDescription = new ArrayList<String>();
+		Iterator<LotteryTicket> it = tickets.iterator();
+		while (it.hasNext()) {
+			ticketDescription.add(it.next().toString());
+
+		}
+		model.addAttribute("ticketDescription", ticketDescription);
 		// set the model attributes to tickets
 		model.addAttribute("donations", tickets);
 		PayBillForm payBillForm = new PayBillForm();
