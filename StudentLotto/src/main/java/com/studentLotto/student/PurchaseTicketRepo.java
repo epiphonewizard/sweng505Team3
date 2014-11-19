@@ -1,6 +1,5 @@
 package com.studentLotto.student;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,22 +58,6 @@ public class PurchaseTicketRepo {
 		}
 
 	}
-	
-	@Transactional
-	public List<LotteryTicket> findStudentTicketsForUpcomingLottery(long studentId,
-			int lotteryId) {
-		try {
-			return entityManager
-					.createNamedQuery(
-							LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY,
-							LotteryTicket.class)
-					.setParameter("lotteryId", lotteryId)
-					.setParameter("studentId", studentId).getResultList();
-		} catch (PersistenceException e) {
-			return null;
-		}
-
-	}
 
 	@Transactional
 	public List<LotteryTicket> findStudentUnpaidTicketForUpcomingLottery(
@@ -88,7 +71,29 @@ public class PurchaseTicketRepo {
 					.setParameter("lotteryId", lotteryId)
 					.setParameter("studentId", studentId).getResultList();
 		} catch (PersistenceException e) {
-			return new ArrayList<LotteryTicket>();
+			return null;
+		}
+
+	}
+	
+	
+	@Transactional
+	public void delete(LotteryTicket ticket){
+		entityManager.remove( entityManager.contains(ticket) ? ticket : entityManager.merge(ticket));
+	}
+	
+	@Transactional
+	public List<LotteryTicket> findStudentTicketsForUpcomingLottery(long studentId,
+			int lotteryId) {
+		try {
+			return entityManager
+					.createNamedQuery(
+							LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY,
+							LotteryTicket.class)
+					.setParameter("lotteryId", lotteryId)
+					.setParameter("studentId", studentId).getResultList();
+		} catch (PersistenceException e) {
+			return null;
 		}
 
 	}

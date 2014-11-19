@@ -16,15 +16,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.studentLotto.account.Account;
 import com.studentLotto.account.Student;
 import com.studentLotto.account.StudentRepository;
 import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
+import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.support.web.MessageHelper;
 
 @Controller
@@ -182,6 +185,23 @@ public class PurchaseTicketController {
 		Student currentStudent = studentRepo.findByUEmailAddress(studentEmail);
 		return currentStudent;
 
+	}
+	
+	@RequestMapping(value="ticket/delete", method=RequestMethod.GET, produces="application/json")
+	public @ResponseBody String deleteDonation(Principal principal, HttpServletRequest request){
+		Assert.notNull(principal, "Invalid Permissions");
+		Long ticketId = Long.valueOf(request.getParameter("id"));
+		LotteryTicket ticket = ticketRepo.findById(ticketId);
+		
+		//get current signed in student info 
+		Student student = studentRepo.findByUEmailAddress(principal.getName()) ;
+
+		Assert.isTrue(ticket.getStudentId()==  student.getId(), "Invalid Permissions");
+		
+		//If it gets to this point it is a valid request
+		ticketRepo.delete(ticket);
+		return "{\"success\": true}"; 
+		
 	}
 
 }
