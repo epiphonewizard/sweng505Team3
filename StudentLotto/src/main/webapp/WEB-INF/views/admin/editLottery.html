@@ -130,13 +130,6 @@
 	        
 	         <fieldset>   
 		     <legend>Lottery Options</legend>
-	       <div class="form-group" th:classappend="${#fields.hasErrors('maxWinnings')}? 'has-error'">
-	            <label for="maxWinnings" class="col-lg-2 control-label">Maximum Winnings</label>
-	            <div class="col-lg-10">
-	                <input type="text" class="form-control" id="maxWinnings"  th:field="*{maxWinnings}"/>
-	                <span class="help-block" th:if="${#fields.hasErrors('maxWinnings')}" th:errors="*{maxWinnings}"></span>
-	            </div>
-	        </div>
 	        
 	        <div class="form-group" th:classappend="${#fields.hasErrors('lotteryTicketCost')}? 'has-error'">
 	            <label for="lotteryTicketCost" class="col-lg-2 control-label">Lottery Ticket Cost</label>

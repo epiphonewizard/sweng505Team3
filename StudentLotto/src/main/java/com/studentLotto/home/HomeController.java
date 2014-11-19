@@ -19,6 +19,8 @@ import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
 import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.lottery.donation.DonationRepository;
+import com.studentLotto.student.LotteryTicket;
+import com.studentLotto.student.PurchaseTicketRepo;
 import com.studentLotto.utilities.AccountActivation;
 import com.studentLotto.utilities.AccountActivationRepository;
 import com.studentLotto.utilities.AccountUtilities;
@@ -31,14 +33,16 @@ public class HomeController {
 	private AccountRepository accountRepository;
 	private DonationRepository donationRepository;
 	private LotteryRepository lotteryRepository;
+	private PurchaseTicketRepo purchaseTicketRepo;
 
 	@Autowired
 	public HomeController(AccountActivationRepository accountActivationRepo, AccountRepository accountRepository, DonationRepository donationRepository,
-			LotteryRepository lotteryRepository) {
+			LotteryRepository lotteryRepository, PurchaseTicketRepo purchaseTicketRepo) {
 		this.accountActivationRepo = accountActivationRepo;
 		this.accountRepository = accountRepository;
 		this.donationRepository = donationRepository;
 		this.lotteryRepository = lotteryRepository;
+		this.purchaseTicketRepo = purchaseTicketRepo;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -57,7 +61,14 @@ public class HomeController {
 				if(student != null){
 					Lottery lottery = lotteryRepository.findUpcomingForUniversity(person.getStudent().getUniversity().getId());
 					model.addAttribute("lottery", lottery);
+					List<LotteryTicket> tickets = purchaseTicketRepo.findStudentTicketsForUpcomingLottery(student.getId(), lottery.getId());
+					model.addAttribute("tickets", tickets);
 					model.addAttribute("canPurchase", lottery.canPurchase());
+					model.addAttribute("ticketSize", tickets.size());
+					model.addAttribute("maxTicketsAllowedToPurchase", lottery.getMaxTicketsAllowedToPurchase());
+				}else{
+					model.addAttribute("ticketSize", 0);
+					model.addAttribute("maxTicketsAllowedToPurchase", 0);
 				}
 			}
 			return "home/homeSignedIn";

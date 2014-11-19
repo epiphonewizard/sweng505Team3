@@ -53,7 +53,12 @@ public class Lottery implements Serializable {
 
 	private double studentWinningPercentage;
  
-	private String winningNumber;
+	private Integer winningNumber1; 
+	private Integer winningNumber2; 
+	private Integer winningNumber3; 
+	private Integer winningNumber4; 
+	private Integer winningNumber5; 
+	private Integer winningNumber6;
 	
 	@ManyToOne
 	@JoinColumn(name="universityID", referencedColumnName="id")
@@ -161,13 +166,6 @@ public class Lottery implements Serializable {
 		this.studentWinningPercentage = studentWinningPercentage;
 	}
 
-	public String getWinningNumber() {
-		return this.winningNumber;
-	}
-
-	public void setWinningNumber(String winningNumber) {
-		this.winningNumber = winningNumber;
-	}
 
 	public University getUniversity() {
 		return university;
@@ -186,6 +184,54 @@ public class Lottery implements Serializable {
 		else if(now.before(purchaseStartDate))
 			return "early";
 		return "no";
+	}
+
+	public Integer getWinningNumber1() {
+		return winningNumber1;
+	}
+
+	public void setWinningNumber1(Integer winningNumber1) {
+		this.winningNumber1 = winningNumber1;
+	}
+
+	public Integer getWinningNumber2() {
+		return winningNumber2;
+	}
+
+	public void setWinningNumber2(Integer winningNumber2) {
+		this.winningNumber2 = winningNumber2;
+	}
+
+	public Integer getWinningNumber3() {
+		return winningNumber3;
+	}
+
+	public void setWinningNumber3(Integer winningNumber3) {
+		this.winningNumber3 = winningNumber3;
+	}
+
+	public Integer getWinningNumber4() {
+		return winningNumber4;
+	}
+
+	public void setWinningNumber4(Integer winningNumber4) {
+		this.winningNumber4 = winningNumber4;
+	}
+
+	public Integer getWinningNumber5() {
+		return winningNumber5;
+	}
+
+	public void setWinningNumber5(Integer winningNumber5) {
+		this.winningNumber5 = winningNumber5;
+	}
+
+	public Integer getWinningNumber6() {
+		return winningNumber6;
+	}
+
+	public void setWinningNumber6(Integer winningNumber6) {
+		this.winningNumber6 = winningNumber6;
 	}
 	
 	

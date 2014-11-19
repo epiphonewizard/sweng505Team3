@@ -60,19 +60,44 @@
 					<th:block th:if="${lottery}">
 						The next lottery for <span th:text="${student.university.name}">SchoolName</span> is scheduled for 
 						<span th:text="${lottery.drawingDate}">SchoolName</span>.
-						<th:block th:if="${canPurchase} == 'yes'">
-							<p> 
-								Tickets are available until <span th:text="${lottery.purchaseEndDate}">endDate</span>.
-							</p>
-							<button th:onclick="'window.location.href=\'' + @{/displayPurchaseTicket}+ '\''">Purchase Ticket</button>
+						<th:block th:if="${ticketSize} &gt; 0">
+							<table class="form-table">
+								<tr>
+									<th> Number </th>
+									<th> Status </th>
+									<th> &nbsp; </th>
+								</tr>
+								<tr th:each="ticket: ${tickets}" th:id="'ticketRow' + ${ticket.id}">
+									<td class="number" th:text="${ticket.firstNumber.toString()} + ' - ' +  ${ticket.secondNumber.toString()}  + ' - ' +  ${ticket.thirdNumber.toString()} + ' - ' +  ${ticket.fourthNumber.toString()} + ' - ' +  ${ticket.fifthNumber.toString()} + ' - ' +  ${ticket.sixthNumber.toString()}"></td>
+									<th:block th:if="${ticket.paymentComplete == 0}">
+										<td class="status">Pending</td>
+										<td class="actions">
+											<button th:onclick="'window.location.href=\'' + @{/bill/pay}+ '\''">Complete</button>
+											<button th:onclick="'deleteDonation(' +${ticket.id} + ')'">Cancel</button>
+										</td>
+									</th:block>
+									<th:block th:unless="${ticket.paymentComplete == 0}">
+										<td class="status">Complete</td>
+										<td class="actions"></td>
+									</th:block>
+								</tr>
+							</table>
 						</th:block>
-						<th:block th:if="${canPurchase} == 'early'">
-							<p>
-								Please come back after <span th:text="${lottery.purchaseStartDate}">startDate</span> to purchase your ticket.
-							</p>						
-						</th:block>
-						<th:block th:if="${canPurchase} == 'late'">
-							<p>Tickets are no longer available</p>
+						<th:block th:if="${ticketSize} &gt; ${maxTicketsAllowedToPurchase}">
+							<th:block th:if="${canPurchase} == 'yes'">
+								<p> 
+									Tickets are available until <span th:text="${lottery.purchaseEndDate}">endDate</span>.
+								</p>
+								<button th:onclick="'window.location.href=\'' + @{/displayPurchaseTicket}+ '\''">Purchase Ticket</button>
+							</th:block>
+							<th:block th:if="${canPurchase} == 'early'">
+								<p>
+									Please come back after <span th:text="${lottery.purchaseStartDate}">startDate</span> to purchase your ticket.
+								</p>						
+							</th:block>
+							<th:block th:if="${canPurchase} == 'late'">
+								<p>Tickets are no longer available</p>
+							</th:block>
 						</th:block>
 					</th:block>
 		    		<th:block th:unless="${lottery}">
