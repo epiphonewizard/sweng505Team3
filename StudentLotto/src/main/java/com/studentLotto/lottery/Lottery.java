@@ -234,6 +234,14 @@ public class Lottery implements Serializable {
 		this.winningNumber6 = winningNumber6;
 	}
 	
-	
+	public void setWinningNumbers(Integer winningNumber1, Integer winningNumber2, Integer winningNumber3, Integer winningNumber4, Integer winningNumber5, Integer winningNumber6) {
+		this.winningNumber1 = winningNumber1;
+		this.winningNumber2 = winningNumber2;
+		this.winningNumber3 = winningNumber3;
+		this.winningNumber4 = winningNumber4;
+		this.winningNumber5 = winningNumber5;
+		this.winningNumber6 = winningNumber6;
+	}
+
 
 }

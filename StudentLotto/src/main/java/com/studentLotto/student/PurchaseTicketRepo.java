@@ -1,6 +1,5 @@
 package com.studentLotto.student;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,10 +8,6 @@ import javax.persistence.PersistenceException;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.studentLotto.lottery.Lottery;
-import com.studentLotto.lottery.donation.Donation;
-import com.studentLotto.utilities.AccountActivation;
 
 @Repository
 @Transactional(readOnly = true)
@@ -97,5 +92,20 @@ public class PurchaseTicketRepo {
 		}
 
 	}
+	
+	@Transactional
+	public List<LotteryTicket> findTicketsForLottery(int lotteryId) {
+		try {
+			return entityManager
+					.createNamedQuery(
+							LotteryTicket.FIND_TICKETS_FOR_LOTTERY,
+							LotteryTicket.class)
+					.setParameter("lotteryId", lotteryId).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+
+	}
+
 
 }
