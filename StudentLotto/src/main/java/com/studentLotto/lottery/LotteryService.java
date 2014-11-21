@@ -52,37 +52,32 @@ public class LotteryService {
 			PurchaseTicketRepo purchaseTicketRepo = new PurchaseTicketRepo();
 			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(lottery.getId());
 			if (lottery.getNumberOfBallsPicked() == 4 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber)) {
-				lottery.setWinningNumber1(firstNumber);
-				lottery.setWinningNumber2(secondNumber);
-				lottery.setWinningNumber3(thirdNumber);
-				lottery.setWinningNumber4(fourthNumber);
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber);
+				lotteryRepository.save(lottery);
 			} else if (lottery.getNumberOfBallsPicked() == 5 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber)) {
-				lottery.setWinningNumber1(firstNumber);
-				lottery.setWinningNumber2(secondNumber);
-				lottery.setWinningNumber3(thirdNumber);
-				lottery.setWinningNumber4(fourthNumber); 
-				lottery.setWinningNumber5(fifthNumber);
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber);
+				lotteryRepository.save(lottery);
 			} else if (lottery.getNumberOfBallsPicked() == 6 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber)) {
-				lottery.setWinningNumber1(firstNumber);
-				lottery.setWinningNumber2(secondNumber);
-				lottery.setWinningNumber3(thirdNumber);
-				lottery.setWinningNumber4(fourthNumber); 
-				lottery.setWinningNumber5(fifthNumber);
-				lottery.setWinningNumber6(sixthNumber);
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber);
+				lotteryRepository.save(lottery);
 			} else {
 				drawWinningNumbers(lottery);
 			}
 		} else {
-			lottery.setWinningNumber1(firstNumber);
-			lottery.setWinningNumber2(secondNumber);
-			lottery.setWinningNumber3(thirdNumber);
-			lottery.setWinningNumber4(fourthNumber);
-			lottery.setWinningNumber5(fifthNumber);
-			lottery.setWinningNumber6(sixthNumber);
+			if (lottery.getNumberOfBallsPicked() == 4) {
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber);
+				lotteryRepository.save(lottery);
+			} else if (lottery.getNumberOfBallsPicked() == 5) {
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber);
+				lotteryRepository.save(lottery);
+			} else if (lottery.getNumberOfBallsPicked() == 6) {
+				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber);
+				lotteryRepository.save(lottery);
+			}
 		}
 	}
 	
-	public boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber) {
+	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber) {
 		for (LotteryTicket ticket : lotteryTickets) {
 			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber) 
 				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber)
@@ -94,7 +89,7 @@ public class LotteryService {
 		return false;
 	}
 	
-	public boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber) {
+	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber) {
 		for (LotteryTicket ticket : lotteryTickets) {
 			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber || ticket.getFirstNumber()==fifthNumber) 
 				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber || ticket.getSecondNumber()==fifthNumber)
@@ -107,7 +102,7 @@ public class LotteryService {
 		return false;
 	}
 	
-	public boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber, int sixthNumber) {
+	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber, int sixthNumber) {
 		for (LotteryTicket ticket : lotteryTickets) {
 			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber || ticket.getFirstNumber()==fifthNumber || ticket.getFirstNumber()==sixthNumber) 
 				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber || ticket.getSecondNumber()==fifthNumber || ticket.getSecondNumber()==sixthNumber)
