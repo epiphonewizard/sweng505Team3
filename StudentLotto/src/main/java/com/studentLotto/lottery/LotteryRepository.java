@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.studentLotto.lottery.donation.Donation;
+import com.studentLotto.student.LotteryTicket;
 import com.studentLotto.university.University;
 
 
@@ -73,5 +75,30 @@ public class LotteryRepository {
 		}catch(PersistenceException e){
 		
 		}
+	}
+	
+	@Transactional
+	public List<Donation> getCompletedDonationsForLottery(Lottery lottery){
+		try {
+			return entityManager.createNamedQuery(Donation.GET_COMPLETED_FOR_LOTTERY, Donation.class).setParameter("lotteryId", lottery.getId()).getResultList();
+		}catch(PersistenceException e){
+			return null;
+		}
+	}
+	
+	@Transactional
+	public List<LotteryTicket> getCompletedTicketsForLottery(Lottery lottery){
+		try {
+			return entityManager.createNamedQuery(LotteryTicket.FIND_TICKETS_FOR_LOTTERY, LotteryTicket.class).setParameter("lotteryId", lottery.getId()).getResultList();
+		}catch(PersistenceException e){
+			return null;
+		}
+	}
+	
+	public double calculateLotteryWinnings(Lottery lottery){
+		double total = 0.0;
+		total += Donation.getTotal(getCompletedDonationsForLottery(lottery));
+		total += LotteryTicket.getTotal(getCompletedTicketsForLottery(lottery));
+		return total;
 	}
 }

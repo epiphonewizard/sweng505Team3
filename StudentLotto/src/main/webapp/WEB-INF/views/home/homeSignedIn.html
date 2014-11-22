@@ -76,7 +76,9 @@
 	    		<p>
 					<th:block th:if="${lottery}">
 						The next lottery for <span th:text="${student.university.name}">SchoolName</span> is scheduled for 
-						<span th:text="${lottery.drawingDate}">SchoolName</span>.
+						<span th:text="${lottery.drawingDate}">SchoolName</span>. <br />
+						Current Pool: <span th:text="${lotteryPool}">lottery pool</span> 
+						
 						<th:block th:if="${ticketSize} &gt; 0">
 							<table class="form-table">
 								<tr>

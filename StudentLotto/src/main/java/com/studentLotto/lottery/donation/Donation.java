@@ -27,12 +27,14 @@ import java.util.List;
 	@NamedQuery(name="Donation.findAll", query="SELECT d FROM Donation d"),
 	@NamedQuery(name = Donation.GET_UNPAID_FOR_ACCOUNT, query = "select d from Donation d WHERE accountId = :accountId and paymentComplete = 0"),
 	@NamedQuery(name = Donation.GET_FOR_ACCOUNT, query = "select d from Donation d WHERE accountId = :accountId"),
+	@NamedQuery(name = Donation.GET_COMPLETED_FOR_LOTTERY, query = "select d from Donation d WHERE lotteryId= :lotteryId and creditCardTransaction != null")
 })
 public class Donation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String GET_UNPAID_FOR_ACCOUNT = "Donation.GET_UNPAID_FOR_ACCOUNT";
 	public static final String GET_FOR_ACCOUNT = "Donation.GET_FOR_ACCOUNT";
+	public static final String GET_COMPLETED_FOR_LOTTERY = "Donation.GET_COMPLETED_FOR_LOTTERY";
 
 	@Id
 	@GeneratedValue
