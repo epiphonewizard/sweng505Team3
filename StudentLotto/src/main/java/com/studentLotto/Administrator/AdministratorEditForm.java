@@ -1,18 +1,26 @@
 package com.studentLotto.Administrator;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.studentLotto.account.Account;
 
 public class AdministratorEditForm {
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
+
 	private String email;
 
-	@NotBlank(message = AdministratorEditForm.NOT_BLANK_MESSAGE)
-	private String role;
 	private Long id;
+	
+	private boolean admin;
 
 	public AdministratorEditForm() {
+	}
+	
+	public AdministratorEditForm(Account account) {
+		this.id = account.getId();
+	    this.email = account.getEmail();
+	    if(account.getRole().equals("ROLE_ADMIN")) {
+	    	this.admin = true;
+	    } else {
+	    	this.admin = false;
+	    }
 	}
 
 	public String getEmail() {
@@ -23,12 +31,12 @@ public class AdministratorEditForm {
 		this.email = email;
 	}
 
-	public String getRole() {
-		return role;
+	public boolean isAdmin() {
+		return admin;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public Long getId() {
@@ -37,17 +45,6 @@ public class AdministratorEditForm {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public AdministratorEditForm(Account account) {
-		this.role = account.getRole();
-		this.email = account.getEmail();
-		this.id = account.getId();
-
-	}
-
-	public Account createAccount() {
-		return new Account(getId(), getEmail(), getRole());
 	}
 
 }

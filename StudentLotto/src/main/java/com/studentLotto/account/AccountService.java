@@ -11,9 +11,18 @@ public class AccountService {
 	private AccountRepository accountRepository;
 	
 	@Transactional
-	public void updateAccountRole(Long id, String role) {
+	public void updateAccountRole(Long id, boolean isAdmin) {
 		Account account = accountRepository.findById(id);
-		account.setRole(role);
+		if(isAdmin) {
+			account.setRole("ROLE_ADMIN");
+		} else {
+			if(account.getPerson().isStudent()) {
+				account.setRole("ROLE_STUDENT");
+			} else {
+				account.setRole("ROLE_DONOR");
+			}
+		}
+		
 	}
 	
 	@Transactional

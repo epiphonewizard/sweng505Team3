@@ -50,13 +50,10 @@
 	        </div>
 	       
 	        
-	          <div class="form-group" th:classappend="${#fields.hasErrors('role')}? 'has-error'">
-	            <label for="role" class="col-lg-2 control-label">Role</label>
+	          <div class="form-group" th:classappend="${#fields.hasErrors('admin')}? 'has-error'">
+	            <label for="admin" class="col-lg-2 control-label">Administrator</label>
 	            <div class="col-lg-10">
-					<select id="role" th:field="*{role}">
-						<option value="ROLE_ADMIN">ROLE_ADMIN</option>
-						<option value="ROLE_USER">ROLE_USER</option>
-						</select>				
+					<input type="checkbox" id="admin" th:field="*{admin}"/>				
 	            </div>
 	        </div>  
 	       

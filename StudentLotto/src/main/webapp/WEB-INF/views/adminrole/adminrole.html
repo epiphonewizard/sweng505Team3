@@ -38,14 +38,30 @@
 	</table><br />
 	<table width='100%'>	
 		<tr>
-			<td width='50%'><strong>Current Users</strong></td>
+			<td width='50%'><strong>Current Students</strong></td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 		</tr>
-		<tr th:each="generalUser : ${generalUsers}">
-			<td th:text="${generalUser.email}"></td>
-			<td><a href="updaterole" th:href="@{/updaterole(rid=${generalUser.id})}" >Update</a></td>
-			<td><a href="delete" th:href="@{/deleteUser(id=${generalUser.id})}" >Delete</a></td>
+		<tr th:each="student : ${students}">
+			<td th:text="${student.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${student.id})}" >Update</a></td>
+			<td><a href="delete" th:href="@{/deleteUser(id=${student.id})}" >Delete</a></td>
+		
+		</tr>
+	
+	
+	</table><br />
+	
+	<table width='100%'>	
+		<tr>
+			<td width='50%'><strong>Current Donors</strong></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr th:each="donor : ${donors}">
+			<td th:text="${donor.email}"></td>
+			<td><a href="updaterole" th:href="@{/updaterole(rid=${donor.id})}" >Update</a></td>
+			<td><a href="delete" th:href="@{/deleteUser(id=${donor.id})}" >Delete</a></td>
 		
 		</tr>
 	

@@ -38,8 +38,9 @@ public class AdministratorController {
 	@RequestMapping(value = "adminrole")
 	public String showUserRoles(Model model) {
 		model.addAttribute("adminUsers", accountRepository.findByRole("ROLE_ADMIN"));
-		model.addAttribute("generalUsers", accountRepository.findByRole("ROLE_USER"));
-
+		model.addAttribute("students", accountRepository.findByRole("ROLE_STUDENT"));
+		model.addAttribute("donors", accountRepository.findByRole("ROLE_DONOR"));
+		
 		return ADMIN_VIEW;
 	}
 
@@ -63,10 +64,12 @@ public class AdministratorController {
 		if (errors.hasErrors()) {
 			return UPDATE_VIEW;
 		}
-		accountService.updateAccountRole(administratorEditForm.getId(), administratorEditForm.getRole());
+		
+		accountService.updateAccountRole(administratorEditForm.getId(), administratorEditForm.isAdmin());
 		 
 		model.addAttribute("adminUsers",accountRepository.findByRole("ROLE_ADMIN"));
-		model.addAttribute("generalUsers", accountRepository.findByRole("ROLE_USER"));
+		model.addAttribute("students", accountRepository.findByRole("ROLE_STUDENT"));
+		model.addAttribute("donors", accountRepository.findByRole("ROLE_DONOR"));
 		
 		return ADMIN_VIEW;
 
