@@ -76,6 +76,31 @@ public class MessageCreator {
 				+ "    </p>\n" + "</div>\n" + "</body>\n" + "</html>";
 		return text;
 	}
+	
+	public String notifyWinner(String amount) {
+		String text = "<!DOCTYPE html>\n"
+				+ "<html>\n"
+				+ "<head>\n"
+				+ "\n"
+				+ "    <title>Student Lotto</title>\n"
+				+ "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n"
+				+ "    <link href=\"${root}/resources/css/bootstrap.min.css\" rel=\"stylesheet\" media=\"screen\" />\n"
+				+ "    <link href=\"${root}/resources/css/core.css\" rel=\"stylesheet\" media=\"screen\" />\n"
+				+ "    <script src=\"http://code.jquery.com/jquery-latest.js\"></script>\n"
+				+ "    <script src=\"${root}/resources/js/bootstrap.min.js\"></script>\n"
+				+ "</head>\n"
+				+ "<body>\n"
+				+ "    <h1>\n"
+				+ "        Congratulations! You are amongst the Lottery Winner - Student Lotto\n"
+				+ "    </h1>\n"
+				+ "<p class=\"lead\">\n"
+				+ "   One your lottery ticket had a match with the winning numbers.\n"
+				+ "   Please contact the administrator to claim your price of ${amount} dollars.\n"
+				+ "</p>\n"
+				+ "</body>\n" + "</html>";
+
+		return text.replace("${amount}", amount);
+	}
 
 	public String passwordResetEmail(String emailAddress, String guid) {
 		String text = "<!DOCTYPE html>\n"

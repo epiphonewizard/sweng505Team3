@@ -98,4 +98,6 @@ class AccountController {
 		MessageHelper.addSuccessAttribute(ra, "account.edit.success");    	
     	return "redirect:/account";
     } 
+    
+    
 }

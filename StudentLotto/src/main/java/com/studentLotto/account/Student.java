@@ -12,10 +12,12 @@ import com.studentLotto.university.University;
  */
 
 @Entity
-@NamedQueries({ @NamedQuery(name = Student.FIND_BY_EMAIL, query = "select a from Student a where a.uEmailAddress = :uEmailAddress") })
+@NamedQueries({ @NamedQuery(name = Student.FIND_BY_EMAIL, query = "select a from Student a where a.uEmailAddress = :uEmailAddress"),
+	@NamedQuery(name = Student.FIND_BY_ID, query = "select a from Student a where a.id = :id")})
 public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String FIND_BY_EMAIL = "Student.findByEmail";
+	public static final String FIND_BY_ID = "Student.findById";
 	@Id
 	@GeneratedValue
 	private Long id;

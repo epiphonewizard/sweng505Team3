@@ -7,14 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.studentLotto.account.AccountRepository;
+import com.studentLotto.account.PersonRepository;
+import com.studentLotto.account.StudentRepository;
 import com.studentLotto.student.LotteryTicket;
 import com.studentLotto.student.PurchaseTicketRepo;
+import com.studentLotto.support.mail.MailSenderImpl;
+import com.studentLotto.support.mail.MessageCreator;
 
 @Service
 public class LotteryService {
 	
 	@Autowired
 	private LotteryRepository lotteryRepository;
+    private StudentRepository studentRepository;
 	
 	@Transactional
 	public void editLottery(EditLotteryForm editLotteryForm) {
@@ -119,5 +125,12 @@ public class LotteryService {
 	public void determinePayout(Lottery lottery) {
 		//to be implemented
 	}
+	
+	public void notifyWinners(int sid, double payout){
+		new MailSenderImpl().sendMail("sweng505team3@gmail.com", studentRepository.findWinnerEmail(sid).getUEmailAddress(), 
+				"Congratulations - You have Won", 
+				new MessageCreator().notifyWinner(String.valueOf(payout)));
+	}
+		
 
 }

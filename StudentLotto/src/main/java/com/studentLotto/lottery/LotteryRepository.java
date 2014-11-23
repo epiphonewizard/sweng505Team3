@@ -101,4 +101,6 @@ public class LotteryRepository {
 		total += LotteryTicket.getTotal(getCompletedTicketsForLottery(lottery));
 		return total;
 	}
+	
+	
 }

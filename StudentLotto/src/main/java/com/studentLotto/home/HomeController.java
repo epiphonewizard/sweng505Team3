@@ -15,8 +15,10 @@ import com.studentLotto.account.Account;
 import com.studentLotto.account.AccountRepository;
 import com.studentLotto.account.Person;
 import com.studentLotto.account.Student;
+import com.studentLotto.account.UserService;
 import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
+import com.studentLotto.lottery.LotteryService;
 import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.lottery.donation.DonationRepository;
 import com.studentLotto.student.LotteryTicket;
@@ -34,6 +36,9 @@ public class HomeController {
 	private DonationRepository donationRepository;
 	private LotteryRepository lotteryRepository;
 	private PurchaseTicketRepo purchaseTicketRepo;
+	
+	@Autowired
+	private LotteryService lotteryService;
 
 	@Autowired
 	public HomeController(AccountActivationRepository accountActivationRepo, AccountRepository accountRepository, DonationRepository donationRepository,
@@ -43,6 +48,7 @@ public class HomeController {
 		this.donationRepository = donationRepository;
 		this.lotteryRepository = lotteryRepository;
 		this.purchaseTicketRepo = purchaseTicketRepo;
+		
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -52,8 +58,10 @@ public class HomeController {
 		else {
 			Account account = accountRepository.findByEmail(principal.getName());
 			List<Donation> donations = donationRepository.findForAccount(account.getId());
+			
 			if(donations.size() > 0)
 				model.addAttribute("donations", donations);
+			
 			Person person = account.getPerson();
 			if(person != null){
 				Student student = person.getStudent();

@@ -26,6 +26,14 @@ public class StudentRepository {
 			return null;
 		}
 	}
+	
+	public Student findWinnerEmail(int id){
+		
+		return entityManager
+					.createNamedQuery(Student.FIND_BY_ID, Student.class)
+					.setParameter("id", id).getSingleResult();
+					
+		}
 
 	@Transactional
 	public Student save(Student student) {

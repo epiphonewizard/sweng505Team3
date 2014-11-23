@@ -12,6 +12,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 	@NamedQuery(name = Account.FIND_BY_ID, query = "select a from Account a where a.id = :id"),
 	@NamedQuery(name = Account.UPDATE_BY_ID, query = "update Account a set a.role = :role where a.id = :id")
 
+
+
 })
 public class Account implements java.io.Serializable {
 
@@ -19,6 +21,9 @@ public class Account implements java.io.Serializable {
 	public static final String FIND_BY_ROLE = "Account.findByRole";
 	public static final String FIND_BY_ID = "Account.findById";
 	public static final String UPDATE_BY_ID = "Account.updateById";
+
+
+
 
 	@Id
 	@GeneratedValue

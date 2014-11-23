@@ -12,12 +12,11 @@ import java.util.Date;
  */
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id"),
+		
 		@NamedQuery(name = "Person.findByName", query = "SELECT p FROM Person p WHERE p.fname = :fname AND p.lname = :lname") })
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String FIND_BY_ID = "Person.findById";
 	public static final String FIND_BY_NAME = "Person.findByName";
 
 	@Id
