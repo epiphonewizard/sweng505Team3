@@ -19,7 +19,7 @@
                 <li id="homeLink"><a href="#" th:href="@{/}" th:if="${#authorization.expression('isAuthenticated()')}">Home</a></li>
                 <li id="accountLink"><a href="/account" th:href="@{/account}" th:if="${#authorization.expression('isAuthenticated()')}">My Account</a></li>
                 <li id="purchaseLink"><a href="/displayPurchaseTicket" sec:authorize="hasRole('ROLE_STUDENT')" th:href="@{/displayPurchaseTicket}" th:if="${#authorization.expression('isAuthenticated()')}">Purchase Ticket</a></li>
-                <li id="donateLink"><a href="/donate" th:href="@{/donate}" sec:authorize="hasRole('ROLE_DONOR')" th:if="${#authorization.expression('isAuthenticated()')}">Donate</a></li>
+                <li id="donateLink"><a href="/donate" th:href="@{/donate}" sec:authorize="hasAnyRole('ROLE_ADMIN, ROLE_DONOR, ROLE_STUDENT')" th:if="${#authorization.expression('isAuthenticated()')}">Donate</a></li>
                 <li id="adminLink" class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')" th:if="${#authorization.expression('isAuthenticated()')}">
                 	<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<b class="caret"></b></a>
                 	<ul class="dropdown-menu">
