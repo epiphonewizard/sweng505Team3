@@ -15,4 +15,10 @@ public class AccountService {
 		Account account = accountRepository.findById(id);
 		account.setRole(role);
 	}
+	
+	@Transactional
+	public void deleteUser(Long id) {
+		Account account = accountRepository.findById(id);
+		accountRepository.remove(account);
+	}
 }

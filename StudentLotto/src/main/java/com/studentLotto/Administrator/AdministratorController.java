@@ -44,7 +44,7 @@ public class AdministratorController {
 	}
 
 	@RequestMapping(value = "updaterole", method = RequestMethod.GET)
-	public String index(Principal principal,
+	public String updateRole(Principal principal,
 			@RequestParam(value = "rid") Long rid, Model model) {
 
 		Account account = accountRepository.findById(rid);
@@ -56,7 +56,7 @@ public class AdministratorController {
 	}
 
 	@RequestMapping(value = "updaterole", method = RequestMethod.POST)
-	public String index(
+	public String updateRole(
 			@Valid @ModelAttribute AdministratorEditForm administratorEditForm,
 			Errors errors, Model model) {
 
@@ -65,6 +65,18 @@ public class AdministratorController {
 		}
 		accountService.updateAccountRole(administratorEditForm.getId(), administratorEditForm.getRole());
 		 
+		model.addAttribute("adminUsers",accountRepository.findByRole("ROLE_ADMIN"));
+		model.addAttribute("generalUsers", accountRepository.findByRole("ROLE_USER"));
+		
+		return ADMIN_VIEW;
+
+	}
+	
+	@RequestMapping(value = "deleteUser", method = RequestMethod.GET)
+	public String deleteUser(Long id, Model model) {
+
+		accountService.deleteUser(id);
+		
 		model.addAttribute("adminUsers",accountRepository.findByRole("ROLE_ADMIN"));
 		model.addAttribute("generalUsers", accountRepository.findByRole("ROLE_USER"));
 		
