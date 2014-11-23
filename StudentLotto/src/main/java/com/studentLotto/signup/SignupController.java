@@ -87,9 +87,9 @@ public class SignupController {
 												  	signupForm.getHomeZip(),
 												  	signupForm.getPhoneNumber(),
 												  	accountRepository.save(new Account(signupForm.getEmail(), 
-															    signupForm.getPassword())))).getAccount();
+															    signupForm.getPassword(), "ROLE_DONOR")))).getAccount();
 		} else {
-			Person person = personRepository.save(new Person(signupForm.getDateOfBirth(),
+			Person person = personRepository.save(new Person(signupForm.getDateOfBirth(), 
 				  	signupForm.getFirstName(),
 				  	signupForm.getLastName(),
 				  	signupForm.getHomeCity(),
@@ -99,7 +99,7 @@ public class SignupController {
 				  	signupForm.getHomeZip(),
 				  	signupForm.getPhoneNumber(),
 				  	accountRepository.save(new Account(signupForm.getEmail(), 
-							    signupForm.getPassword()))));
+							    signupForm.getPassword(), "ROLE_STUDENT"))));
 			return     studentRepository.save(new Student(signupForm.getMailCity(),
 									 	 signupForm.getMailStreetAddress(),
 									 	 "",

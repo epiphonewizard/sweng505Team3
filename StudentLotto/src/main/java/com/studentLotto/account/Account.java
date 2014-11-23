@@ -33,7 +33,7 @@ public class Account implements java.io.Serializable {
 	@OneToOne(mappedBy = "account", cascade=CascadeType.ALL)
 	private Person person;
 
-	private String role = "ROLE_USER";
+	private String role;
 	
 
 	
@@ -55,18 +55,19 @@ public class Account implements java.io.Serializable {
 		this.id = id; 
 	}
 	
-
-	public Account(String email, String password) {
-		super();
-		this.email = email;
-		this.password = password;
-	}	
-	
-	public Account(String email, String password, Person person) {
+	public Account(String email, String password, Person person, String role) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.person = person;
+		this.role = role;
+	}
+	
+	public Account(String email, String password, String role) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.role = role;
 	}
 
 	public Long getId() {
