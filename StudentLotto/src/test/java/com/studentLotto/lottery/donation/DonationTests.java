@@ -18,7 +18,7 @@ public class DonationTests {
 		Donation donation = new Donation();
 		donation.setAmount(0.0);
 		donation.setPaymentComplete(false);
-		donation.setAccount(new Account("test@gmail.com", "password"));
+		donation.setAccount(new Account("test@gmail.com", "password", "ROLE_DONATE"));
 		donation.setLottery(new Lottery());
 		
 		assertEquals(0.0, donation.getAmount(), 0.1);
@@ -38,7 +38,7 @@ public class DonationTests {
 		DonationForm form = new DonationForm();
 		form.setAmount(100.5);
 		Donation donation = form.createDonation(
-				new Account("test@gmail.com", "password"), 
+				new Account("test@gmail.com", "password", "ROLE_DONATE"), 
 				new Lottery(new Date(), null, 0, 0, 0, 0, new Date(), new Date(), 100.0, null));
 		assertEquals(form.getAmount(), donation.getAmount(), 0.1);
 		assertEquals("test@gmail.com", donation.getAccount().getEmail());
