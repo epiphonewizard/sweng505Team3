@@ -5,6 +5,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.security.Principal;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,13 +54,12 @@ public class HomeControllerIntegrationTest extends WebAppConfigurationAware {
                 .andExpect(view().name("redirect:/signin"));
     }
     
-//    @Test
-//    public void signedInDisplayHomePage() throws Exception {
-//        mockMvc.perform(get("/").session(makeAuthSession()))
-//        	.andExpect(status().is3xxRedirection())
-//        	.andExpect(view().name("home/SignedIn"));
-//        
-//    }
+    @Test
+    public void signedInDisplayHomePage() throws Exception {
+        mockMvc.perform(get("/").session(makeAuthSession()).principal(createPrincipal()))
+        	.andExpect(status().isOk())
+        	.andExpect(view().name("home/homeSignedIn"));        
+    } 
     
 
 	private MockHttpSession makeAuthSession() {
@@ -64,4 +69,15 @@ public class HomeControllerIntegrationTest extends WebAppConfigurationAware {
         SecurityContextHolder.getContext().setAuthentication(authToken);
         return session;
     }
+	
+	private Principal createPrincipal() {
+		Principal principal = new Principal() {
+			
+			@Override
+			public String getName() {
+				return "test@test.com";
+			}
+		};
+		return principal;
+	}
 }
