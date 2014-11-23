@@ -29,10 +29,7 @@ import com.studentLotto.student.PurchaseTicketRepo;
 import com.studentLotto.utilities.AccountActivationRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.hamcrest.Matchers.*;
 
 public class HomeControllerIntegrationTest extends WebAppConfigurationAware {
 	@Autowired
@@ -56,10 +53,24 @@ public class HomeControllerIntegrationTest extends WebAppConfigurationAware {
     
     @Test
     public void signedInDisplayHomePage() throws Exception {
-        mockMvc.perform(get("/").session(makeAuthSession()).principal(createPrincipal()))
+        mockMvc.perform(get("/").session(makeAuthSession()).principal(createPrincipal("test@test.com")))
         	.andExpect(status().isOk())
-        	.andExpect(view().name("home/homeSignedIn"));        
+        	.andExpect(view().name("home/homeSignedIn"));
     } 
+    
+    @Test
+    public void studentShouldDisplayStudentInfo() throws Exception{
+        mockMvc.perform(get("/").session(makeAuthSession()).principal(createPrincipal("test@test.com")))
+    	.andExpect(status().isOk())
+    	.andExpect(content().string(containsString("<div id=\"University\"")));    	
+    }
+    
+    @Test
+    public void donatorShouldNotDisplayStudentInfo() throws Exception{
+        mockMvc.perform(get("/").session(makeAuthSession()).principal(createPrincipal("ryanhicke@gmail.com")))
+    	.andExpect(status().isOk())
+    	.andExpect(content().string( not(containsString("<div id=\"University\""))));      	
+    }
     
 
 	private MockHttpSession makeAuthSession() {
@@ -70,12 +81,12 @@ public class HomeControllerIntegrationTest extends WebAppConfigurationAware {
         return session;
     }
 	
-	private Principal createPrincipal() {
+	private Principal createPrincipal(final String name) {
 		Principal principal = new Principal() {
 			
 			@Override
 			public String getName() {
-				return "test@test.com";
+				return name;
 			}
 		};
 		return principal;
