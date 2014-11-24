@@ -1,6 +1,7 @@
 package com.studentLotto.lottery;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -24,6 +25,7 @@ public class LotteryController {
 	private static final String CREATE_LOTTERY_PAGE = "admin/createLottery";
 	private static final String VIEW_LOTTERY_PAGE = "admin/viewLotteries";
 	private static final String EDIT_LOTTERY_PAGE = "admin/editLottery";
+	private static final String DRAW_LOTTERY_PAGE = "admin/drawLottery";
 	
 
 	@Autowired
@@ -95,10 +97,26 @@ public class LotteryController {
 	
 	@RequestMapping(value="lottery/draw", method=RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
-	public String draw(Principal principal, Model model, RedirectAttributes ra, int lotteryId){
-		Lottery lottery = lotteryRepository.findOne(lotteryId);
+	public String draw(Principal principal, Model model){
+		//Lottery lottery = lotteryRepository.findOne(lotteryId);
+		//lotteryService.drawWinningNumbers(lottery);
+		
+		List<Lottery> lotteryList = lotteryRepository.findAll();
+		model.addAttribute("lotteryList", lotteryList);
+		
+		Lottery selectedLottery = new Lottery();
+		model.addAttribute("selectedLottery", selectedLottery);
+		
+		return DRAW_LOTTERY_PAGE;
+	}
+	
+	@RequestMapping(value="lottery/draw", method=RequestMethod.POST)
+	@Secured("ROLE_ADMIN")
+	public String draw(Principal principal, Model model, RedirectAttributes ra, @ModelAttribute Lottery selectedLottery){
+		Lottery lottery = lotteryRepository.findOne(selectedLottery.getId());
 		lotteryService.drawWinningNumbers(lottery);
-		return VIEW_LOTTERY_PAGE;
+		MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
+		return "redirect:/lottery/draw";
 	}
 	
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add a University</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+
+	<script>
+		$(document).ready(function(){
+			$('.navbar-nav').on('click', 'li', function() {
+			    $('.navbar-nav li.active').removeClass('active');
+			    $(this).addClass('active');
+			});
+			
+			$('#adminLink').addClass('active');
+		});
+	</script>
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header">Header</div>
+
+<form id="editUniversityForm" class="form-narrow form-horizontal" method="post" th:action="@{/lottery/draw}">
+	
+	<th:block th:if="${message != null}">
+        <!-- /* The message code is returned from the @Controller */ -->
+	    <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${message.args[0]})})">&nbsp;</div>
+    </th:block>
+	
+	<fieldset>
+		<legend>Select a Lottery to Draw</legend>
+
+		<div class="form-group">
+			<div class="col-lg-10">
+				<select id="lottery" class="form-control" th:field="${selectedLottery.id}">
+					<option value="0" selected="selected">Select a Lottery...</option>
+					<option th:each="lottery : ${lotteryList}" th:value="${lottery.id}" th:text="${lottery.id} + '&nbsp;' + ${lottery.university.name}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
+				<button type="submit" class="btn btn-default">Draw!</button>
+				<button type="button" class="btn btn-default" onclick="window.location = window.location.pathname">Cancel</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
+
+</body>
+</html>
