@@ -1,8 +1,6 @@
 package com.studentLotto.lottery;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -16,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.studentLotto.account.Account;
-import com.studentLotto.passwordreset.PasswordResetForm;
 import com.studentLotto.support.web.MessageHelper;
-import com.studentLotto.timedemail.TimedEmailCode;
 import com.studentLotto.university.University;
 import com.studentLotto.university.UniversityRepository;
 
@@ -98,5 +93,12 @@ public class LotteryController {
 		return "redirect:/lottery/view"; 
 	}
 	
+	@RequestMapping(value="lottery/draw", method=RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public String draw(Principal principal, Model model, RedirectAttributes ra, int lotteryId){
+		Lottery lottery = lotteryRepository.findOne(lotteryId);
+		lotteryService.drawWinningNumbers(lottery);
+		return VIEW_LOTTERY_PAGE;
+	}
 	
 }

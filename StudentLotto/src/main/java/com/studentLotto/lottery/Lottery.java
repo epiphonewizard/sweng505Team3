@@ -8,7 +8,10 @@ import org.hibernate.annotations.Type;
 
 import com.studentLotto.university.University;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -234,29 +237,27 @@ public class Lottery implements Serializable {
 		this.winningNumber6 = winningNumber6;
 	}
 	
-	public void setWinningNumbers(Integer winningNumber1, Integer winningNumber2, Integer winningNumber3, Integer winningNumber4, Integer winningNumber5, Integer winningNumber6) {
-		this.winningNumber1 = winningNumber1;
-		this.winningNumber2 = winningNumber2;
-		this.winningNumber3 = winningNumber3;
-		this.winningNumber4 = winningNumber4;
-		this.winningNumber5 = winningNumber5;
-		this.winningNumber6 = winningNumber6;
+	public void setWinningNumbers(Set<Integer> winningNumberSet) {
+		List<Integer> winningNumberList=new ArrayList<>(winningNumberSet);
+		if (winningNumberSet.size() == 4) {
+			this.winningNumber1 = winningNumberList.get(0);
+			this.winningNumber2 = winningNumberList.get(1);
+			this.winningNumber3 = winningNumberList.get(2);
+			this.winningNumber4 = winningNumberList.get(3);
+		} else if (winningNumberSet.size() == 5) {
+			this.winningNumber1 = winningNumberList.get(0);
+			this.winningNumber2 = winningNumberList.get(1);
+			this.winningNumber3 = winningNumberList.get(2);
+			this.winningNumber4 = winningNumberList.get(3);
+			this.winningNumber5 = winningNumberList.get(4);
+		} else if (winningNumberSet.size() == 6) {
+			this.winningNumber1 = winningNumberList.get(0);
+			this.winningNumber2 = winningNumberList.get(1);
+			this.winningNumber3 = winningNumberList.get(2);
+			this.winningNumber4 = winningNumberList.get(3);
+			this.winningNumber5 = winningNumberList.get(4);
+			this.winningNumber6 = winningNumberList.get(5);
+		}
 	}
-	
-	public void setWinningNumbers(Integer winningNumber1, Integer winningNumber2, Integer winningNumber3, Integer winningNumber4, Integer winningNumber5) {
-		this.winningNumber1 = winningNumber1;
-		this.winningNumber2 = winningNumber2;
-		this.winningNumber3 = winningNumber3;
-		this.winningNumber4 = winningNumber4;
-		this.winningNumber5 = winningNumber5;
-	}
-	
-	public void setWinningNumbers(Integer winningNumber1, Integer winningNumber2, Integer winningNumber3, Integer winningNumber4) {
-		this.winningNumber1 = winningNumber1;
-		this.winningNumber2 = winningNumber2;
-		this.winningNumber3 = winningNumber3;
-		this.winningNumber4 = winningNumber4;
-	}
-
 
 }

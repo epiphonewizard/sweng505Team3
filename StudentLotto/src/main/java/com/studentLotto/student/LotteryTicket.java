@@ -7,7 +7,9 @@ import javax.persistence.*;
 import com.studentLotto.lottery.Lottery;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The persistent class for the LotteryTicket database table.
@@ -19,7 +21,7 @@ import java.util.List;
 	@NamedQuery(name = LotteryTicket.FIND_ALL, query = "SELECT l FROM LotteryTicket l"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query = "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId  AND paymentComplete = 0"),
-	@NamedQuery(name = LotteryTicket.FIND_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
+	@NamedQuery(name = LotteryTicket.FIND_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId")
 })
 
 public class LotteryTicket implements Serializable {
@@ -28,7 +30,6 @@ public class LotteryTicket implements Serializable {
 	public static final String FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY = "LotteryTicket.findStudentReservedTicketForLottery";
 	public static final String FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY = "LotteryTicket.getUnpaidStudentTicket";
 	public static final String FIND_TICKETS_FOR_LOTTERY = "LotteryTicket.findTicketsForLottery";
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -305,6 +306,17 @@ public class LotteryTicket implements Serializable {
 				+ secondNumber + ", thirdNumber=" + thirdNumber
 				+ ", fourthNumber=" + fourthNumber + ",   fifthNumber="
 				+ fifthNumber + ", sixthNumber=" + sixthNumber + "]";
+	}
+	
+	public Set<Integer> getTicketNumbers(){
+		Set<Integer> ticketNumberSet = new HashSet<>();
+		ticketNumberSet.add(this.firstNumber);
+		ticketNumberSet.add(this.secondNumber);
+		ticketNumberSet.add(this.thirdNumber);
+		ticketNumberSet.add(this.fourthNumber);
+		ticketNumberSet.add(this.fifthNumber);
+		ticketNumberSet.add(this.sixthNumber);
+		return ticketNumberSet;
 	}
 
 }

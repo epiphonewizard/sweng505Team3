@@ -1,14 +1,14 @@
 package com.studentLotto.lottery;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.studentLotto.account.AccountRepository;
-import com.studentLotto.account.PersonRepository;
 import com.studentLotto.account.StudentRepository;
 import com.studentLotto.student.LotteryTicket;
 import com.studentLotto.student.PurchaseTicketRepo;
@@ -20,7 +20,12 @@ public class LotteryService {
 	
 	@Autowired
 	private LotteryRepository lotteryRepository;
+	
+	@Autowired
     private StudentRepository studentRepository;
+	
+	@Autowired
+    private PurchaseTicketRepo purchaseTicketRepo;
 	
 	@Transactional
 	public void editLottery(EditLotteryForm editLotteryForm) {
@@ -43,79 +48,45 @@ public class LotteryService {
 	}
 	
 	public void drawWinningNumbers(Lottery lottery) {
-		//to be implemented
-		int end = lottery.getNumberOfBallsAvailable();
-		Random randomGenerator = new Random();
-
-		int firstNumber = randomGenerator.nextInt(end) + 1;
-		int secondNumber = randomGenerator.nextInt(end) + 1;
-		int thirdNumber = randomGenerator.nextInt(end) + 1;
-		int fourthNumber = randomGenerator.nextInt(end) + 1;
-		int fifthNumber = randomGenerator.nextInt(end) + 1;
-		int sixthNumber = randomGenerator.nextInt(end) + 1;
+		
+		Set<Integer> winningNumberSet = pickRandom(lottery.getNumberOfBallsPicked(), lottery.getNumberOfBallsAvailable());
 		
 		if (lottery.getFullMatchGuaranteed()) {	
-			PurchaseTicketRepo purchaseTicketRepo = new PurchaseTicketRepo();
-			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(lottery.getId());
-			if (lottery.getNumberOfBallsPicked() == 4 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber)) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber);
-				lotteryRepository.save(lottery);
-			} else if (lottery.getNumberOfBallsPicked() == 5 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber)) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber);
-				lotteryRepository.save(lottery);
-			} else if (lottery.getNumberOfBallsPicked() == 6 && atLeastOneFullMatch(lotteryTickets, firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber)) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber);
-				lotteryRepository.save(lottery);
+			int lotteryId = lottery.getId();
+			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(lotteryId);
+			
+			if (atLeastOneFullMatch(lotteryTickets, winningNumberSet)) {
+				lottery.setWinningNumbers(winningNumberSet);
+				lotteryRepository.update(lottery);
 			} else {
 				drawWinningNumbers(lottery);
 			}
+			
 		} else {
-			if (lottery.getNumberOfBallsPicked() == 4) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber);
-				lotteryRepository.save(lottery);
-			} else if (lottery.getNumberOfBallsPicked() == 5) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber);
-				lotteryRepository.save(lottery);
-			} else if (lottery.getNumberOfBallsPicked() == 6) {
-				lottery.setWinningNumbers(firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, sixthNumber);
-				lotteryRepository.save(lottery);
-			}
+			lottery.setWinningNumbers(winningNumberSet);
+			lotteryRepository.update(lottery);
 		}
 	}
 	
-	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber) {
-		for (LotteryTicket ticket : lotteryTickets) {
-			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber) 
-				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber)
-				&& (ticket.getThirdNumber()==firstNumber || ticket.getThirdNumber()==secondNumber || ticket.getThirdNumber()==thirdNumber || ticket.getThirdNumber()==fourthNumber)
-				&& (ticket.getFourthNumber()==firstNumber || ticket.getFourthNumber()==secondNumber || ticket.getFourthNumber()==thirdNumber || ticket.getFourthNumber()==fourthNumber)) {
-				return true;
-			}
-		}
-		return false;
+	public Set<Integer> pickRandom(int numberOfBalls, int numberOfElements) {
+	    Random random = new Random(); // if this method is used often, perhaps define random at class level
+	    Set<Integer> picked = new HashSet<>();
+	    while(picked.size() < numberOfBalls) {
+	        picked.add(random.nextInt(numberOfElements + 1));
+	    }
+	    return picked;
 	}
 	
-	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber) {
+	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, Set<Integer> winningNumberSet) {
 		for (LotteryTicket ticket : lotteryTickets) {
-			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber || ticket.getFirstNumber()==fifthNumber) 
-				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber || ticket.getSecondNumber()==fifthNumber)
-				&& (ticket.getThirdNumber()==firstNumber || ticket.getThirdNumber()==secondNumber || ticket.getThirdNumber()==thirdNumber || ticket.getThirdNumber()==fourthNumber || ticket.getThirdNumber()==fifthNumber)
-				&& (ticket.getFourthNumber()==firstNumber || ticket.getFourthNumber()==secondNumber || ticket.getFourthNumber()==thirdNumber || ticket.getFourthNumber()==fourthNumber  || ticket.getFourthNumber()==fifthNumber)
-				&& (ticket.getFifthNumber()==firstNumber || ticket.getFifthNumber()==secondNumber || ticket.getFifthNumber()==thirdNumber || ticket.getFifthNumber()==fourthNumber  || ticket.getFifthNumber()==fifthNumber)) {
-				return true;
+			Set<Integer> ticketNumberSet = ticket.getTicketNumbers();
+			int winningNumberCount = 0;
+			for (int winningNumber : winningNumberSet){
+				if(ticketNumberSet.contains(winningNumber)){
+					winningNumberCount++;
+				}
 			}
-		}
-		return false;
-	}
-	
-	private boolean atLeastOneFullMatch(List<LotteryTicket> lotteryTickets, int firstNumber, int secondNumber, int thirdNumber, int fourthNumber, int fifthNumber, int sixthNumber) {
-		for (LotteryTicket ticket : lotteryTickets) {
-			if ((ticket.getFirstNumber()==firstNumber || ticket.getFirstNumber()==secondNumber || ticket.getFirstNumber()==thirdNumber || ticket.getFirstNumber()==fourthNumber || ticket.getFirstNumber()==fifthNumber || ticket.getFirstNumber()==sixthNumber) 
-				&& (ticket.getSecondNumber()==firstNumber || ticket.getSecondNumber()==secondNumber || ticket.getSecondNumber()==thirdNumber || ticket.getSecondNumber()==fourthNumber || ticket.getSecondNumber()==fifthNumber || ticket.getSecondNumber()==sixthNumber)
-				&& (ticket.getThirdNumber()==firstNumber || ticket.getThirdNumber()==secondNumber || ticket.getThirdNumber()==thirdNumber || ticket.getThirdNumber()==fourthNumber || ticket.getThirdNumber()==fifthNumber || ticket.getThirdNumber()==sixthNumber)
-				&& (ticket.getFourthNumber()==firstNumber || ticket.getFourthNumber()==secondNumber || ticket.getFourthNumber()==thirdNumber || ticket.getFourthNumber()==fourthNumber  || ticket.getFourthNumber()==fifthNumber || ticket.getFourthNumber()==sixthNumber)
-				&& (ticket.getFifthNumber()==firstNumber || ticket.getFifthNumber()==secondNumber || ticket.getFifthNumber()==thirdNumber || ticket.getFifthNumber()==fourthNumber  || ticket.getFifthNumber()==fifthNumber  || ticket.getFifthNumber()==sixthNumber)
-				&& (ticket.getSixthNumber()==firstNumber || ticket.getSixthNumber()==secondNumber || ticket.getSixthNumber()==thirdNumber || ticket.getSixthNumber()==fourthNumber  || ticket.getSixthNumber()==fifthNumber  || ticket.getSixthNumber()==sixthNumber)) {
+			if (winningNumberCount == winningNumberSet.size()) {
 				return true;
 			}
 		}

@@ -16,7 +16,11 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header">Header</div>
-
+	
+	<th:block th:if="${message != null}">
+        <!-- /* The message code is returned from the @Controller */ -->
+	    <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${message.args[0]})})">&nbsp;</div>
+    </th:block>
 
     <fieldset>
         <legend>View Lotteries</legend>
