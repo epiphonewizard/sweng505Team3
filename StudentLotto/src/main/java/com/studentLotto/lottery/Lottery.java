@@ -10,6 +10,7 @@ import com.studentLotto.university.University;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -258,6 +259,30 @@ public class Lottery implements Serializable {
 			this.winningNumber5 = winningNumberList.get(4);
 			this.winningNumber6 = winningNumberList.get(5);
 		}
+	}
+	
+	public Set<Integer> getWinningNumbers() {
+		Set<Integer> winningNumberSet= new HashSet<>();
+		if (this.numberOfBallsPicked == 4) {
+			winningNumberSet.add(this.winningNumber1);
+			winningNumberSet.add(this.winningNumber2);
+			winningNumberSet.add(this.winningNumber3);
+			winningNumberSet.add(this.winningNumber4);
+		} else if (this.numberOfBallsPicked == 5) {
+			winningNumberSet.add(this.winningNumber1);
+			winningNumberSet.add(this.winningNumber2);
+			winningNumberSet.add(this.winningNumber3);
+			winningNumberSet.add(this.winningNumber4);
+			winningNumberSet.add(this.winningNumber5);
+		} else if (this.numberOfBallsPicked == 6) {
+			winningNumberSet.add(this.winningNumber1);
+			winningNumberSet.add(this.winningNumber2);
+			winningNumberSet.add(this.winningNumber3);
+			winningNumberSet.add(this.winningNumber4);
+			winningNumberSet.add(this.winningNumber5);
+			winningNumberSet.add(this.winningNumber6);
+		}
+		return winningNumberSet;
 	}
 
 }

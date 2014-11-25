@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.studentLotto.student.LotteryTicket;
+import com.studentLotto.student.PurchaseTicketRepo;
 import com.studentLotto.support.web.MessageHelper;
 import com.studentLotto.university.University;
 import com.studentLotto.university.UniversityRepository;
@@ -33,6 +35,9 @@ public class LotteryController {
 	
 	@Autowired
 	private UniversityRepository universityRepository;
+	
+	@Autowired
+	private PurchaseTicketRepo purchaseTicketRepo;
 	
 	@Autowired
 	private LotteryService lotteryService;
@@ -114,7 +119,9 @@ public class LotteryController {
 	@Secured("ROLE_ADMIN")
 	public String draw(Principal principal, Model model, RedirectAttributes ra, @ModelAttribute Lottery selectedLottery){
 		Lottery lottery = lotteryRepository.findOne(selectedLottery.getId());
-		lotteryService.drawWinningNumbers(lottery);
+		List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(selectedLottery.getId());
+		lotteryService.drawWinningNumbers(lottery, lotteryTickets);
+		lotteryService.payoutLottery(lottery);
 		MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
 		return "redirect:/lottery/draw";
 	}

@@ -21,7 +21,7 @@ import java.util.Set;
 	@NamedQuery(name = LotteryTicket.FIND_ALL, query = "SELECT l FROM LotteryTicket l"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query = "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId  AND paymentComplete = 0"),
-	@NamedQuery(name = LotteryTicket.FIND_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId")
+	@NamedQuery(name = LotteryTicket.FIND_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
 })
 
 public class LotteryTicket implements Serializable {
