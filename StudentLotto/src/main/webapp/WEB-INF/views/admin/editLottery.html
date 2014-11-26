@@ -23,9 +23,9 @@
 	      timeFormat: "hh:mm tt"
 	    });
 	    
-	    $("#maxWinnings").change(function(){
+	    $("#maxStudentWinnings").change(function(){
 			  if(isNaN(parseFloat($("#maxWinnings").val()))){
-				  alert("Maximum Winnings must be a valid number.")
+				  alert("Maximum Student Winnings must be a valid number.")
 				  $("#maxWinnings").val("0.0")
 			  }
 		  })
@@ -78,8 +78,6 @@
 	  } else {
 		  $( "#studentWinningPercentageSlider" ).slider( "value", $( "#studentWinningPercentage" ).val());
 	  }
-	 
-	  
 	  
 	  });
 	</script>
@@ -121,7 +119,7 @@
 	        
 	        
    		    <div class="form-group" th:classappend="${#fields.hasErrors('drawingDate')}? 'has-error'">
-	            <label for="drawingDate" class="col-lg-2 control-label">Day of drawing</label>
+	            <label for="drawingDate" class="col-lg-2 control-label">Day of Drawing</label>
 	            <div class="col-lg-10">
 	                <input type="text" class="form-control" id="drawingDate"  th:field="*{drawingDate}"/>
 	                <span class="help-block" th:if="${#fields.hasErrors('drawingDate')}" th:errors="*{drawingDate}"></span>
@@ -147,8 +145,16 @@
 	            </div>
 	        </div>
 	        
+	        <div class="form-group" th:classappend="${#fields.hasErrors('maxStudentWinnings')}? 'has-error'">
+	            <label for="maxStudentWinnings" class="col-lg-2 control-label">Max Winnings Per Student</label>
+	            <div class="col-lg-10">
+	                <input type="text" class="form-control" id="maxStudentWinnings"  th:field="*{maxStudentWinnings}"/>
+	                <span class="help-block" th:if="${#fields.hasErrors('maxStudentWinnings')}" th:errors="*{maxStudentWinnings}"></span>
+	            </div>
+	        </div>
+	        
 	        <div class="form-group" th:classappend="${#fields.hasErrors('numberOfBallsAvailable')}? 'has-error'">
-	            <label for="numberOfBallsAvailable" class="col-lg-2 control-label">Number of Balls Available</label>
+	            <label for="numberOfBallsAvailable" class="col-lg-2 control-label">Number of Options Available Per Ball</label>
 	            <div class="col-lg-10">
 	                <input type="text" class="form-control" id="numberOfBallsAvailable" readonly="readonly"   th:field="*{numberOfBallsAvailable}"/>
 	                <div id="numberOfBallsAvailableSlider"></div>
@@ -174,16 +180,15 @@
 	            </div>
 	            
 	        </div>
-	       
 	        
 	         <div class="form-group" th:classappend="${#fields.hasErrors('fullMatchGuaranteed')}? 'has-error'">
 	            <label for="fullMatchGuaranteed" class="col-lg-2 control-label">One Full Match Guaranteed</label>
 	            <div class="col-lg-10">
 	                <input type="checkbox" class="form-control" id="fullMatchGuaranteed"  th:field="*{fullMatchGuaranteed}"/>
 	                <span class="help-block" th:if="${#fields.hasErrors('fullMatchGuaranteed')}" th:errors="*{fullMatchGuaranteed}"></span>
-	            </div>
-	            
+	            </div>	            
 	        </div>
+	        
 	   </fieldset>
         <input type="hidden" id="id"  th:field="*{id}"/>
 	                

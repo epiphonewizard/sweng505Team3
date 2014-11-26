@@ -40,6 +40,7 @@ public class LotteryService {
 		lottery.setPurchaseEndDate(editLotteryForm.getPurchaseEndDate());
 		lottery.setPurchaseStartDate(editLotteryForm.getPurchaseStartDate());
 		lottery.setStudentWinningPercentage(editLotteryForm.getStudentWinningPercentage());
+		lottery.setMaxStudentWinnings(editLotteryForm.getMaxStudentWinnings());
 		lotteryRepository.update(lottery);
 	}
 	
@@ -98,8 +99,7 @@ public class LotteryService {
 		List<LotteryTicket> twoOffFullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(lottery, lottery.getNumberOfBallsPicked()-2);
 		
 		Double lotteryWinnings = lotteryRepository.calculateLotteryWinnings(lottery);
-		Double maxWinningsPerStudent = 25.00;
-		
+		Double maxWinningsPerStudent = lottery.getMaxStudentWinnings();
 		Double studentWinnings = lotteryWinnings * (lottery.getStudentWinningPercentage() / 100);
 		
 		//full match payout

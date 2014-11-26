@@ -8,12 +8,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.ScriptAssert;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.studentLotto.university.University;
 @ScriptAssert.List({
 	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate != null && _this.purchaseEndDate != null", message = "The Purchase start date must be before the end date."),
 	@ScriptAssert(lang = "javascript", script = "_this.drawingDate != null && _this.purchaseEndDate != null && _this.purchaseEndDate.before(_this.drawingDate)", message = "The Purchase period must end before the drawing begins.")
 })
+
 public class EditLotteryForm {
+	
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 	
 	private int id;
@@ -30,7 +31,6 @@ public class EditLotteryForm {
 	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
 	private Date purchaseStartDate;
 	
-
 	private Boolean fullMatchGuaranteed;
 
 	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
@@ -49,6 +49,9 @@ public class EditLotteryForm {
 
 	private long universityID;
 	
+	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
+	private double maxStudentWinnings;
+	
 	public EditLotteryForm(){}
 	
 	public EditLotteryForm(Lottery lottery) {
@@ -64,9 +67,8 @@ public class EditLotteryForm {
 		this.numberOfBallsPicked = lottery.getNumberOfBallsPicked();
 		this.studentWinningPercentage = lottery.getStudentWinningPercentage();
 		this.universityID = lottery.getUniversity().getId();
+		this.maxStudentWinnings = lottery.getMaxStudentWinnings();
 	}
-
-	
 	
 	public int getId() {
 		return id;
@@ -135,6 +137,14 @@ public class EditLotteryForm {
 	}
 	public void setStudentWinningPercentage(double studentWinningPercentage) {
 		this.studentWinningPercentage = studentWinningPercentage;
+	}
+
+	public double getMaxStudentWinnings() {
+		return maxStudentWinnings;
+	}
+
+	public void setMaxStudentWinnings(double maxStudentWinnings) {
+		this.maxStudentWinnings = maxStudentWinnings;
 	}
 	
 }

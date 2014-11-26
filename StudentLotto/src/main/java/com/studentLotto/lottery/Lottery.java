@@ -56,6 +56,7 @@ public class Lottery implements Serializable {
 	private Date purchaseStartDate;
 
 	private double studentWinningPercentage;
+	private double maxStudentWinnings;
  
 	private Integer winningNumber1; 
 	private Integer winningNumber2; 
@@ -76,7 +77,7 @@ public class Lottery implements Serializable {
 			int numberOfBallsAvailable,
 			int numberOfBallsPicked, Date purchaseEndDate,
 			Date purchaseStartDate, double studentWinningPercentage,
-			University university) {
+			University university, double maxStudentWinnings) {
 		super();
 		this.drawingDate = drawingDate;
 		this.fullMatchGuaranteed = fullMatchGuaranteed;
@@ -88,6 +89,7 @@ public class Lottery implements Serializable {
 		this.purchaseStartDate = purchaseStartDate;
 		this.studentWinningPercentage = studentWinningPercentage;
 		this.university = university;
+		this.maxStudentWinnings = maxStudentWinnings;
 	}
 
 	public int getId() {
@@ -283,6 +285,14 @@ public class Lottery implements Serializable {
 			winningNumberSet.add(this.winningNumber6);
 		}
 		return winningNumberSet;
+	}
+
+	public double getMaxStudentWinnings() {
+		return maxStudentWinnings;
+	}
+
+	public void setMaxStudentWinnings(double maxStudentWinnings) {
+		this.maxStudentWinnings = maxStudentWinnings;
 	}
 
 }

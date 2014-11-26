@@ -8,11 +8,14 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.ScriptAssert;
 
 import com.studentLotto.university.University;
+
 @ScriptAssert.List({
 	@ScriptAssert(lang = "javascript", script = "_this.purchaseStartDate != null && _this.purchaseEndDate != null", message = "The Purchase start date must be before the end date."),
 	@ScriptAssert(lang = "javascript", script = "_this.drawingDate != null && _this.purchaseEndDate != null && _this.purchaseEndDate.before(_this.drawingDate)", message = "The Purchase period must end before the drawing begins.")
 })
+
 public class CreateLotteryForm {
+	
 	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
 	
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
@@ -41,6 +44,10 @@ public class CreateLotteryForm {
 	private double studentWinningPercentage;
 
 	private long universityID;
+	
+	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
+	private double maxStudentWinnings;
+	
 	public Date getDrawingDate() {
 		return drawingDate;
 	}
@@ -102,13 +109,20 @@ public class CreateLotteryForm {
 		this.studentWinningPercentage = studentWinningPercentage;
 	}
 	
+	public double getMaxStudentWinnings() {
+		return maxStudentWinnings;
+	}
+	public void setMaxStudentWinnings(double maxStudentWinnings) {
+		this.maxStudentWinnings = maxStudentWinnings;
+	}
+	
 	public Lottery createLottery(University university) {
 		return new Lottery(getDrawingDate(), getFullMatchGuaranteed(),
 				getLotteryTicketCost(), getMaxTicketsAllowedToPurchase(),
 				 getNumberOfBallsAvailable(),
 				getNumberOfBallsPicked(), getPurchaseEndDate(),
 				getPurchaseStartDate(), getStudentWinningPercentage(),
-				university);
+				university, getMaxStudentWinnings());
 	}
 	
 }
