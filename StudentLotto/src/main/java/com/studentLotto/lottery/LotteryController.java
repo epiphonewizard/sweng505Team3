@@ -1,7 +1,6 @@
 package com.studentLotto.lottery;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -105,19 +104,9 @@ public class LotteryController {
 	@RequestMapping(value="lottery/draw", method=RequestMethod.GET)
 	@Secured("ROLE_ADMIN")
 	public String draw(Principal principal, Model model){
-		//Lottery lottery = lotteryRepository.findOne(lotteryId);
-		//lotteryService.drawWinningNumbers(lottery);
 		
-		List<Lottery> lotteryList = lotteryRepository.findAll();
-		List<Lottery> activeLotteryList = new ArrayList<Lottery>();
-		
-		for (Lottery lottery : lotteryList) {
-			if (lotteryRepository.getCompletedTicketsForLottery(lottery).size() > 0) {
-				activeLotteryList.add(lottery);
-			}
-		}
-		
-		model.addAttribute("activeLotteryList", activeLotteryList);
+		List<Lottery> lotteryList = lotteryRepository.findAll();		
+		model.addAttribute("activeLotteryList", lotteryList);
 		
 		Lottery selectedLottery = new Lottery();
 		model.addAttribute("selectedLottery", selectedLottery);
@@ -131,14 +120,24 @@ public class LotteryController {
 		Lottery lottery = lotteryRepository.findOne(selectedLottery.getId());
 		Date currentDate = new Date();
 		
-		if (lottery.getDrawingDate().before(currentDate)) {
+		if (lottery.getDrawingDate().after(currentDate)) {
 			MessageHelper.addErrorAttribute(ra, "lottery.draw.dateFailure", lottery.getUniversity().getName());
 			return "redirect:/lottery/draw";
 		} else {
 			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findPaidTicketsForLottery(selectedLottery.getId());
-			lotteryService.drawWinningNumbers(lottery, lotteryTickets);
-			lotteryService.payoutLottery(lottery);
-			MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
+			if (lotteryTickets.size() > 0) {
+				lotteryService.drawWinningNumbers(lottery, lotteryTickets);
+				if (lottery.getWinningNumbers().size() > 0) {
+					lotteryService.payoutLottery(lottery);
+				} else {
+					MessageHelper.addErrorAttribute(ra, "lottery.draw.winningNumberFailure", lottery.getUniversity().getName());
+					return "redirect:/lottery/draw";
+				}
+				MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
+			} else {
+				MessageHelper.addErrorAttribute(ra, "lottery.draw.ticketFailure", lottery.getUniversity().getName());
+			}
+				
 			return "redirect:/lottery/draw";
 		}
 	}

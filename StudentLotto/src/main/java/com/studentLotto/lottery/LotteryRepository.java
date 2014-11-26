@@ -100,5 +100,4 @@ public class LotteryRepository {
 		return total;
 	}
 	
-	
 }
