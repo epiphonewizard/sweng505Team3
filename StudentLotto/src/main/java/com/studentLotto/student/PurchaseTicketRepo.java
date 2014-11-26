@@ -94,11 +94,11 @@ public class PurchaseTicketRepo {
 	}
 	
 	@Transactional
-	public List<LotteryTicket> findTicketsForLottery(int lotteryId) {
+	public List<LotteryTicket> findPaidTicketsForLottery(int lotteryId) {
 		try {
 			return entityManager
 					.createNamedQuery(
-							LotteryTicket.FIND_TICKETS_FOR_LOTTERY,
+							LotteryTicket.FIND_PAID_TICKETS_FOR_LOTTERY,
 							LotteryTicket.class)
 					.setParameter("lotteryId", lotteryId).getResultList();
 		} catch (PersistenceException e) {

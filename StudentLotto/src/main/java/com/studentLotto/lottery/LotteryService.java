@@ -40,6 +40,7 @@ public class LotteryService {
 		lottery.setPurchaseEndDate(editLotteryForm.getPurchaseEndDate());
 		lottery.setPurchaseStartDate(editLotteryForm.getPurchaseStartDate());
 		lottery.setStudentWinningPercentage(editLotteryForm.getStudentWinningPercentage());
+		lotteryRepository.update(lottery);
 	}
 	
 	@Transactional
@@ -169,7 +170,7 @@ public class LotteryService {
 	
 	private List<LotteryTicket> identifyWinningTicketsBySpecifiedMatchAmount(Lottery lottery, int ballsToMatch) {
 		Set<Integer> winningNumberSet = lottery.getWinningNumbers();
-		List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(lottery.getId());
+		List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findPaidTicketsForLottery(lottery.getId());
 		List<LotteryTicket> winningTickets = new ArrayList<LotteryTicket>();
 		
 		for (LotteryTicket ticket : lotteryTickets) {

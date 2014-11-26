@@ -7,13 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.studentLotto.lottery.donation.Donation;
 import com.studentLotto.student.LotteryTicket;
-import com.studentLotto.university.University;
 
 
 @Repository
@@ -89,7 +87,7 @@ public class LotteryRepository {
 	@Transactional
 	public List<LotteryTicket> getCompletedTicketsForLottery(Lottery lottery){
 		try {
-			return entityManager.createNamedQuery(LotteryTicket.FIND_TICKETS_FOR_LOTTERY, LotteryTicket.class).setParameter("lotteryId", lottery.getId()).getResultList();
+			return entityManager.createNamedQuery(LotteryTicket.FIND_PAID_TICKETS_FOR_LOTTERY, LotteryTicket.class).setParameter("lotteryId", lottery.getId()).getResultList();
 		}catch(PersistenceException e){
 			return null;
 		}

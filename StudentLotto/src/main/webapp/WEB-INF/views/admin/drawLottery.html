@@ -40,7 +40,7 @@
 			<div class="col-lg-10">
 				<select id="lottery" class="form-control" th:field="${selectedLottery.id}">
 					<option value="0" selected="selected">Select a Lottery...</option>
-					<option th:each="lottery : ${lotteryList}" th:value="${lottery.id}" th:text="${lottery.id} + '&nbsp;' + ${lottery.university.name}"></option>
+					<option th:each="lottery : ${activeLotteryList}" th:value="${lottery.id}" th:text="${lottery.id} + '&nbsp;' + ${lottery.university.name}"></option>
 				</select>
 			</div>
 		</div>

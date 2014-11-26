@@ -18,14 +18,16 @@
             <ul class="nav navbar-nav">
                 <li id="homeLink"><a href="#" th:href="@{/}" th:if="${#authorization.expression('isAuthenticated()')}">Home</a></li>
                 <li id="accountLink"><a href="/account" th:href="@{/account}" th:if="${#authorization.expression('isAuthenticated()')}">My Account</a></li>
-                <li id="purchaseLink"><a href="/displayPurchaseTicket" sec:authorize="hasRole('ROLE_STUDENT')" th:href="@{/displayPurchaseTicket}" th:if="${#authorization.expression('isAuthenticated()')}">Purchase Ticket</a></li>
+                <li id="purchaseLink"><a href="/displayPurchaseTicket" sec:authorize="hasAnyRole('ROLE_STUDENT, ROLE_ADMIN')" th:href="@{/displayPurchaseTicket}" th:if="${#authorization.expression('isAuthenticated()')}">Purchase Ticket</a></li>
                 <li id="donateLink"><a href="/donate" th:href="@{/donate}" sec:authorize="hasAnyRole('ROLE_ADMIN, ROLE_DONOR, ROLE_STUDENT')" th:if="${#authorization.expression('isAuthenticated()')}">Donate</a></li>
                 <li id="adminLink" class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')" th:if="${#authorization.expression('isAuthenticated()')}">
                 	<a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<b class="caret"></b></a>
                 	<ul class="dropdown-menu">
+                    	<li><a href="#" th:href="@{/manageUniversity}">Add a New University</a></li>
                     	<li><a href="#" th:href="@{/manageUniversity}">Manage Universities</a></li>
                     	<li><a href="#" th:href="@{/lottery/create}">Create a New Lottery</a></li>
-                    	<li><a href="#" th:href="@{/lottery/view}">View Lotteries</a></li>
+                    	<li><a href="#" th:href="@{/lottery/view}">Manage Lotteries</a></li>
+                    	<li><a href="#" th:href="@{/lottery/draw}">Draw a Lottery</a></li>
                     	<li><a href="#" th:href="@{/adminrole}">Manage Users</a></li>
                     </ul>
                 </li>

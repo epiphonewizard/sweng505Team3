@@ -1,6 +1,8 @@
 package com.studentLotto.lottery;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -62,8 +64,8 @@ public class LotteryController {
 		Lottery lottery = createLotteryForm.createLottery(university);	
 		lotteryRepository.save(lottery);
 
-        MessageHelper.addSuccessAttribute(ra, "lottery.create.successful");
-		return "redirect:/"; 
+        MessageHelper.addSuccessAttribute(ra, "lottery.create.success", lottery.getUniversity().getName());
+		return "redirect:/lottery/view"; 
 	}
 	
 	@RequestMapping(value = "lottery/view", method = RequestMethod.GET)
@@ -89,7 +91,7 @@ public class LotteryController {
 			return EDIT_LOTTERY_PAGE;
 		}
 		lotteryService.editLottery(editLotteryForm);
-        MessageHelper.addSuccessAttribute(ra, "lottery.create.successful");
+        MessageHelper.addSuccessAttribute(ra, "lottery.update.success", lotteryRepository.findOne(editLotteryForm.getId()).getUniversity().getName());
 		return "redirect:/lottery/view"; 
 	}
 	
@@ -107,7 +109,15 @@ public class LotteryController {
 		//lotteryService.drawWinningNumbers(lottery);
 		
 		List<Lottery> lotteryList = lotteryRepository.findAll();
-		model.addAttribute("lotteryList", lotteryList);
+		List<Lottery> activeLotteryList = new ArrayList<Lottery>();
+		
+		for (Lottery lottery : lotteryList) {
+			if (lotteryRepository.getCompletedTicketsForLottery(lottery).size() > 0) {
+				activeLotteryList.add(lottery);
+			}
+		}
+		
+		model.addAttribute("activeLotteryList", activeLotteryList);
 		
 		Lottery selectedLottery = new Lottery();
 		model.addAttribute("selectedLottery", selectedLottery);
@@ -119,11 +129,18 @@ public class LotteryController {
 	@Secured("ROLE_ADMIN")
 	public String draw(Principal principal, Model model, RedirectAttributes ra, @ModelAttribute Lottery selectedLottery){
 		Lottery lottery = lotteryRepository.findOne(selectedLottery.getId());
-		List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findTicketsForLottery(selectedLottery.getId());
-		lotteryService.drawWinningNumbers(lottery, lotteryTickets);
-		lotteryService.payoutLottery(lottery);
-		MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
-		return "redirect:/lottery/draw";
+		Date currentDate = new Date();
+		
+		if (lottery.getDrawingDate().before(currentDate)) {
+			MessageHelper.addErrorAttribute(ra, "lottery.draw.dateFailure", lottery.getUniversity().getName());
+			return "redirect:/lottery/draw";
+		} else {
+			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findPaidTicketsForLottery(selectedLottery.getId());
+			lotteryService.drawWinningNumbers(lottery, lotteryTickets);
+			lotteryService.payoutLottery(lottery);
+			MessageHelper.addSuccessAttribute(ra, "lottery.draw.success", lottery.getUniversity().getName());
+			return "redirect:/lottery/draw";
+		}
 	}
 	
 }

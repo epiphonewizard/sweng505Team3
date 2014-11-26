@@ -21,7 +21,8 @@ import java.util.Set;
 	@NamedQuery(name = LotteryTicket.FIND_ALL, query = "SELECT l FROM LotteryTicket l"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query = "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId"),
 	@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId  AND paymentComplete = 0"),
-	@NamedQuery(name = LotteryTicket.FIND_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
+	@NamedQuery(name = LotteryTicket.FIND_PAID_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1"),
+	//@NamedQuery(name = LotteryTicket.FIND_ACTIVE_LOTTERIES, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
 })
 
 public class LotteryTicket implements Serializable {
@@ -29,8 +30,9 @@ public class LotteryTicket implements Serializable {
 	public static final String FIND_ALL = "LotteryTicket.findAll";
 	public static final String FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY = "LotteryTicket.findStudentReservedTicketForLottery";
 	public static final String FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY = "LotteryTicket.getUnpaidStudentTicket";
-	public static final String FIND_TICKETS_FOR_LOTTERY = "LotteryTicket.findTicketsForLottery";
-
+	public static final String FIND_PAID_TICKETS_FOR_LOTTERY = "LotteryTicket.findTicketsForLottery";
+	//public static final String FIND_ACTIVE_LOTTERIES = "LotteryTicket.findActiveLotteries";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
