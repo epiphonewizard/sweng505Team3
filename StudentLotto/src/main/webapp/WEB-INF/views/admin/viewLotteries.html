@@ -43,7 +43,14 @@
 						<td th:text="${{lottery.purchaseStartDate}}"></td>
 						<td th:text="${{lottery.purchaseEndDate}}"></td>
 						<td th:text="${{lottery.drawingDate}}"></td>
-						<td><a th:href="@{/lottery/edit(id=${lottery.id})}" >Edit</a></td>
+						<td>
+							<th:block th:if="${lottery.winningNumber1}">
+								<a th:href="@{/lottery/results(id=${lottery.id})}">Results</a>
+							</th:block>
+							<th:block th:unless="${lottery.winningNumber1}">
+								<a th:href="@{/lottery/edit(id=${lottery.id})}" >Edit</a>
+							</th:block>
+						</td>
 						<!-- <td><a th:href="@{/lottery/delete(id=${lottery.id})}" >Delete</a></td> -->
 					</tr>
 				</tbody>

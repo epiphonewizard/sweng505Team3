@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Lotto</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+  	<link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.css" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-sliderAccess.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.js"></script>
+    
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+    
+	    <fieldset >
+   			 <div class="form-narrow">
+	    	<legend>Lottery</legend>
+	        	<th:block th:if="${message != null}">
+			        <!-- /* The message code is returned from the @Controller */ -->
+				    <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${message.args[0]})})">&nbsp;</div>
+			    </th:block>
+	    	<table class="form-table">
+				<tr>
+					<td class="bold">University:</td> <td> <span th:text="${lottery.university.name}"></span></td>
+				</tr>
+				<tr><td class="bold">Drawing Date:</td> <td> <span th:text="${lottery.drawingDate}"></span></td></tr>
+				<tr><td class="bold">Winning Numbers:</td> <td><span th:text="${lottery.stringRepresentation}"></span></td></tr>
+	    	</table>
+	    	</div>
+	    </fieldset>
+	    
+	    <fieldset>
+	    	<div class="form-narrow">
+	    		<legend>Winning Tickets</legend>
+	    		<table class="form-table">
+	    		<tr>
+	    			<th>Winning Student</th>
+	    			<th>Number</th>
+	    			<th>Payout</th>
+	    		</tr>
+	    		 <tr th:each="winner: ${winners}">
+	    		 	<td th:text="${winner.student.person.fname} + ' ' + ${winner.student.person.lname}"></td>
+	    		 	<td th:text="${winner.stringRepresentation}"></td>
+	    		 	<td th:text="'$' + ${winner.payout}"></td>
+	    		 </tr> 
+	    		
+	    		</table>
+	    	</div>	   
+	  
+	    </fieldset>
+</body>
+</html>
