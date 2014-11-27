@@ -3,15 +3,18 @@ package com.studentLotto.support.mail;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.util.HtmlUtils;
 
 import com.studentLotto.student.LotteryTicket;
 
@@ -54,7 +57,7 @@ public class MessageCreator {
 				+ "    \tTo activate your account please click the following link:\n"
 				+ " \t\t\t<a href=\"${root}/activation?id=${code}&email=${email}\">Click to activate!</a>\n"
 				+ " \t</p>\n" + "</div>\n" + "</body>\n" + "</html>";
-		return text.replace("${root}", root).replace("${email}", email)
+		return text.replace("${root}", root).replace("${email}", URLEncoder.encode(email))
 				.replace("${code}", code);
 	}
 

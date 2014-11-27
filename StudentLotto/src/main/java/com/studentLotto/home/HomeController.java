@@ -69,12 +69,14 @@ public class HomeController {
 				if(student != null){
 					Lottery lottery = lotteryRepository.findUpcomingForUniversity(person.getStudent().getUniversity().getId());
 					model.addAttribute("lottery", lottery);
-					List<LotteryTicket> tickets = purchaseTicketRepo.findStudentTicketsForUpcomingLottery(student.getId(), lottery.getId());
-					model.addAttribute("tickets", tickets);
-					model.addAttribute("canPurchase", lottery.canPurchase());
-					model.addAttribute("ticketSize", tickets.size());
-					model.addAttribute("maxTicketsAllowedToPurchase", lottery.getMaxTicketsAllowedToPurchase());
-					model.addAttribute("lotteryPool", lotteryRepository.calculateLotteryWinnings(lottery));
+					if(lottery != null){
+						List<LotteryTicket> tickets = purchaseTicketRepo.findStudentTicketsForUpcomingLottery(student.getId(), lottery.getId());
+						model.addAttribute("tickets", tickets);
+						model.addAttribute("canPurchase", lottery.canPurchase());
+						model.addAttribute("ticketSize", tickets.size());
+						model.addAttribute("maxTicketsAllowedToPurchase", lottery.getMaxTicketsAllowedToPurchase());
+						model.addAttribute("lotteryPool", lotteryRepository.calculateLotteryWinnings(lottery));
+					}
 				}else{
 					model.addAttribute("ticketSize", 0);
 					model.addAttribute("maxTicketsAllowedToPurchase", 0);
