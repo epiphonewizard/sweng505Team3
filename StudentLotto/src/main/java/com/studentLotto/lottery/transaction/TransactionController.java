@@ -76,13 +76,17 @@ public class TransactionController {
 			@Valid @ModelAttribute PayBillForm payBillForm, Errors errors,
 			RedirectAttributes ra, Model model) {
 		if (isPayTicket) {
-			System.out.println("M--2");
 			Assert.notNull(principal);
 			String[] idList = payBillForm.getDonationIDs().split(",");
 			List<LotteryTicket> tickets = new ArrayList<LotteryTicket>();
+			LotteryTicket tempTicket=null;
 			for (String id : idList) {
 				if (!StringUtils.isEmptyOrWhitespace(id)) {
-					tickets.add(ticketRepo.findById(Long.valueOf(id)));
+					//remove the removed ticket from the list
+					tempTicket = ticketRepo.findById(Long.valueOf(id));
+					if(tempTicket!=null){
+						tickets.add(tempTicket);
+					}
 				}
 			}
 			if (errors.hasErrors()) {
@@ -93,13 +97,16 @@ public class TransactionController {
 				model.addAttribute("totalBill", total);
 				return "redirect:/bill/payTicket";
 			}
-
 			Account account = accountRepository
 					.findByEmail(principal.getName());
 			CreditCardTransaction transaction = ccTransactionRepository
 					.saveAndFlush(payBillForm.createCCTransaction(account));
-
 			for (LotteryTicket ticket : tickets) {
+				if(ticket==null)
+				{
+					tickets.remove(ticket);
+					continue;
+				}
 				ticket.setPaymentComplete(1);
 				ticket.setCcTransactionId(transaction.getId());
 				ticketRepo.update(ticket);
@@ -110,10 +117,8 @@ public class TransactionController {
 					"Payment Confirmation", new MessageCreator()
 							.purchaseTicketSuccessEmail(transaction.getId(),
 									tickets, tickets.get(0).getAmount()));
-
 			return "redirect:/";
 		} else {
-			System.out.println("A--2");
 			Assert.notNull(principal);
 			String[] idList = payBillForm.getDonationIDs().split(",");
 			List<Donation> donations = new ArrayList<Donation>();
