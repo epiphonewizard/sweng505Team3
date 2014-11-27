@@ -54,7 +54,7 @@ public class PurchaseTicketController {
 	public String displayPurchaseTicket(Principal principal, Model model,
 			ModelAndView modelAndView, RedirectAttributes ra) {
 
-		currStudent = getStudent();
+		currStudent = getStudent(principal);
 
 		if (currStudent == null) {
 			MessageHelper.addErrorAttribute(ra, "ticket.edit.anonymousStudent");
@@ -164,7 +164,7 @@ public class PurchaseTicketController {
 			if (form.getFirstNumber() == 0) {
 				continue;
 			}
-			LotteryTicket persistentTicket = new LotteryTicket(form, studentId,
+			LotteryTicket persistentTicket = new LotteryTicket(form, currStudent,
 					currentLottery);
 
 			ticketRepo.save(persistentTicket);
@@ -173,15 +173,8 @@ public class PurchaseTicketController {
 		return "redirect:/bill/payTicket";
 	}
 
-	private Student getStudent() {
-
-		Object myPrincipal = SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal();
-		UserDetails userDetails = null;
-		if (myPrincipal instanceof UserDetails) {
-			userDetails = (UserDetails) myPrincipal;
-		}
-		String studentEmail = userDetails.getUsername();
+	private Student getStudent(Principal principal) {
+		String studentEmail = principal.getName();
 		Student currentStudent = studentRepo.findByUEmailAddress(studentEmail);
 		return currentStudent;
 
@@ -196,7 +189,7 @@ public class PurchaseTicketController {
 		//get current signed in student info 
 		Student student = studentRepo.findByUEmailAddress(principal.getName()) ;
 
-		Assert.isTrue(ticket.getStudentId()==  student.getId(), "Invalid Permissions");
+		Assert.isTrue(ticket.getStudent().getId() ==  student.getId(), "Invalid Permissions");
 		
 		//If it gets to this point it is a valid request
 		ticketRepo.delete(ticket);

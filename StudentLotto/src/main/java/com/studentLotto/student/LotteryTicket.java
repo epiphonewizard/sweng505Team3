@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.studentLotto.account.Student;
 import com.studentLotto.lottery.Lottery;
 
 import java.util.Date;
@@ -19,9 +20,11 @@ import java.util.Set;
 @Table(name = "LotteryTicket")
 @NamedQueries({
 	@NamedQuery(name = LotteryTicket.FIND_ALL, query = "SELECT l FROM LotteryTicket l"),
-	@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query = "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId"),
-	@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.studentId = :studentId  AND paymentComplete = 0"),
+	@NamedQuery(name = LotteryTicket.FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY, query = "SELECT l FROM LotteryTicket l WHERE lotteryId = :lotteryId AND l.student.id = :studentId"),
+	@NamedQuery(name = LotteryTicket.FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND l.student.id = :studentId  AND paymentComplete = 0"),
 	@NamedQuery(name = LotteryTicket.FIND_PAID_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1"),
+	@NamedQuery(name = LotteryTicket.FIND_WINNING_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND winFlag = 1"),
+	@NamedQuery(name = LotteryTicket.FIND_WINNING_TICKETS_FOR_STUDENT, query = "select l from LotteryTicket l WHERE student.id = :studentId AND winFlag = 1"),
 	//@NamedQuery(name = LotteryTicket.FIND_ACTIVE_LOTTERIES, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
 })
 
@@ -31,6 +34,8 @@ public class LotteryTicket implements Serializable {
 	public static final String FIND_STUDENT_RESERVED_TICEKT_FOR_LOTTERY = "LotteryTicket.findStudentReservedTicketForLottery";
 	public static final String FIND_STUDENT_UNPAID_TICEKT_FOR_UPCOMING_LOTTERY = "LotteryTicket.getUnpaidStudentTicket";
 	public static final String FIND_PAID_TICKETS_FOR_LOTTERY = "LotteryTicket.findTicketsForLottery";
+	public static final String FIND_WINNING_TICKETS_FOR_LOTTERY = "LotteryTicket.findWinningTicketsForLottery";
+	public static final String FIND_WINNING_TICKETS_FOR_STUDENT = "LotteryTicket.FIND_WINNING_TICKETS_FOR_STUDENT";
 	//public static final String FIND_ACTIVE_LOTTERIES = "LotteryTicket.findActiveLotteries";
 	
 	@Id
@@ -55,9 +60,10 @@ public class LotteryTicket implements Serializable {
 
 	@Column(nullable = false)
 	private int sixthNumber;
-
-	@Column(nullable = false)
-	private long studentId;
+	
+	@ManyToOne
+	@JoinColumn(name = "studentId", referencedColumnName = "id")
+	private Student student;
 
 	@Column(nullable = false)
 	private int thirdNumber;
@@ -100,9 +106,9 @@ public class LotteryTicket implements Serializable {
 		stringRepresentation = "[" + firstNumber + ", " + secondNumber + ", "
 				+ thirdNumber + ", " + fourthNumber;
 
-		if (lottery.getNumberOfBallsAvailable() == 5) {
+		if (lottery.getNumberOfBallsPicked() >= 5) {
 			stringRepresentation += ", " + fifthNumber;
-		} else if (lottery.getNumberOfBallsAvailable() == 6) {
+		} else if (lottery.getNumberOfBallsPicked() == 6) {
 			stringRepresentation += ", " + sixthNumber;
 		}
 		stringRepresentation += "]";
@@ -137,7 +143,7 @@ public class LotteryTicket implements Serializable {
 	public LotteryTicket() {
 	}
 
-	public LotteryTicket(LotteryTicketForm form, long studentId, Lottery lottery) {
+	public LotteryTicket(LotteryTicketForm form, Student student, Lottery lottery) {
 		this.firstNumber = form.getFirstNumber();
 		this.secondNumber = form.getSecondNumber();
 		this.thirdNumber = form.getThirdNumber();
@@ -149,7 +155,7 @@ public class LotteryTicket implements Serializable {
 		this.transactionTimeStamp = new Date(System.currentTimeMillis()
 				- (24 * 60 * 60 * 1000));
 		this.winDescription = "Ticket just purchased. Results pending";
-		this.studentId = studentId;
+		this.student = student;
 		// this.lotteryId = lotteryId;
 		setLottery(lottery);
 		this.paymentComplete = 0;
@@ -235,12 +241,12 @@ public class LotteryTicket implements Serializable {
 		this.sixthNumber = sixthNumber;
 	}
 
-	public long getStudentId() {
-		return this.studentId;
+	public Student getStudent() {
+		return this.student;
 	}
 
-	public void setStudentId(long studentId) {
-		this.studentId = studentId;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 
 	public int getThirdNumber() {

@@ -71,6 +71,37 @@ public class PurchaseTicketRepo {
 
 	}
 	
+	@Transactional
+	public List<LotteryTicket> findWinningTicketsForLottery(int lotteryId) {
+
+		try {
+			return entityManager
+					.createNamedQuery(
+							LotteryTicket.FIND_WINNING_TICKETS_FOR_LOTTERY,
+							LotteryTicket.class)
+					.setParameter("lotteryId", lotteryId).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+
+	}
+	
+	@Transactional
+	public List<LotteryTicket> findWinningTicketsForStudent(long studentId) {
+
+		try {
+			return entityManager
+					.createNamedQuery(
+							LotteryTicket.FIND_WINNING_TICKETS_FOR_STUDENT,
+							LotteryTicket.class)
+					.setParameter("studentId", studentId).getResultList();
+		} catch (PersistenceException e) {
+			return null;
+		}
+
+	}
+	
+	
 	
 	@Transactional
 	public void delete(LotteryTicket ticket){

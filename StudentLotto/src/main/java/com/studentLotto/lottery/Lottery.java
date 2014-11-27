@@ -294,5 +294,33 @@ public class Lottery implements Serializable {
 	public void setMaxStudentWinnings(double maxStudentWinnings) {
 		this.maxStudentWinnings = maxStudentWinnings;
 	}
+	
+	@Transient
+	private String stringRepresentation;
+
+	/**
+	 * @return the stringRepresentation
+	 */
+	public String getStringRepresentation() {
+		stringRepresentation = "[" + winningNumber1 + ", " + winningNumber2 + ", "
+				+ winningNumber3 + ", " + winningNumber4;
+
+		if (getNumberOfBallsPicked() >= 5) {
+			stringRepresentation += ", " + winningNumber5;
+		} else if (getNumberOfBallsPicked() == 6) {
+			stringRepresentation += ", " + winningNumber6;
+		}
+		stringRepresentation += "]";
+
+		return stringRepresentation;
+	}
+
+	/**
+	 * @param stringRepresentation
+	 *            the stringRepresentation to set
+	 */
+	public void setStringRepresentation(String stringRepresentation) {
+		this.stringRepresentation = stringRepresentation;
+	}
 
 }

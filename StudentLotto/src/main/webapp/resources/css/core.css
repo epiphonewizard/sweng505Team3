@@ -25,3 +25,7 @@ body {
  .form-table {
  	width: 85%;
  }
+ 
+ .bold{
+ 	font-weight: bold;
+ }

@@ -29,6 +29,7 @@ public class LotteryController {
 	private static final String VIEW_LOTTERY_PAGE = "admin/viewLotteries";
 	private static final String EDIT_LOTTERY_PAGE = "admin/editLottery";
 	private static final String DRAW_LOTTERY_PAGE = "admin/drawLottery";
+	private static final String VIEW_RESULTS_LOTTERY_PAGE = "admin/viewLotteryResults";
 	
 
 	@Autowired
@@ -72,6 +73,19 @@ public class LotteryController {
 	public String view(Principal principal, Model model) {
 		model.addAttribute("allLotteries", lotteryRepository.findAll());
 		return VIEW_LOTTERY_PAGE; 
+	}
+	
+	@RequestMapping(value="lottery/results", method=RequestMethod.GET)
+	@Secured("ROLE_ADMIN")
+	public String results(int id, Principal principal, RedirectAttributes ra, Model model){
+		Lottery lottery = lotteryRepository.findOne(id);		
+		if(lottery == null){
+			MessageHelper.addErrorAttribute(ra, "lottery.notfound");
+			return "error/general";
+		}
+		model.addAttribute("lottery", lottery);
+		model.addAttribute("winners", purchaseTicketRepo.findWinningTicketsForLottery(lottery.getId()));
+		return VIEW_RESULTS_LOTTERY_PAGE;
 	}
 	
 	@RequestMapping(value="lottery/edit", method=RequestMethod.GET)

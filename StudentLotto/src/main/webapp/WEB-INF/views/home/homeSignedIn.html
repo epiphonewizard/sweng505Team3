@@ -127,6 +127,28 @@
 				</p>
 			</fieldset>
 		</div>
+		
+		
+		<th:block th:if="${winners.size()} &gt; 0">
+			<div id="winningTickets" class="form-narrow form-horizontal">
+		    <fieldset>
+		    		<legend>Winning Tickets</legend>
+		    		<table class="form-table">
+		    		<tr>
+		    			<th>Drawing Date</th>
+		    			<th>Number</th>
+		    			<th>Payout</th>
+		    		</tr>
+		    		 <tr th:each="winner: ${winners}">
+		    		 	<td th:text="${winner.lottery.drawingDate}"></td>
+		    		 	<td th:text="${winner.stringRepresentation}"></td>
+		    		 	<td th:text="'$' + ${winner.payout}"></td>
+		    		 </tr> 
+		    		
+		    		</table>	  
+		    </fieldset>
+			</div>
+		</th:block>
     </th:block>
     
     <div id="donations" class="form-narrow form-horizontal">

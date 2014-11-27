@@ -77,6 +77,7 @@ public class HomeController {
 						model.addAttribute("maxTicketsAllowedToPurchase", lottery.getMaxTicketsAllowedToPurchase());
 						model.addAttribute("lotteryPool", lotteryRepository.calculateLotteryWinnings(lottery));
 					}
+					model.addAttribute("winners", purchaseTicketRepo.findWinningTicketsForStudent(student.getId()));
 				}else{
 					model.addAttribute("ticketSize", 0);
 					model.addAttribute("maxTicketsAllowedToPurchase", 0);
