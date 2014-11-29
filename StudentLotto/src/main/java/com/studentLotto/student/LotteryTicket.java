@@ -310,10 +310,12 @@ public class LotteryTicket implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "LotteryTicket [firstNumber=" + firstNumber + ", secondNumber="
-				+ secondNumber + ", thirdNumber=" + thirdNumber
-				+ ", fourthNumber=" + fourthNumber + ",   fifthNumber="
-				+ fifthNumber + ", sixthNumber=" + sixthNumber + "]";
+		return "LotteryTicket [id= " + id + ", firstNumber=" + firstNumber
+				+ ", secondNumber=" + secondNumber + ", thirdNumber="
+				+ thirdNumber + ", fourthNumber=" + fourthNumber
+				+ ", fifthNumber=" + fifthNumber + ", sixthNumber="
+				+ sixthNumber + ", payout= " + payout + ", winDesc="
+				+ winDescription + ", winFlag = " + winFlag + "]";
 	}
 	
 	public Set<Integer> getTicketNumbers(){
@@ -325,6 +327,18 @@ public class LotteryTicket implements Serializable {
 		ticketNumberSet.add(this.fifthNumber);
 		ticketNumberSet.add(this.sixthNumber);
 		return ticketNumberSet;
+	}
+
+	// the id is auto increment . This constructor is only used for testing
+	public LotteryTicket(int id, int first, int second, int third, int fourth,
+			int fifth, int sixth) {
+		this.id = id;
+		this.firstNumber = first;
+		this.secondNumber = second;
+		this.thirdNumber = third;
+		this.fourthNumber = fourth;
+		this.fifthNumber = fifth;
+		this.sixthNumber = sixth;
 	}
 
 }

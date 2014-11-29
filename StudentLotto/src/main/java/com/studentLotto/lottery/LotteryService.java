@@ -195,8 +195,8 @@ public class LotteryService {
 		return winningTickets;
 	}
 	
-	public void notifyWinners(int sid, double payout){
-		new MailSenderImpl().sendMail("sweng505team3@gmail.com", studentRepository.findWinnerEmail(sid).getUEmailAddress(), 
+	public void notifyWinners(long sid, double payout){
+		new MailSenderImpl().sendMail("sweng505team3@gmail.com",  studentRepository.findWinnerEmail(sid).getUEmailAddress(), 
 				"Congratulations - You have Won", 
 				new MessageCreator().notifyWinner(String.valueOf(payout)));
 	}
@@ -204,21 +204,23 @@ public class LotteryService {
 	
 	// Where are we storing the full ride amount?
 	// Where are we storing the lottery pot? or is it calculated on the fly
-	public Hashtable<Integer, LinkedList<LotteryTicket>> balancedStrategy(
+	public Hashtable<Integer, LinkedList<LotteryTicket>> balancedStrategy2(
 			Lottery lottery, List<LotteryTicket> tickets, double lotteryPot,
-			double fullRide) {
+			double fullRide, double jackpotGroupPercentage,
+			double secondGroupPercentage, double thirdGroupPercentage,
+			boolean isTest) {
 		// get the group weight
-		final double jackpotGroupPercentage = 50;
-		final double secondGroupPercentage = 30;
-		final double thirdGroupPercentage = 20;
-
+		if (((jackpotGroupPercentage + secondGroupPercentage + thirdGroupPercentage) != 100.0)) {
+			System.out.println("Error: Percentages do not amount to 100% ");
+		}
+		double unclaminedMoney = 0.0;
 		// get if full match was required and make sure we have at least 1 full
 		// match in the supplied lottery ticket
 		// this check is done as an integrity check
 		boolean isFullMatchGuaranteed = lottery.getFullMatchGuaranteed();
 
 		// get the number of configured balls for the lottery
-		int ballCount = lottery.getNumberOfBallsAvailable();
+		int ballCount = lottery.getNumberOfBallsPicked();
 
 		// Each group represent the total matching balls. The max we can match
 		// is equivalent to ball count
@@ -277,6 +279,7 @@ public class LotteryService {
 			// then add a brand new category to the table
 			if (!winningTable.containsKey(winningCategory)) {
 				LinkedList<LotteryTicket> categoryList = new LinkedList<LotteryTicket>();
+				categoryList.add(currTicket);
 				winningTable.put(winningCategory, categoryList);
 
 			}// otherwise, fetch the category from the table and update it
@@ -314,17 +317,30 @@ public class LotteryService {
 			matchingTicketPerGroup.add(keyTicket.size());
 			// index += 1;
 		}
+
 		// We adjust the matching tickets to preserve fairness. For example the
 		// ticket that matches 6 balls is considered as a winner
 		// that matched 6, 5 and 4 balls
 		matchingTicketPerGroupAdjusted = calculateMatchingTicketAdjusted(matchingTicketPerGroup);
-
+		System.out.println("X" + matchingTicketPerGroupAdjusted.toString());
+		// Now we check if we have any matches at all. If we dont. we distribute
+		// the wealth among the remaining categories
+		if (matchingTicketPerGroupAdjusted.get(0) == 0
+				&& matchingTicketPerGroupAdjusted.get(1) == 0
+				&& matchingTicketPerGroupAdjusted.get(2) == 0) {
+			unclaminedMoney = reDistributeRemainingDollars(winningTable,
+					lotteryPot, ballCount, fullRide, false);
+			// save unclaimed money to the database
+			return winningTable;
+		} else {
 		// adjust the percentages because we are trying to pay off all the
 		// allocated money to the top 3 groups
-		// for example , if there was 0 jackpot matches , allocate the jackpot
+			// for example , if there was 0 jackpot matches , allocate the
+			// jackpot
 		// percentage to the group below it
 		ArrayList<Double> adjustedPercentages = getAdjustedPercentages(
-				matchingTicketPerGroup.get(0), matchingTicketPerGroup.get(1),
+					matchingTicketPerGroup.get(0),
+					matchingTicketPerGroup.get(1),
 				matchingTicketPerGroup.get(2), jackpotGroupPercentage,
 				secondGroupPercentage, thirdGroupPercentage);
 
@@ -338,24 +354,39 @@ public class LotteryService {
 				moneyAllocatedPerPersonPerGroup, adjustedPercentages);
 
 		ArrayList<ArrayList<Double>> retObj = getMoneyRawCalculatedPerPersonCorrected(
-				rawCalculatedMoneyPerPerson, fullRide, matchingTicketPerGroup);
+					rawCalculatedMoneyPerPerson, fullRide,
+					matchingTicketPerGroup);
 
 		ArrayList<Double> remainder = (ArrayList<Double>) retObj.get(0);
 		ArrayList<Double> adjusted = (ArrayList<Double>) retObj.get(1);
 		ArrayList<Double> corrected = (ArrayList<Double>) retObj.get(2);
 
 		double totalPayoutForTopThreeGroups = getTotalPayoutForTopThreeGroupsAndIssuePayout(
-				corrected, winningTable);
+					corrected, winningTable, isTest);
 		if (totalPayoutForTopThreeGroups > lotteryPot) {
 			System.out
 					.println("SOmething went wrong!: we paid more than what we have in the pot!");
 			return null;
 		}
-		double remainderAfterPayout = lotteryPot - totalPayoutForTopThreeGroups;
+			double remainderAfterPayout = lotteryPot
+					- totalPayoutForTopThreeGroups;
 		if (remainderAfterPayout <= 0) {
 			// we are done at this point . THere was no remainder money to
 			// provide to other categories
 			return winningTable;
+			} else {
+
+				// in this case there was a remainder after top 3 categories pay
+				// out! we
+				// need to re distribute the wealth again among the remaining
+				// categories!!!
+				unclaminedMoney = reDistributeRemainingDollars(winningTable,
+						remainderAfterPayout, ballCount,
+						getMinPersonPayout(corrected, matchingTicketPerGroup),
+						isTest);
+
+				// save unclaimed money to the database
+			}
 		}
 
 		// in this case there was a remainder after top 3 categories pay out! we
@@ -437,18 +468,26 @@ public class LotteryService {
 			return -1;
 		}
 
+		// in this case , lets just append these 0 matches to the end of the set
+		if (matchingNumberCount == 0) {
+			return ballCount + 1;
+		}
+
 		// if all numbers match, then it is category 1 (or the jackpot category)
 		if (matchingNumberCount == ballCount) {
 			return 1;
 			// if all the numbers match but 1 number, it is category 2 (still a
 			// winner)
-		} else if (matchingNumberCount == ballCount - 1) {
+		}
+		if (matchingNumberCount == ballCount - 1) {
 			return 2;
 			// if all the numbers match but 2 numbers, it is category 3 (still a
 			// winner)
-		} else if (matchingNumberCount == ballCount - 2) {
+		}
+		if (matchingNumberCount == ballCount - 2) {
 			return 3;
-		} else if (matchingNumberCount == ballCount - 3) {
+		}
+		if (matchingNumberCount == ballCount - 3) {
 			return 4;
 		}
 
@@ -651,9 +690,8 @@ public class LotteryService {
 
 		ArrayList<Double> remainder = new ArrayList<Double>(3);
 
-		Iterator<Double> it = rawCalculatedMoneyPerPerson.iterator();
 		int count = 0;
-		while (it.hasNext()) {
+		while (count < rawCalculatedMoneyPerPerson.size()) {
 
 			// in this case, also the the adjusted percentage should also be set
 			// to 0.0
@@ -705,7 +743,8 @@ public class LotteryService {
 
 	public double getTotalPayoutForTopThreeGroupsAndIssuePayout(
 			ArrayList<Double> corrected,
-			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable) {
+			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
+			boolean isTest) {
 		double topThreeCategoriesTotal = 0.0;
 		double keepTrackOfTotal = 0.0;
 		topThreeCategoriesTotal = (corrected.get(0) * winningTable.get(1)
@@ -726,6 +765,12 @@ public class LotteryService {
 			currTicket.setWinDescription("Jackpot");
 			currTicket.setPayout(firstCateogryWinning);
 			keepTrackOfTotal += firstCateogryWinning;
+			// save to database
+			if (isTest == false) {
+				notifyWinners( currTicket.getStudent().getId(),
+						firstCateogryWinning);
+				purchaseTicketRepo.update(currTicket);
+			}
 		}
 		LinkedList<LotteryTicket> secondCategoryTickets = winningTable.get(2);
 		it = secondCategoryTickets.iterator();
@@ -735,22 +780,110 @@ public class LotteryService {
 			currTicket.setWinDescription("Jackpot-1");
 			currTicket.setPayout(secondCateogryWinning);
 			keepTrackOfTotal += secondCateogryWinning;
+			// save to database
+			if (isTest == false) {
+				notifyWinners( currTicket.getStudent().getId(),
+						secondCateogryWinning);
+				purchaseTicketRepo.update(currTicket);
+			}
 		}
 		LinkedList<LotteryTicket> thirdCategoryTickets = winningTable.get(3);
 		it = thirdCategoryTickets.iterator();
 		while (it.hasNext()) {
 			currTicket = it.next();
 			currTicket.setWinFlag(1);
-			currTicket.setWinDescription("Jackpot-1");
+			currTicket.setWinDescription("Jackpot-2");
 			currTicket.setPayout(thirdCateogryWinning);
 			keepTrackOfTotal += thirdCateogryWinning;
+			// save to database
+			if (isTest == false) {
+				notifyWinners(currTicket.getStudent().getId(),
+						thirdCateogryWinning);
+				purchaseTicketRepo.update(currTicket);
+			}
 		}
-
-		if (keepTrackOfTotal != topThreeCategoriesTotal) {
-			System.out
-					.println("INTEGRITY ERROR! :  computed total 2 different ways and ended up with different results");
+		keepTrackOfTotal = Math.round(keepTrackOfTotal);
+		if (Math.abs(keepTrackOfTotal - topThreeCategoriesTotal) > 0.001) {
+			System.out.println("INTEGRITY ERROR! :  computed total 2 different"
+					+ " ways and ended up with different results: "
+					+ keepTrackOfTotal + "  " + topThreeCategoriesTotal);
 		}
 		return topThreeCategoriesTotal;
+		}
+
+	public double reDistributeRemainingDollars(
+			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
+			double dollarAmount, int ballCount, double maxAmountPerPerson,
+			boolean isTest) {
+		double unclaimedMoney = 0.0;
+		double paidSoFar = 0.0;
+		LinkedList<LotteryTicket> currTicketList = null;
+		LotteryTicket currTicket = null;
+		Iterator<LotteryTicket> it = null;
+		double toPay = 0.0;
+		boolean done = false;
+		for (int i = 4; i <= ballCount + 1; i++) {
+			currTicketList = winningTable.get(i);
+			// deduct the paid so far amount and divide among all tickets within
+			// that list.
+			// f if we exceed the max amount to pay that means we will have a
+			// remainder
+			if ((dollarAmount - paidSoFar) / currTicketList.size() > maxAmountPerPerson) {
+				toPay = maxAmountPerPerson;
+
+			} else {
+				toPay = (dollarAmount - paidSoFar) / currTicketList.size();
+				done = true;
+			}
+			it = currTicketList.iterator();
+			while (it.hasNext()) {
+				currTicket = it.next();
+				currTicket.setWinDescription("Secondaray: Jackpot-3");
+				currTicket.setWinFlag(1);
+				currTicket.setPayout(toPay);
+				paidSoFar += maxAmountPerPerson;
+				// save to database
+				if (isTest == false) {
+					notifyWinners(currTicket.getStudent().getId(), toPay);
+					purchaseTicketRepo.update(currTicket);
+				}
+
+			}
+			if (done) {
+				unclaimedMoney = 0.0;
+				return unclaimedMoney;
+			}
+		}
+		unclaimedMoney = dollarAmount - paidSoFar;
+		return unclaimedMoney;
 	}
 
+	public double getMinPersonPayout(ArrayList<Double> corrected,
+			ArrayList<Integer> matchingTicketPerGroup) {
+		double minPersonPayout = Double.MAX_VALUE;
+		boolean valUpdated = false;
+		// loop through the top 3 categories
+		for (int i = 0; i < 3; i++) {
+			// first check if there was any match in that category. If there
+			// isnt, the payout is 0.0 anyways! that is small but not good data
+			// either because it is a "no payout"
+			if (matchingTicketPerGroup.get(i) > 0) {
+				// if we find a smaller payout, then update my ongoing value
+				if (corrected.get(i) < minPersonPayout) {
+					minPersonPayout = corrected.get(i);
+					// this is a flag that states a min was truly found
+					valUpdated = true;
+				}
+			}
+		}
+
+		// if there is not legit min (first 3 categories all 0.0 because there
+		// was no match)
+		// set the minPersonPayout to 0.0
+		if (valUpdated == false) {
+			minPersonPayout = 0.0;
+	}
+
+		return minPersonPayout;
+	}
 }

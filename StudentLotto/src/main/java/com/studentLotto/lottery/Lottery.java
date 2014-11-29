@@ -64,6 +64,15 @@ public class Lottery implements Serializable {
 	private Integer winningNumber4; 
 	private Integer winningNumber5; 
 	private Integer winningNumber6;
+	private Integer strategy; 
+	
+	public Integer getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Integer strategy) {
+		this.strategy = strategy;
+	}
 	
 	@ManyToOne
 	@JoinColumn(name="universityID", referencedColumnName="id")

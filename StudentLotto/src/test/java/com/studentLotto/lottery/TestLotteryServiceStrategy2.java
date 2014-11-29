@@ -6,11 +6,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.junit.Test;
 
+import com.studentLotto.student.LotteryTicket;
 import com.studentLotto.university.University;
 
 public class TestLotteryServiceStrategy2 {
@@ -399,5 +404,216 @@ public class TestLotteryServiceStrategy2 {
 		assertEquals(output.get(1), 234.4666667, 0.001);
 		assertEquals(output.get(2), 0.0, 0.001);
 
+	}
+
+	@Test
+	public void getMinPersonPayoutTest1() {
+		LotteryService ls = new LotteryService();
+		ArrayList<Double> corrected = new ArrayList<Double>();
+		// the algorithm considers only the top 3 categories and ignores the 2.0
+		corrected.add(100.0);
+		corrected.add(50.0);
+		corrected.add(600.0);
+		corrected.add(2.0);
+		ArrayList<Integer> matchingTicketPerGroup = new ArrayList<Integer>();
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		double min = 0.0;
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 50.0, 0.001);
+
+		corrected.clear();
+		matchingTicketPerGroup.clear();
+		corrected.add(100.0);
+		corrected.add(50.0);
+		corrected.add(30.0);
+		corrected.add(2.0);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 30.0, 0.001);
+
+		corrected.clear();
+		matchingTicketPerGroup.clear();
+		corrected.add(1.0);
+		corrected.add(50.0);
+		corrected.add(30.0);
+		corrected.add(2.0);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 1.0, 0.001);
+
+		corrected.clear();
+		matchingTicketPerGroup.clear();
+		corrected.add(30.0);
+		corrected.add(30.0);
+		corrected.add(20.0);
+		corrected.add(2.0);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 20.0, 0.001);
+
+		corrected.clear();
+		matchingTicketPerGroup.clear();
+		corrected.add(30.0);
+		corrected.add(20.0);
+		corrected.add(30.0);
+		corrected.add(2.0);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 20.0, 0.001);
+
+		corrected.clear();
+		matchingTicketPerGroup.clear();
+		corrected.add(30.0);
+		corrected.add(30.0);
+		corrected.add(30.0);
+		corrected.add(2.0);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		matchingTicketPerGroup.add(1);
+		min = ls.getMinPersonPayout(corrected, matchingTicketPerGroup);
+		assertEquals(min, 30.0, 0.001);
+
+	}
+
+	@Test
+	public void reDistributeRemainingDollarsTest1() {
+		LotteryService ls = new LotteryService();
+		double dollarAmount = 8000.0;
+		double ballCount = 4.0;
+		double maxAmountPerPerson = 3000;
+		ArrayList<Double> corrected = new ArrayList<Double>();
+		double remaining = 0.0;
+		LotteryTicket ticket1 = null;
+		// remaining = reDistributeRemainingDollars(
+		// Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
+		// double dollarAmount, int ballCount, double maxAmountPerPerson)
+
+	}
+
+	@Test
+	public void balancedStrategy2Test1() {
+		LotteryService ls = new LotteryService();
+		double jackpotGroupPercentage = 60;
+		double secondGroupPercentage = 30;
+		double thirdGroupPercentage = 10;
+		double lotteryPot = 90000;
+		double fullRide = 3000;
+		Lottery lottery = new Lottery();
+		lottery.setFullMatchGuaranteed(false);
+		lottery.setLotteryTicketCost(2);
+		lottery.setMaxStudentWinnings(fullRide);
+		lottery.setMaxTicketsAllowedToPurchase(5);
+		lottery.setNumberOfBallsAvailable(15);
+		lottery.setNumberOfBallsPicked(5);
+		lottery.setStudentWinningPercentage(80);
+		lottery.setWinningNumber1(1);
+		lottery.setWinningNumber2(2);
+		lottery.setWinningNumber3(3);
+		lottery.setWinningNumber4(4);
+		lottery.setWinningNumber5(5);
+		lottery.setWinningNumber6(0);
+
+		LotteryTicket ticket1 = new LotteryTicket(1, 1, 2, 3, 4, 5, 0);
+		LotteryTicket ticket2 = new LotteryTicket(2, 1, 2, 3, 4, 5, 0);
+		LotteryTicket ticket3 = new LotteryTicket(3, 1, 2, 3, 4, 5, 0);
+		LotteryTicket ticket4 = new LotteryTicket(4, 6, 2, 3, 4, 5, 0);
+		LotteryTicket ticket5 = new LotteryTicket(5, 6, 2, 3, 4, 5, 0);
+		LotteryTicket ticket6 = new LotteryTicket(6, 6, 2, 3, 4, 5, 0);
+		LotteryTicket ticket7 = new LotteryTicket(7, 7, 2, 3, 4, 5, 0);
+		LotteryTicket ticket8 = new LotteryTicket(8, 7, 2, 3, 4, 5, 0);
+		LotteryTicket ticket9 = new LotteryTicket(9, 8, 2, 3, 4, 5, 0);
+		LotteryTicket ticket10 = new LotteryTicket(10, 8, 2, 3, 4, 5, 0);
+		LotteryTicket ticket11 = new LotteryTicket(11, 9, 2, 3, 4, 5, 0);
+		LotteryTicket ticket12 = new LotteryTicket(12, 10, 2, 3, 4, 5, 0);
+		LotteryTicket ticket13 = new LotteryTicket(13, 11, 2, 3, 4, 5, 0);
+		LotteryTicket ticket14 = new LotteryTicket(14, 5, 6, 7, 8, 9, 0);
+		LotteryTicket ticket15 = new LotteryTicket(15, 6, 7, 8, 9, 10, 0);
+		LotteryTicket ticket16 = new LotteryTicket(16, 10, 2, 3, 8, 9, 0);
+		LotteryTicket ticket17 = new LotteryTicket(17, 1, 2, 3, 7, 8, 0);
+		LotteryTicket ticket18 = new LotteryTicket(18, 10, 2, 13, 4, 5, 0);
+		LotteryTicket ticket19 = new LotteryTicket(19, 1, 2, 13, 4, 5, 0);
+		LotteryTicket ticket20 = new LotteryTicket(20, 1, 12, 3, 14, 15, 0);
+		LotteryTicket ticket21 = new LotteryTicket(21, 11, 12, 13, 14, 15, 0);
+		LotteryTicket ticket22 = new LotteryTicket(22, 11, 12, 13, 14, 15, 0);
+		LotteryTicket ticket23 = new LotteryTicket(23, 11, 12, 3, 14, 5, 0);
+		LotteryTicket ticket24 = new LotteryTicket(24, 1, 12, 3, 14, 15, 0);
+		LotteryTicket ticket25 = new LotteryTicket(25, 1, 12, 13, 14, 5, 0);
+		LotteryTicket ticket26 = new LotteryTicket(26, 1, 2, 3, 7, 5, 0);
+		LotteryTicket ticket27 = new LotteryTicket(27, 1, 6, 8, 4, 5, 0);
+		LotteryTicket ticket28 = new LotteryTicket(28, 11, 2, 7, 4, 5, 0);
+		LotteryTicket ticket29 = new LotteryTicket(29, 1, 2, 3, 8, 15, 0);
+		LotteryTicket ticket30 = new LotteryTicket(30, 1, 12, 13, 8, 15, 0);
+		LotteryTicket ticket31 = new LotteryTicket(31, 11, 2, 13, 14, 5, 0);
+		LotteryTicket ticket32 = new LotteryTicket(32, 1, 2, 4, 6, 7, 0);
+		LotteryTicket ticket33 = new LotteryTicket(33, 11, 2, 13, 4, 15, 0);
+		LotteryTicket ticket34 = new LotteryTicket(34, 1, 2, 6, 9, 15, 0);
+		LotteryTicket ticket35 = new LotteryTicket(35, 6, 7, 13, 4, 15, 0);
+
+		List<LotteryTicket> tickets = new LinkedList<LotteryTicket>();
+		tickets.add(ticket1);
+		tickets.add(ticket2);
+		tickets.add(ticket3);
+		tickets.add(ticket4);
+		tickets.add(ticket5);
+		tickets.add(ticket6);
+		tickets.add(ticket7);
+		tickets.add(ticket8);
+		tickets.add(ticket9);
+		tickets.add(ticket10);
+		tickets.add(ticket11);
+		tickets.add(ticket12);
+		tickets.add(ticket13);
+		tickets.add(ticket14);
+		tickets.add(ticket15);
+		tickets.add(ticket16);
+		tickets.add(ticket17);
+		tickets.add(ticket18);
+		tickets.add(ticket19);
+		tickets.add(ticket20);
+		tickets.add(ticket21);
+		tickets.add(ticket22);
+		tickets.add(ticket23);
+		tickets.add(ticket24);
+		tickets.add(ticket25);
+		tickets.add(ticket26);
+		tickets.add(ticket27);
+		tickets.add(ticket28);
+		tickets.add(ticket29);
+		tickets.add(ticket30);
+		tickets.add(ticket31);
+		tickets.add(ticket32);
+		tickets.add(ticket33);
+		tickets.add(ticket34);
+		tickets.add(ticket35);
+		Hashtable<Integer, LinkedList<LotteryTicket>> table = ls
+				.balancedStrategy2(lottery, tickets, lotteryPot, fullRide,
+						jackpotGroupPercentage, secondGroupPercentage,
+						thirdGroupPercentage, true);
+		Set<Integer> set = table.keySet();
+
+		for (int i = 1; i < set.size(); i++) {
+
+			System.out.println("size: " + table.get(i).size()
+					+ "  payout per ticket for this group: "
+					+ table.get(i).get(0).getPayout());
+
+		}
+		System.out.println(table.toString());
 	}
 }

@@ -27,7 +27,7 @@ public class StudentRepository {
 		}
 	}
 	
-	public Student findWinnerEmail(int id){
+	public Student findWinnerEmail(long id){
 		
 		return entityManager
 					.createNamedQuery(Student.FIND_BY_ID, Student.class)
