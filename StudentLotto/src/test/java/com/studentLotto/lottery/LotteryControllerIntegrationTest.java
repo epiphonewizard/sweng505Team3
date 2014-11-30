@@ -94,4 +94,32 @@ public class LotteryControllerIntegrationTest extends WebAppConfigurationAware  
         SecurityContextHolder.getContext().setAuthentication(authToken);
         return session;
     }
+    
+    @Test
+    public void getViewResults() throws Exception {
+    	Lottery lottery = getCompletedLottery();
+    	if(lottery == null)
+    		return;
+    	
+    	mockMvc.perform(get("/lottery/results?id=" + lottery.getId())
+				.session(makeAuthSession()))
+			.andExpect(view().name("admin/viewLotteryResults"))
+			.andExpect(status().isOk());
+    }
+    
+    private Lottery getCompletedLottery(){
+    	for(Lottery lottery: 	lotteryRepositoryMock.findAll()){
+    		if(lottery.getWinningNumber1() != null)
+    			return lottery;
+    	}
+    	return null;
+    }
+    
+    @Test
+    public void getViewResultsForNonExistentLottery() throws Exception {
+    	mockMvc.perform(get("/lottery/results?id=-1")
+				.session(makeAuthSession()))
+			.andExpect(view().name("error/general"))
+			.andExpect(status().isOk());
+    }
 }
