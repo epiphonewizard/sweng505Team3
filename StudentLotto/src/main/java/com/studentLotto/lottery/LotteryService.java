@@ -444,7 +444,7 @@ public class LotteryService {
 	 * @param ballCount
 	 * @return
 	 */
-	public SortedSet<Integer> convertTicketToSortedSet(int firstNumber,
+	public static SortedSet<Integer> convertTicketToSortedSet(int firstNumber,
 			int secondNumber, int thirdNumber, int fourthNumber,
 			int fifthNumber, int sixthNumber, int ballCount) {
 		// define the sorted set
@@ -467,7 +467,7 @@ public class LotteryService {
 		return ticketNumbers;
 	}
 
-	public int getMatchingNumberCount(SortedSet<Integer> studentTicket,
+	public static int getMatchingNumberCount(SortedSet<Integer> studentTicket,
 			SortedSet<Integer> jackpotTicketNumbers) {
 
 		if (studentTicket.size() != jackpotTicketNumbers.size()) {

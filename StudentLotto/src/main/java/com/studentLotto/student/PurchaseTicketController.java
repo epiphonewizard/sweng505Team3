@@ -2,18 +2,14 @@ package com.studentLotto.student;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -21,13 +17,12 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.studentLotto.account.Account;
 import com.studentLotto.account.Student;
 import com.studentLotto.account.StudentRepository;
 import com.studentLotto.lottery.Lottery;
 import com.studentLotto.lottery.LotteryRepository;
-import com.studentLotto.lottery.donation.Donation;
+import com.studentLotto.lottery.LotteryService;
+
 import com.studentLotto.support.web.MessageHelper;
 
 @Controller
@@ -36,6 +31,10 @@ public class PurchaseTicketController {
 	private static final String DISPLAY_PURCHASE_TICKET = "displayPurchaseTicket";
 	private static final String PROCESS_TICKET_PURCHASE = "processTicketPurchase";
 	private static final String PURCHASE_TICKET_VIEW_NAME = "student/purchaseTicket";
+
+	private final static int UNIQUE_TICKET_STATUS = 0;
+	private final static int FOUND_DUPLICATE_WITHIN_CURRENT_PURCHASE = 1;
+	private final static int FOUND_DUPLICATE_FROM_PREVIOUS_PURCHASE = 2;
 
 	@Autowired
 	private PurchaseTicketRepo ticketRepo;
@@ -70,8 +69,8 @@ public class PurchaseTicketController {
 		if (currentLottery == null) {
 			// exit because there is no lottery set up for this student
 			// university within the given date
-			MessageHelper.addInfoAttribute(ra,
-					"ticket.edit.unavailableLottery");
+			MessageHelper
+					.addInfoAttribute(ra, "ticket.edit.unavailableLottery");
 			return "redirect:/";
 		}
 
@@ -132,31 +131,43 @@ public class PurchaseTicketController {
 				.getTicketList();
 
 		if (errors.hasErrors()) {
-			MessageHelper.addErrorAttribute(ra,
-					"ticket.edit.errorDetected");
+			MessageHelper.addErrorAttribute(ra, "ticket.edit.errorDetected");
+
 			return "redirect:/displayPurchaseTicket";
 		}
+
 		if (currStudent == null) {
 			// exit student error!
-			MessageHelper.addErrorAttribute(ra,
-					"ticket.edit.anonymousStudent");
+			MessageHelper.addErrorAttribute(ra, "ticket.edit.anonymousStudent");
 			return "redirect:/";
 		}
-
-		// currStudent = getStudent();
-		long studentId = currStudent.getId();
 
 		if (currentLottery == null) {
 			// exit because there is no lottery set up for this student
 			// university within the given date
-			MessageHelper.addInfoAttribute(ra,
-					"ticket.edit.unavailableLottery");
+			MessageHelper
+					.addInfoAttribute(ra, "ticket.edit.unavailableLottery");
 			return "redirect:/";
 		}
 
-		int lotteryId = currentLottery.getId();
+		// get the duplicate status
+		int duplicateStatus = getDuplicateStatus(arrayTicketList,
+				currentLottery.getNumberOfBallsPicked(), currStudent.getId(),
+				currentLottery.getId());
+
+		if (duplicateStatus == FOUND_DUPLICATE_WITHIN_CURRENT_PURCHASE) {
+			MessageHelper.addInfoAttribute(ra, "ticket.edit.duplicateInCart");
+			return "redirect:/displayPurchaseTicket";
+		} else if (duplicateStatus == FOUND_DUPLICATE_FROM_PREVIOUS_PURCHASE) {
+			MessageHelper.addInfoAttribute(ra,
+					"ticket.edit.duplicateFromPreviousPurchase");
+			return "redirect:/displayPurchaseTicket";
+		} else {
+			// all is good
+		}
+
 		Iterator<LotteryTicketForm> it = arrayTicketList.iterator();
-		int i = 0;
+
 		while (it.hasNext()) {
 			LotteryTicketForm form = it.next();
 
@@ -164,11 +175,10 @@ public class PurchaseTicketController {
 			if (form.getFirstNumber() == 0) {
 				continue;
 			}
-			LotteryTicket persistentTicket = new LotteryTicket(form, currStudent,
-					currentLottery);
+			LotteryTicket persistentTicket = new LotteryTicket(form,
+					currStudent, currentLottery);
 
 			ticketRepo.save(persistentTicket);
-			i++;
 		}
 		return "redirect:/bill/payTicket";
 	}
@@ -179,22 +189,111 @@ public class PurchaseTicketController {
 		return currentStudent;
 
 	}
-	
-	@RequestMapping(value="ticket/delete", method=RequestMethod.GET, produces="application/json")
-	public @ResponseBody String deleteDonation(Principal principal, HttpServletRequest request){
+
+	@RequestMapping(value = "ticket/delete", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String deleteDonation(Principal principal,
+			HttpServletRequest request) {
 		Assert.notNull(principal, "Invalid Permissions");
 		Long ticketId = Long.valueOf(request.getParameter("id"));
 		LotteryTicket ticket = ticketRepo.findById(ticketId);
-		
-		//get current signed in student info 
-		Student student = studentRepo.findByUEmailAddress(principal.getName()) ;
 
-		Assert.isTrue(ticket.getStudent().getId() ==  student.getId(), "Invalid Permissions");
-		
-		//If it gets to this point it is a valid request
+		// get current signed in student info
+		Student student = studentRepo.findByUEmailAddress(principal.getName());
+
+		Assert.isTrue(ticket.getStudent().getId() == student.getId(),
+				"Invalid Permissions");
+
+		// If it gets to this point it is a valid request
 		ticketRepo.delete(ticket);
-		return "{\"success\": true}"; 
-		
+		return "{\"success\": true}";
+
+	}
+
+	private int getDuplicateStatus(ArrayList<LotteryTicketForm> arrayFormList,
+			int ballCount, long studentId, int lotteryId) {
+
+		int duplicateStatus = UNIQUE_TICKET_STATUS;
+		TreeSet<Integer> firstTicketCompare = null;
+		TreeSet<Integer> secondTicketCompare = null;
+		int matchCount = 0;
+		// if we only have 1 ticket. We dont have other tickets to compare
+		// against
+		if (arrayFormList.size() > 1) {
+
+			// Step 1: I will compare the "cart" tickets to find out if they
+			// match
+			// or not
+			for (int i = 0; i < arrayFormList.size(); i++) {
+				// get the first ticket sorted
+				firstTicketCompare = (TreeSet<Integer>) LotteryService
+						.convertTicketToSortedSet(arrayFormList.get(i)
+								.getFirstNumber(), arrayFormList.get(i)
+								.getSecondNumber(), arrayFormList.get(i)
+								.getThirdNumber(), arrayFormList.get(i)
+								.getFourthNumber(), arrayFormList.get(i)
+								.getFifthNumber(), arrayFormList.get(i)
+								.getSixthNumber(), ballCount);
+				for (int j = i+1; j < arrayFormList.size(); j++) {
+					// get the second ticket sorted
+					secondTicketCompare = (TreeSet<Integer>) LotteryService
+							.convertTicketToSortedSet(arrayFormList.get(j)
+									.getFirstNumber(), arrayFormList.get(j)
+									.getSecondNumber(), arrayFormList.get(j)
+									.getThirdNumber(), arrayFormList.get(j)
+									.getFourthNumber(), arrayFormList.get(j)
+									.getFifthNumber(), arrayFormList.get(j)
+									.getSixthNumber(), ballCount);
+					// now compare both tickets
+					matchCount = LotteryService.getMatchingNumberCount(
+							firstTicketCompare, secondTicketCompare);
+					// that means all balls matched on both tickets! so it is a
+					// duplicate ticket
+					//System.out.println(firstTicketCompare.toString() +" Y " +secondTicketCompare.toString()+ "  "+matchCount+"  "+ballCount);
+					if (matchCount == ballCount) {
+
+						return FOUND_DUPLICATE_WITHIN_CURRENT_PURCHASE;
+					}
+				}// end inner loop
+			}// end outer loop
+		}
+		// step 2: I will compare the "cart" ticket to the previously
+		// purchased tickets to find out if a the student is re purchasing
+		// the same ticket
+		ArrayList<LotteryTicket> purchasedTickets = (ArrayList<LotteryTicket>) ticketRepo
+				.findStudentTicketsForUpcomingLottery(studentId, lotteryId);
+		for (int i = 0; i < purchasedTickets.size(); i++) {
+
+			firstTicketCompare = (TreeSet<Integer>) LotteryService
+					.convertTicketToSortedSet(purchasedTickets.get(i)
+							.getFirstNumber(), purchasedTickets.get(i)
+							.getSecondNumber(), purchasedTickets.get(i)
+							.getThirdNumber(), purchasedTickets.get(i)
+							.getFourthNumber(), purchasedTickets.get(i)
+							.getFifthNumber(), purchasedTickets.get(i)
+							.getSixthNumber(), ballCount);
+			for (int j = 0; j < arrayFormList.size(); j++) {
+				secondTicketCompare = (TreeSet<Integer>) LotteryService
+						.convertTicketToSortedSet(arrayFormList.get(j)
+								.getFirstNumber(), arrayFormList.get(j)
+								.getSecondNumber(), arrayFormList.get(j)
+								.getThirdNumber(), arrayFormList.get(j)
+								.getFourthNumber(), arrayFormList.get(j)
+								.getFifthNumber(), arrayFormList.get(j)
+								.getSixthNumber(), ballCount);
+				
+				// now compare both tickets
+				matchCount = LotteryService.getMatchingNumberCount(
+						firstTicketCompare, secondTicketCompare);
+				//System.out.println(firstTicketCompare.toString() +" X " +secondTicketCompare.toString()+ "  "+matchCount+"  "+ballCount);
+				// that means all balls matched on both tickets! so it is a
+				// duplicate ticket
+				if (matchCount == ballCount) {
+
+					return FOUND_DUPLICATE_FROM_PREVIOUS_PURCHASE;
+				}
+			}
+		}
+		return duplicateStatus;
 	}
 
 }
