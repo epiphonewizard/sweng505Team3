@@ -180,7 +180,15 @@
 	                <input type="checkbox" class="form-control" id="fullMatchGuaranteed"  th:field="*{fullMatchGuaranteed}"/>
 	                <span class="help-block" th:if="${#fields.hasErrors('fullMatchGuaranteed')}" th:errors="*{fullMatchGuaranteed}"></span>
 	            </div>
-	            
+	        </div>
+	         <div class="form-group" th:classappend="${#fields.hasErrors('fullMatchGuaranteed')}? 'has-error'">
+	            <label for="strategy" class="col-lg-2 control-label">Payout Strategy</label>
+	            <div class="col-lg-10">
+	                <select id="strategyId" th:field="*{strategy}" >
+						<option th:value= "1">Strategy 1</option>
+						<option th:value= "2">Strategy 2</option>
+					</select>
+	            </div>
 	        </div>
 	   </fieldset>
         

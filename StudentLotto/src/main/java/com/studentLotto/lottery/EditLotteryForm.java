@@ -52,6 +52,10 @@ public class EditLotteryForm {
 	@NotNull(message = EditLotteryForm.NOT_BLANK_MESSAGE)
 	private double maxStudentWinnings;
 	
+	private Integer strategy;
+	
+
+
 	public EditLotteryForm(){}
 	
 	public EditLotteryForm(Lottery lottery) {
@@ -68,6 +72,7 @@ public class EditLotteryForm {
 		this.studentWinningPercentage = lottery.getStudentWinningPercentage();
 		this.universityID = lottery.getUniversity().getId();
 		this.maxStudentWinnings = lottery.getMaxStudentWinnings();
+		this.strategy = lottery.getStrategy();
 	}
 	
 	public int getId() {
@@ -146,5 +151,17 @@ public class EditLotteryForm {
 	public void setMaxStudentWinnings(double maxStudentWinnings) {
 		this.maxStudentWinnings = maxStudentWinnings;
 	}
-	
+	/**
+	 * @return the strategy
+	 */
+	public Integer getStrategy() {
+		return strategy;
+	}
+
+	/**
+	 * @param strategy the strategy to set
+	 */
+	public void setStrategy(Integer strategy) {
+		this.strategy = strategy;
+	}
 }

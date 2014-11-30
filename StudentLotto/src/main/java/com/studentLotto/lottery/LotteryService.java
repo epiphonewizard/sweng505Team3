@@ -47,6 +47,7 @@ public class LotteryService {
 		lottery.setPurchaseStartDate(editLotteryForm.getPurchaseStartDate());
 		lottery.setStudentWinningPercentage(editLotteryForm.getStudentWinningPercentage());
 		lottery.setMaxStudentWinnings(editLotteryForm.getMaxStudentWinnings());
+		lottery.setStrategy(editLotteryForm.getStrategy());
 		lotteryRepository.update(lottery);
 	}
 	
