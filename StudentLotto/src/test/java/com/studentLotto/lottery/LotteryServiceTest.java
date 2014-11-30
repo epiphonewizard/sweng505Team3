@@ -24,7 +24,7 @@ public class LotteryServiceTest {
 	@Test
 	public void drawNumbersTest() {
 		//arrange
-		Lottery lottery = new Lottery(new Date(), true, 5.0, 15, 25, 4, new Date(), new Date(), 0.45, new University(), 100.0);
+		Lottery lottery = new Lottery(new Date(), true, 5.0, 15, 25, 4, new Date(), new Date(), 0.45, new University(), 100.0,1);
 		lottery.setId(12);
 		
 		//act

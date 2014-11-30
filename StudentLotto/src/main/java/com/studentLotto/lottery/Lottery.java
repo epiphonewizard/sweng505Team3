@@ -14,20 +14,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * The persistent class for the Lottery database table.
  * 
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name=Lottery.FIND_ALL, query="SELECT l FROM Lottery l"),
-	@NamedQuery(name="Lottery.getUpcoming", query="SELECT l FROM Lottery l WHERE now() < l.drawingDate"),
-	@NamedQuery(name=Lottery.GET_UPCOMING_FOR_UNIVERSITY, query="SELECT l FROM Lottery l WHERE :now < l.drawingDate and universityId = :universityId ORDER BY l.drawingDate")
-	})
+		@NamedQuery(name = Lottery.FIND_ALL, query = "SELECT l FROM Lottery l"),
+		@NamedQuery(name = "Lottery.getUpcoming", query = "SELECT l FROM Lottery l WHERE now() < l.drawingDate"),
+		@NamedQuery(name = Lottery.GET_UPCOMING_FOR_UNIVERSITY, query = "SELECT l FROM Lottery l WHERE :now < l.drawingDate and universityId = :universityId ORDER BY l.drawingDate") })
 public class Lottery implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	public static final String GET_UPCOMING_FOR_UNIVERSITY = "Lottery.getUpcomingForUniversity";
 	public static final String FIND_ALL = "Lottery.findAll";
 
@@ -57,36 +55,29 @@ public class Lottery implements Serializable {
 
 	private double studentWinningPercentage;
 	private double maxStudentWinnings;
- 
-	private Integer winningNumber1; 
-	private Integer winningNumber2; 
-	private Integer winningNumber3; 
-	private Integer winningNumber4; 
-	private Integer winningNumber5; 
-	private Integer winningNumber6;
-	private Integer strategy; 
-	
-	public Integer getStrategy() {
-		return strategy;
-	}
 
-	public void setStrategy(Integer strategy) {
-		this.strategy = strategy;
-	}
-	
+	private Integer winningNumber1;
+	private Integer winningNumber2;
+	private Integer winningNumber3;
+	private Integer winningNumber4;
+	private Integer winningNumber5;
+	private Integer winningNumber6;
+	private Integer strategy;
+	private double unclaimedMoney;
+
 	@ManyToOne
-	@JoinColumn(name="universityID", referencedColumnName="id")
+	@JoinColumn(name = "universityID", referencedColumnName = "id")
 	private University university;
 
 	public Lottery() {
 	}
-	
+
 	public Lottery(Date drawingDate, Boolean fullMatchGuaranteed,
 			double lotteryTicketCost, int maxTicketsAllowedToPurchase,
-			int numberOfBallsAvailable,
-			int numberOfBallsPicked, Date purchaseEndDate,
-			Date purchaseStartDate, double studentWinningPercentage,
-			University university, double maxStudentWinnings, Integer strategy) {
+			int numberOfBallsAvailable, int numberOfBallsPicked,
+			Date purchaseEndDate, Date purchaseStartDate,
+			double studentWinningPercentage, University university,
+			double maxStudentWinnings, Integer strategy) {
 		super();
 		this.drawingDate = drawingDate;
 		this.fullMatchGuaranteed = fullMatchGuaranteed;
@@ -99,7 +90,7 @@ public class Lottery implements Serializable {
 		this.studentWinningPercentage = studentWinningPercentage;
 		this.university = university;
 		this.maxStudentWinnings = maxStudentWinnings;
-		this.strategy= strategy;
+		this.strategy = strategy;
 	}
 
 	public int getId() {
@@ -182,7 +173,6 @@ public class Lottery implements Serializable {
 		this.studentWinningPercentage = studentWinningPercentage;
 	}
 
-
 	public University getUniversity() {
 		return university;
 	}
@@ -190,14 +180,14 @@ public class Lottery implements Serializable {
 	public void setUniversity(University university) {
 		this.university = university;
 	}
-	
+
 	public String canPurchase() {
 		Date now = new Date();
-		if(now.after(purchaseStartDate) && now.before(purchaseEndDate))
+		if (now.after(purchaseStartDate) && now.before(purchaseEndDate))
 			return "yes";
-		else if(now.after(purchaseEndDate))
+		else if (now.after(purchaseEndDate))
 			return "late";
-		else if(now.before(purchaseStartDate))
+		else if (now.before(purchaseStartDate))
 			return "early";
 		return "no";
 	}
@@ -249,9 +239,9 @@ public class Lottery implements Serializable {
 	public void setWinningNumber6(Integer winningNumber6) {
 		this.winningNumber6 = winningNumber6;
 	}
-	
+
 	public void setWinningNumbers(Set<Integer> winningNumberSet) {
-		List<Integer> winningNumberList=new ArrayList<>(winningNumberSet);
+		List<Integer> winningNumberList = new ArrayList<>(winningNumberSet);
 		if (winningNumberSet.size() == 4) {
 			this.winningNumber1 = winningNumberList.get(0);
 			this.winningNumber2 = winningNumberList.get(1);
@@ -272,9 +262,9 @@ public class Lottery implements Serializable {
 			this.winningNumber6 = winningNumberList.get(5);
 		}
 	}
-	
+
 	public Set<Integer> getWinningNumbers() {
-		Set<Integer> winningNumberSet= new HashSet<>();
+		Set<Integer> winningNumberSet = new HashSet<>();
 		if (this.numberOfBallsPicked == 4) {
 			winningNumberSet.add(this.winningNumber1);
 			winningNumberSet.add(this.winningNumber2);
@@ -304,7 +294,7 @@ public class Lottery implements Serializable {
 	public void setMaxStudentWinnings(double maxStudentWinnings) {
 		this.maxStudentWinnings = maxStudentWinnings;
 	}
-	
+
 	@Transient
 	private String stringRepresentation;
 
@@ -312,8 +302,8 @@ public class Lottery implements Serializable {
 	 * @return the stringRepresentation
 	 */
 	public String getStringRepresentation() {
-		stringRepresentation = "[" + winningNumber1 + ", " + winningNumber2 + ", "
-				+ winningNumber3 + ", " + winningNumber4;
+		stringRepresentation = "[" + winningNumber1 + ", " + winningNumber2
+				+ ", " + winningNumber3 + ", " + winningNumber4;
 
 		if (getNumberOfBallsPicked() >= 5) {
 			stringRepresentation += ", " + winningNumber5;
@@ -333,4 +323,26 @@ public class Lottery implements Serializable {
 		this.stringRepresentation = stringRepresentation;
 	}
 
+	/**
+	 * @return the unclaimedMoney
+	 */
+	public double getUnclaimedMoney() {
+		return unclaimedMoney;
+	}
+
+	/**
+	 * @param unclaimedMoney
+	 *            the unclaimedMoney to set
+	 */
+	public void setUnclaimedMoney(double unclaimedMoney) {
+		this.unclaimedMoney = unclaimedMoney;
+	}
+
+	public Integer getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Integer strategy) {
+		this.strategy = strategy;
+	}
 }

@@ -48,19 +48,6 @@ public class CreateLotteryForm {
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
 	private Integer strategy; 
 	
-	/**
-	 * @return the strategy
-	 */
-	public Integer getStrategy() {
-		return strategy;
-	}
-	/**
-	 * @param strategy the strategy to set
-	 */
-	public void setStrategy(Integer strategy) {
-		this.strategy = strategy;
-	}
-
 	@NotNull(message = CreateLotteryForm.NOT_BLANK_MESSAGE)
 	private double maxStudentWinnings;
 	
@@ -140,5 +127,20 @@ public class CreateLotteryForm {
 				getPurchaseStartDate(), getStudentWinningPercentage(),
 				university, getMaxStudentWinnings(),getStrategy());
 	}
+	
+
+	/**
+	 * @return the strategy
+	 */
+	public Integer getStrategy() {
+		return strategy;
+	}
+	/**
+	 * @param strategy the strategy to set
+	 */
+	public void setStrategy(Integer strategy) {
+		this.strategy = strategy;
+	}
+
 	
 }
