@@ -33,7 +33,7 @@ public class MailSenderImpl {
 		senderImpl.setHost("smtp.gmail.com");
 		senderImpl.setPort(587);
 		senderImpl.setUsername("Sweng505team3@gmail.com");
-		senderImpl.setPassword("pennstate14");
+		senderImpl.setPassword("PennState!2");
 		Properties mailProps = new Properties();
 		mailProps.setProperty("mail.smtp.auth", "true");
 		mailProps.setProperty("mail.smtp.starttls.enable", "true");
@@ -80,7 +80,7 @@ public class MailSenderImpl {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
 
-            return new PasswordAuthentication("sweng505team3@gmail.com", "pennstate14");
+            return new PasswordAuthentication("sweng505team3@gmail.com", "PennState!2");
 
         }
     }
