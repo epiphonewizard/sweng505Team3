@@ -247,12 +247,15 @@ public class Lottery implements Serializable {
 			this.winningNumber2 = winningNumberList.get(1);
 			this.winningNumber3 = winningNumberList.get(2);
 			this.winningNumber4 = winningNumberList.get(3);
+			this.winningNumber5 = 0; 
+			this.winningNumber6 = 0;
 		} else if (winningNumberSet.size() == 5) {
 			this.winningNumber1 = winningNumberList.get(0);
 			this.winningNumber2 = winningNumberList.get(1);
 			this.winningNumber3 = winningNumberList.get(2);
 			this.winningNumber4 = winningNumberList.get(3);
 			this.winningNumber5 = winningNumberList.get(4);
+			this.winningNumber6 = 0; 
 		} else if (winningNumberSet.size() == 6) {
 			this.winningNumber1 = winningNumberList.get(0);
 			this.winningNumber2 = winningNumberList.get(1);

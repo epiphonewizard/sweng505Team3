@@ -123,6 +123,40 @@ public class TestLotteryServiceStrategy2 {
 	}
 
 	@Test
+	public void getMoneyRawCalculatedPerPersonCorrectedTest4() {
+		ArrayList<Integer> matchCount = new ArrayList<Integer>(3);
+		matchCount.add(0);
+		matchCount.add(0);
+		matchCount.add(3);
+		ArrayList<Double> rawCalculatedMoneyPerPerson = new ArrayList<Double>(3);
+		rawCalculatedMoneyPerPerson.add(0.0);
+		rawCalculatedMoneyPerPerson.add(0.0);
+		rawCalculatedMoneyPerPerson.add(7.2);
+
+		double fullRide = 2000;
+		LotteryService ls = new LotteryService();
+		ArrayList<ArrayList<Double>> retObj = ls
+				.getMoneyRawCalculatedPerPersonCorrected(
+						rawCalculatedMoneyPerPerson, fullRide, matchCount);
+
+		ArrayList<Double> remainder = retObj.get(0);
+		ArrayList<Double> adjusted = retObj.get(1);
+		ArrayList<Double> corrected = retObj.get(2);
+
+		assertEquals(remainder.get(0), 0.0, 0.001);
+		assertEquals(remainder.get(1), 0.0, 0.001);
+		assertEquals(remainder.get(2), 0.0, 0.001);
+
+		assertEquals(adjusted.get(0), 0.0, 0.001);
+		assertEquals(adjusted.get(1), 0.0, 0.001);
+		assertEquals(adjusted.get(2), 7.2, 0.001);
+
+		assertEquals(corrected.get(0), 0.0, 0.001);
+		assertEquals(corrected.get(1), 0.0, 0.001);
+		assertEquals(corrected.get(2), 7.2, 0.001);
+	}
+
+	@Test
 	public void convertTicketToSortedSetTest1() {
 		LotteryService ls = new LotteryService();
 		SortedSet<Integer> sorted = ls.convertTicketToSortedSet(20, 15, 18, 12,
