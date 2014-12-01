@@ -25,6 +25,7 @@ import com.studentLotto.support.mail.MessageCreator;
 @Service
 public class LotteryService {
 
+	private Hashtable<Long, ArrayList<Double>> winningTableByStudentId;
 	@Autowired
 	private LotteryRepository lotteryRepository;
 
@@ -121,33 +122,44 @@ public class LotteryService {
 					lottery.getMaxStudentWinnings(), 60.0, 10.0, 30.0, false);
 
 		} else if (lottery.getStrategy() == 1) {
-			List<LotteryTicket> fullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(lottery, lottery.getNumberOfBallsPicked());
-			List<LotteryTicket> oneOffFullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(lottery, lottery.getNumberOfBallsPicked() - 1);
-			List<LotteryTicket> twoOffFullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(lottery, lottery.getNumberOfBallsPicked() - 2);
+			List<LotteryTicket> fullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(
+					lottery, lottery.getNumberOfBallsPicked());
+			List<LotteryTicket> oneOffFullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(
+					lottery, lottery.getNumberOfBallsPicked() - 1);
+			List<LotteryTicket> twoOffFullMatchSet = identifyWinningTicketsBySpecifiedMatchAmount(
+					lottery, lottery.getNumberOfBallsPicked() - 2);
 
-			Double lotteryWinnings = lotteryRepository.calculateLotteryWinnings(lottery);
+			Double lotteryWinnings = lotteryRepository
+					.calculateLotteryWinnings(lottery);
 			Double maxWinningsPerStudent = lottery.getMaxStudentWinnings();
-			Double studentWinnings = lotteryWinnings * (lottery.getStudentWinningPercentage() / 100);
-			
+			Double studentWinnings = lotteryWinnings
+					* (lottery.getStudentWinningPercentage() / 100);
+
 			// full match payout
 			if (fullMatchSet.size() > 0) {
-				
-				Double winningsPerFullMatch = studentWinnings / fullMatchSet.size();
+
+				Double winningsPerFullMatch = studentWinnings
+						/ fullMatchSet.size();
 
 				if (winningsPerFullMatch > maxWinningsPerStudent) {
 					for (LotteryTicket ticket : fullMatchSet) {
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent){
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
@@ -156,66 +168,82 @@ public class LotteryService {
 							ticket.setPayout(maxWinningsPerStudent);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - maxWinningsPerStudent;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- maxWinningsPerStudent;
 						}
-					} 
+					}
 				} else {
 					for (LotteryTicket ticket : fullMatchSet) {
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + winningsPerFullMatch > maxWinningsPerStudent){
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + winningsPerFullMatch > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
-							} 
+							}
 						} else {
 							ticket.setPayout(winningsPerFullMatch);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - winningsPerFullMatch;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- winningsPerFullMatch;
 						}
 					}
 				}
 			}
-			
+
 			// one off full match payout
 			if (oneOffFullMatchSet.size() > 0 && studentWinnings > 0) {
-				
+
 				int eligibleWinners = 0;
-				
-				for (LotteryTicket ticket: oneOffFullMatchSet) {
-					if (purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId()) < maxWinningsPerStudent) {
+
+				for (LotteryTicket ticket : oneOffFullMatchSet) {
+					if (purchaseTicketRepo.findCurrentStudentWinnings(ticket
+							.getLottery().getId(), ticket.getStudent().getId()) < maxWinningsPerStudent) {
 						eligibleWinners++;
 					}
 				}
-				
-				Double winningsPerOneOffFullMatch = studentWinnings / eligibleWinners;
+
+				Double winningsPerOneOffFullMatch = studentWinnings
+						/ eligibleWinners;
 
 				if (winningsPerOneOffFullMatch > maxWinningsPerStudent) {
 					for (LotteryTicket ticket : oneOffFullMatchSet) {
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent){
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
@@ -224,34 +252,43 @@ public class LotteryService {
 							ticket.setPayout(maxWinningsPerStudent);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - maxWinningsPerStudent;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- maxWinningsPerStudent;
 						}
 					}
 				} else {
-					for (LotteryTicket ticket : oneOffFullMatchSet) {	
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + winningsPerOneOffFullMatch > maxWinningsPerStudent){
+					for (LotteryTicket ticket : oneOffFullMatchSet) {
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + winningsPerOneOffFullMatch > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
-							} 
+							}
 						} else {
 							ticket.setPayout(winningsPerOneOffFullMatch);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - winningsPerOneOffFullMatch;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- winningsPerOneOffFullMatch;
 						}
 					}
 				}
@@ -260,22 +297,28 @@ public class LotteryService {
 			// two off full match payout
 			if (twoOffFullMatchSet.size() > 0 && studentWinnings > 0) {
 
-				Double winningsPerTwoOffFullMatch = studentWinnings / twoOffFullMatchSet.size();
+				Double winningsPerTwoOffFullMatch = studentWinnings
+						/ twoOffFullMatchSet.size();
 
 				if (winningsPerTwoOffFullMatch > maxWinningsPerStudent) {
 					for (LotteryTicket ticket : twoOffFullMatchSet) {
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent){
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + maxWinningsPerStudent > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
@@ -284,47 +327,55 @@ public class LotteryService {
 							ticket.setPayout(maxWinningsPerStudent);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - maxWinningsPerStudent;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- maxWinningsPerStudent;
 						}
 					}
 				} else {
 					for (LotteryTicket ticket : twoOffFullMatchSet) {
-						
-						//determine how much the student has already won
-						Double currentStudentWinnings = purchaseTicketRepo.findCurrentStudentWinnings(ticket.getLottery().getId(), ticket.getStudent().getId());
-						
-						if (currentStudentWinnings + winningsPerTwoOffFullMatch > maxWinningsPerStudent){
+
+						// determine how much the student has already won
+						Double currentStudentWinnings = purchaseTicketRepo
+								.findCurrentStudentWinnings(ticket.getLottery()
+										.getId(), ticket.getStudent().getId());
+
+						if (currentStudentWinnings + winningsPerTwoOffFullMatch > maxWinningsPerStudent) {
 							if (maxWinningsPerStudent - currentStudentWinnings > 0) {
-								ticket.setPayout(maxWinningsPerStudent - currentStudentWinnings);
+								ticket.setPayout(maxWinningsPerStudent
+										- currentStudentWinnings);
 								ticket.setWinFlag(1);
 								ticket.setWinDescription("Student already won for this lottery. Increasing payout to the maximum amount.");
 								purchaseTicketRepo.update(ticket);
-								notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-								studentWinnings = studentWinnings - (maxWinningsPerStudent - currentStudentWinnings);
+								notifyWinners(ticket.getStudent().getId(),
+										ticket.getPayout());
+								studentWinnings = studentWinnings
+										- (maxWinningsPerStudent - currentStudentWinnings);
 							} else {
 								ticket.setWinDescription("Maximum win amount reached for this lottery.");
 								purchaseTicketRepo.update(ticket);
-							} 
+							}
 						} else {
 							ticket.setPayout(winningsPerTwoOffFullMatch);
 							ticket.setWinFlag(1);
 							purchaseTicketRepo.update(ticket);
-							notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
-							studentWinnings = studentWinnings - winningsPerTwoOffFullMatch;
+							notifyWinners(ticket.getStudent().getId(),
+									ticket.getPayout());
+							studentWinnings = studentWinnings
+									- winningsPerTwoOffFullMatch;
 						}
 					}
 				}
 			}
-			
-			//set remainder to the unclaimed money
+
+			// set remainder to the unclaimed money
 			if (studentWinnings > 0) {
 				lottery.setUnclaimedMoney(studentWinnings);
 				lotteryRepository.update(lottery);
 			}
 		}
 	}
-
 
 	private List<LotteryTicket> identifyWinningTicketsBySpecifiedMatchAmount(
 			Lottery lottery, int ballsToMatch) {
@@ -364,7 +415,7 @@ public class LotteryService {
 			double fullRide, double jackpotGroupPercentage,
 			double secondGroupPercentage, double thirdGroupPercentage,
 			boolean isTest) {
-
+		winningTableByStudentId = new Hashtable<Long, ArrayList<Double>>();
 		// get the group weight
 		if (((jackpotGroupPercentage + secondGroupPercentage + thirdGroupPercentage) != 100.0)) {
 			System.out.println("Error: Percentages do not amount to 100% ");
@@ -511,7 +562,7 @@ public class LotteryService {
 				&& matchingTicketPerGroupAdjusted.get(1) == 0
 				&& matchingTicketPerGroupAdjusted.get(2) == 0) {
 			unclaminedMoney = reDistributeRemainingDollars(winningTable,
-					lotteryPot, ballCount, fullRide, lottery, false);
+					lotteryPot, ballCount, fullRide, lottery, fullRide, false);
 			// save unclaimed money to the database
 			return winningTable;
 		} else {
@@ -546,7 +597,7 @@ public class LotteryService {
 			ArrayList<Double> corrected = (ArrayList<Double>) retObj.get(2);
 
 			double totalPayoutForTopThreeGroups = getTotalPayoutForTopThreeGroupsAndIssuePayout(
-					corrected, winningTable, isTest);
+					corrected, winningTable, fullRide, isTest);
 			if (totalPayoutForTopThreeGroups > lotteryPot) {
 				// System.out
 				// .println("SOmething went wrong!: we paid more than what we have in the pot!");
@@ -567,7 +618,7 @@ public class LotteryService {
 				unclaminedMoney = reDistributeRemainingDollars(winningTable,
 						remainderAfterPayout, ballCount,
 						getMinPersonPayout(corrected, matchingTicketPerGroup),
-						lottery, isTest);
+						lottery, fullRide, isTest);
 
 				// save unclaimed money to the database
 			}
@@ -942,14 +993,16 @@ public class LotteryService {
 	public double getTotalPayoutForTopThreeGroupsAndIssuePayout(
 			ArrayList<Double> corrected,
 			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
-			boolean isTest) {
+			double fullRide, boolean isTest) {
 		double topThreeCategoriesTotal = 0.0;
 		double keepTrackOfTotal = 0.0;
 		Set<Integer> keys = winningTable.keySet();
 		Iterator<LotteryTicket> it = null;
 		LotteryTicket currTicket = null;
-
-		System.out.println("corrected: " + corrected.toString());
+		Set<Long> studentKeys = null;
+		double amountWonSoFar = 0.0;
+		System.out.println("corrected: " + corrected.toString() + "  "
+				+ winningTable.toString());
 
 		if (keys.contains(new Integer(1))) {
 			topThreeCategoriesTotal += (corrected.get(0) * winningTable.get(1)
@@ -967,13 +1020,29 @@ public class LotteryService {
 		double firstCateogryWinning = corrected.get(0);
 		double secondCateogryWinning = corrected.get(1);
 		double thirdCateogryWinning = corrected.get(2);
+
 		if (keys.contains(new Integer(1))) {
+			studentKeys = winningTableByStudentId.keySet();
+
 			LinkedList<LotteryTicket> firstCategoryTickets = winningTable
 					.get(1);
 			it = firstCategoryTickets.iterator();
 
 			while (it.hasNext()) {
 				currTicket = it.next();
+
+				if (studentKeys.contains(currTicket.getStudent().getId())) {
+					amountWonSoFar = calculateAmountWonSoFar(winningTableByStudentId
+							.get(currTicket.getStudent().getId()));
+					if (amountWonSoFar + firstCateogryWinning > fullRide) {
+						continue;
+					}
+				} else {
+					ArrayList<Double> winningAmount = new ArrayList<Double>();
+					winningAmount.add(firstCateogryWinning);
+					winningTableByStudentId.put(
+							currTicket.getStudent().getId(), winningAmount);
+				}
 				currTicket.setWinFlag(1);
 				currTicket.setWinDescription("Jackpot");
 				currTicket.setPayout(firstCateogryWinning);
@@ -987,11 +1056,26 @@ public class LotteryService {
 			}
 		}
 		if (keys.contains(new Integer(2))) {
+			studentKeys = winningTableByStudentId.keySet();
 			LinkedList<LotteryTicket> secondCategoryTickets = winningTable
 					.get(2);
 			it = secondCategoryTickets.iterator();
+
 			while (it.hasNext()) {
 				currTicket = it.next();
+
+				if (studentKeys.contains(currTicket.getStudent().getId())) {
+					amountWonSoFar = calculateAmountWonSoFar(winningTableByStudentId
+							.get(currTicket.getStudent().getId()));
+					if (amountWonSoFar + secondCateogryWinning > fullRide) {
+						continue;
+					}
+				} else {
+					ArrayList<Double> winningAmount = new ArrayList<Double>();
+					winningAmount.add(secondCateogryWinning);
+					winningTableByStudentId.put(
+							currTicket.getStudent().getId(), winningAmount);
+				}
 				currTicket.setWinFlag(1);
 				currTicket.setWinDescription("Jackpot-1");
 				currTicket.setPayout(secondCateogryWinning);
@@ -1005,11 +1089,25 @@ public class LotteryService {
 			}
 		}
 		if (keys.contains(new Integer(3))) {
+			studentKeys = winningTableByStudentId.keySet();
 			LinkedList<LotteryTicket> thirdCategoryTickets = winningTable
 					.get(3);
 			it = thirdCategoryTickets.iterator();
 			while (it.hasNext()) {
 				currTicket = it.next();
+
+				if (studentKeys.contains(currTicket.getStudent().getId())) {
+					amountWonSoFar = calculateAmountWonSoFar(winningTableByStudentId
+							.get(currTicket.getStudent().getId()));
+					if (amountWonSoFar + thirdCateogryWinning > fullRide) {
+						continue;
+					}
+				} else {
+					ArrayList<Double> winningAmount = new ArrayList<Double>();
+					winningAmount.add(thirdCateogryWinning);
+					winningTableByStudentId.put(
+							currTicket.getStudent().getId(), winningAmount);
+				}
 				currTicket.setWinFlag(1);
 				currTicket.setWinDescription("Jackpot-2");
 				currTicket.setPayout(thirdCateogryWinning);
@@ -1034,7 +1132,7 @@ public class LotteryService {
 	public double reDistributeRemainingDollars(
 			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
 			double dollarAmount, int ballCount, double maxAmountPerPerson,
-			Lottery lottery, boolean isTest) {
+			Lottery lottery, double fullRide, boolean isTest) {
 		double unclaimedMoney = 0.0;
 		double paidSoFar = 0.0;
 		LinkedList<LotteryTicket> currTicketList = null;
@@ -1042,6 +1140,8 @@ public class LotteryService {
 		Iterator<LotteryTicket> it = null;
 		double toPay = 0.0;
 		boolean done = false;
+		double amountWonSoFar = 0.0;
+		Set<Long> studentKeys = null;
 		Set<Integer> keys = winningTable.keySet();
 		for (int i = 4; i <= ballCount + 1; i++) {
 			// if we dont have any winner in this category, then move on
@@ -1061,8 +1161,21 @@ public class LotteryService {
 				done = true;
 			}
 			it = currTicketList.iterator();
+			studentKeys = winningTableByStudentId.keySet();
 			while (it.hasNext()) {
 				currTicket = it.next();
+				if (studentKeys.contains(currTicket.getStudent().getId())) {
+					amountWonSoFar = calculateAmountWonSoFar(winningTableByStudentId
+							.get(currTicket.getStudent().getId()));
+					if (amountWonSoFar + maxAmountPerPerson > fullRide) {
+						continue;
+					}
+				} else {
+					ArrayList<Double> winningAmount = new ArrayList<Double>();
+					winningAmount.add(maxAmountPerPerson);
+					winningTableByStudentId.put(
+							currTicket.getStudent().getId(), winningAmount);
+				}
 				currTicket.setWinDescription("Secondary winning");
 				currTicket.setWinFlag(1);
 				currTicket.setPayout(toPay);
@@ -1116,5 +1229,14 @@ public class LotteryService {
 		}
 
 		return minPersonPayout;
+	}
+
+	public double calculateAmountWonSoFar(ArrayList<Double> amountWon) {
+		double total = 0.0;
+		Iterator<Double> it = amountWon.iterator();
+		while (it.hasNext()) {
+			total += it.next();
+		}
+		return total;
 	}
 }

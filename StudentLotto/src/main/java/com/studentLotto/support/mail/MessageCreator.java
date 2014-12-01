@@ -97,8 +97,8 @@ public class MessageCreator {
 				+ "        Congratulations! You are amongst the Lottery Winner - Student Lotto\n"
 				+ "    </h1>\n"
 				+ "<p class=\"lead\">\n"
-				+ "   One your lottery ticket had a match with the winning numbers.\n"
-				+ "   Please contact the administrator to claim your price of ${amount} dollars.\n"
+				+ "   One of your lottery tickets had a match with the winning numbers.\n"
+				+ "   Please contact the administrator to claim your prize of ${amount} dollars.\n"
 				+ "</p>\n"
 				+ "</body>\n" + "</html>";
 

@@ -329,7 +329,7 @@ public class LotteryTicket implements Serializable {
 
 	// the id is auto increment . This constructor is only used for testing
 	public LotteryTicket(int id, int first, int second, int third, int fourth,
-			int fifth, int sixth) {
+			int fifth, int sixth, long sid) {
 		this.id = id;
 		this.firstNumber = first;
 		this.secondNumber = second;
@@ -337,6 +337,9 @@ public class LotteryTicket implements Serializable {
 		this.fourthNumber = fourth;
 		this.fifthNumber = fifth;
 		this.sixthNumber = sixth;
+		Student s = new Student();
+		s.setId(sid);
+		setStudent(s);
 	}
 
 }
