@@ -784,59 +784,78 @@ public class LotteryService {
 			boolean isTest) {
 		double topThreeCategoriesTotal = 0.0;
 		double keepTrackOfTotal = 0.0;
-		topThreeCategoriesTotal = (corrected.get(0) * winningTable.get(1)
-				.size())
-				+ (corrected.get(1) * winningTable.get(2).size())
-				+ (corrected.get(2) * winningTable.get(3).size());
+		Set<Integer> keys = winningTable.keySet();
+		Iterator<LotteryTicket> it = null;
+		LotteryTicket currTicket = null;
+		if (keys.contains(new Integer(1))) {
+			topThreeCategoriesTotal += (corrected.get(0) * winningTable.get(1)
+					.size());
+		}
+		if (keys.contains(new Integer(2))) {
+			topThreeCategoriesTotal += (corrected.get(1) * winningTable.get(2)
+					.size());
+		}
+		if (keys.contains(new Integer(3))) {
+			topThreeCategoriesTotal += (corrected.get(2) * winningTable.get(3)
+					.size());
+		}
 
 		double firstCateogryWinning = corrected.get(0);
 		double secondCateogryWinning = corrected.get(1);
 		double thirdCateogryWinning = corrected.get(2);
+		if (keys.contains(new Integer(1))) {
+			LinkedList<LotteryTicket> firstCategoryTickets = winningTable
+					.get(1);
+			it = firstCategoryTickets.iterator();
 
-		LinkedList<LotteryTicket> firstCategoryTickets = winningTable.get(1);
-		Iterator<LotteryTicket> it = firstCategoryTickets.iterator();
-		LotteryTicket currTicket = null;
-		while (it.hasNext()) {
-			currTicket = it.next();
-			currTicket.setWinFlag(1);
-			currTicket.setWinDescription("Jackpot");
-			currTicket.setPayout(firstCateogryWinning);
-			keepTrackOfTotal += firstCateogryWinning;
-			// save to database
-			if (isTest == false) {
-				notifyWinners(currTicket.getStudent().getId(),
-						firstCateogryWinning);
-				purchaseTicketRepo.update(currTicket);
+			while (it.hasNext()) {
+				currTicket = it.next();
+				currTicket.setWinFlag(1);
+				currTicket.setWinDescription("Jackpot");
+				currTicket.setPayout(firstCateogryWinning);
+				keepTrackOfTotal += firstCateogryWinning;
+				// save to database
+				if (isTest == false) {
+					notifyWinners(currTicket.getStudent().getId(),
+							firstCateogryWinning);
+					purchaseTicketRepo.update(currTicket);
+				}
 			}
 		}
-		LinkedList<LotteryTicket> secondCategoryTickets = winningTable.get(2);
-		it = secondCategoryTickets.iterator();
-		while (it.hasNext()) {
-			currTicket = it.next();
-			currTicket.setWinFlag(1);
-			currTicket.setWinDescription("Jackpot-1");
-			currTicket.setPayout(secondCateogryWinning);
-			keepTrackOfTotal += secondCateogryWinning;
-			// save to database
-			if (isTest == false) {
-				notifyWinners(currTicket.getStudent().getId(),
-						secondCateogryWinning);
-				purchaseTicketRepo.update(currTicket);
+		if (keys.contains(new Integer(2))) {
+			LinkedList<LotteryTicket> secondCategoryTickets = winningTable
+					.get(2);
+			it = secondCategoryTickets.iterator();
+			while (it.hasNext()) {
+				currTicket = it.next();
+				currTicket.setWinFlag(1);
+				currTicket.setWinDescription("Jackpot-1");
+				currTicket.setPayout(secondCateogryWinning);
+				keepTrackOfTotal += secondCateogryWinning;
+				// save to database
+				if (isTest == false) {
+					notifyWinners(currTicket.getStudent().getId(),
+							secondCateogryWinning);
+					purchaseTicketRepo.update(currTicket);
+				}
 			}
 		}
-		LinkedList<LotteryTicket> thirdCategoryTickets = winningTable.get(3);
-		it = thirdCategoryTickets.iterator();
-		while (it.hasNext()) {
-			currTicket = it.next();
-			currTicket.setWinFlag(1);
-			currTicket.setWinDescription("Jackpot-2");
-			currTicket.setPayout(thirdCateogryWinning);
-			keepTrackOfTotal += thirdCateogryWinning;
-			// save to database
-			if (isTest == false) {
-				notifyWinners(currTicket.getStudent().getId(),
-						thirdCateogryWinning);
-				purchaseTicketRepo.update(currTicket);
+		if (keys.contains(new Integer(3))) {
+			LinkedList<LotteryTicket> thirdCategoryTickets = winningTable
+					.get(3);
+			it = thirdCategoryTickets.iterator();
+			while (it.hasNext()) {
+				currTicket = it.next();
+				currTicket.setWinFlag(1);
+				currTicket.setWinDescription("Jackpot-2");
+				currTicket.setPayout(thirdCateogryWinning);
+				keepTrackOfTotal += thirdCateogryWinning;
+				// save to database
+				if (isTest == false) {
+					notifyWinners(currTicket.getStudent().getId(),
+							thirdCateogryWinning);
+					purchaseTicketRepo.update(currTicket);
+				}
 			}
 		}
 		keepTrackOfTotal = Math.round(keepTrackOfTotal);
@@ -850,8 +869,8 @@ public class LotteryService {
 
 	public double reDistributeRemainingDollars(
 			Hashtable<Integer, LinkedList<LotteryTicket>> winningTable,
-			double dollarAmount, int ballCount, double maxAmountPerPerson, Lottery lottery,
-			boolean isTest) {
+			double dollarAmount, int ballCount, double maxAmountPerPerson,
+			Lottery lottery, boolean isTest) {
 		double unclaimedMoney = 0.0;
 		double paidSoFar = 0.0;
 		LinkedList<LotteryTicket> currTicketList = null;
@@ -859,7 +878,12 @@ public class LotteryService {
 		Iterator<LotteryTicket> it = null;
 		double toPay = 0.0;
 		boolean done = false;
+		Set<Integer> keys = winningTable.keySet();
 		for (int i = 4; i <= ballCount + 1; i++) {
+			// if we dont have any winner in this category, then move on
+			if (!keys.contains(new Integer(i))) {
+				continue;
+			}
 			currTicketList = winningTable.get(i);
 			// deduct the paid so far amount and divide among all tickets within
 			// that list.
@@ -892,12 +916,12 @@ public class LotteryService {
 			}
 		}
 		unclaimedMoney = dollarAmount - paidSoFar;
-		
+
 		lottery.setUnclaimedMoney(unclaimedMoney);
-		if(isTest == false){
+		if (isTest == false) {
 			lotteryRepository.update(lottery);
 		}
-		
+
 		return unclaimedMoney;
 	}
 
