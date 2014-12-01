@@ -297,8 +297,17 @@ public class LotteryService {
 			// two off full match payout
 			if (twoOffFullMatchSet.size() > 0 && studentWinnings > 0) {
 
+				int eligibleWinners = 0;
+
+				for (LotteryTicket ticket : twoOffFullMatchSet) {
+					if (purchaseTicketRepo.findCurrentStudentWinnings(ticket
+							.getLottery().getId(), ticket.getStudent().getId()) < maxWinningsPerStudent) {
+						eligibleWinners++;
+					}
+				}
+
 				Double winningsPerTwoOffFullMatch = studentWinnings
-						/ twoOffFullMatchSet.size();
+						/ eligibleWinners;
 
 				if (winningsPerTwoOffFullMatch > maxWinningsPerStudent) {
 					for (LotteryTicket ticket : twoOffFullMatchSet) {
