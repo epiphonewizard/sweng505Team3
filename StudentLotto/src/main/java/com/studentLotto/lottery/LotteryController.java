@@ -156,4 +156,18 @@ public class LotteryController {
 		}
 	}
 	
+	@RequestMapping(value="/runLottery", method=RequestMethod.GET)
+	public void draw(Integer lotteryId, String key){
+		if("M0neyDr3ams".equals(key)) {
+			Lottery lottery = lotteryRepository.findOne(lotteryId);	
+			List<LotteryTicket> lotteryTickets = purchaseTicketRepo.findPaidTicketsForLottery(lotteryId);
+			if (lotteryTickets.size() > 0) {
+				lotteryService.drawWinningNumbers(lottery, lotteryTickets);
+				lotteryService.payoutLottery(lottery);
+			}
+		}
+		
+		
+	}
+	
 }
