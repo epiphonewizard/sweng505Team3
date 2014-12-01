@@ -25,7 +25,6 @@ import java.util.Set;
 	@NamedQuery(name = LotteryTicket.FIND_PAID_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1"),
 	@NamedQuery(name = LotteryTicket.FIND_WINNING_TICKETS_FOR_LOTTERY, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND winFlag = 1"),
 	@NamedQuery(name = LotteryTicket.FIND_WINNING_TICKETS_FOR_STUDENT, query = "select l from LotteryTicket l WHERE student.id = :studentId AND winFlag = 1"),
-	//@NamedQuery(name = LotteryTicket.FIND_ACTIVE_LOTTERIES, query = "select l from LotteryTicket l WHERE lotteryId = :lotteryId AND paymentComplete = 1")
 })
 
 public class LotteryTicket implements Serializable {
@@ -36,7 +35,6 @@ public class LotteryTicket implements Serializable {
 	public static final String FIND_PAID_TICKETS_FOR_LOTTERY = "LotteryTicket.findTicketsForLottery";
 	public static final String FIND_WINNING_TICKETS_FOR_LOTTERY = "LotteryTicket.findWinningTicketsForLottery";
 	public static final String FIND_WINNING_TICKETS_FOR_STUDENT = "LotteryTicket.FIND_WINNING_TICKETS_FOR_STUDENT";
-	//public static final String FIND_ACTIVE_LOTTERIES = "LotteryTicket.findActiveLotteries";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -21,15 +21,7 @@
 	      changeYear: true,
 	      yearRange: "c-100:c",
 	      timeFormat: "hh:mm tt"
-	    });
-	    
-	    $("#maxStudentWinnings").change(function(){
-			  if(isNaN(parseFloat($("#maxWinnings").val()))){
-				  alert("Maximum Student Winnings must be a valid number.")
-				  $("#maxWinnings").val("0.0")
-			  }
-		  })
-	 
+	    });	 
 	  
 	  $( "#numberOfBallsAvailableSlider" ).slider({
 	      range: "max",

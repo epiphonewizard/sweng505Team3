@@ -137,6 +137,19 @@ public class PurchaseTicketRepo {
 		}
 
 	}
-
-
+	
+	public Double findCurrentStudentWinnings(int lotteryId, Long studentId) {
+		Double currentStudentWinnings = 0.0;
+		
+		List<LotteryTicket> studentTicketsForLottery = findStudentTicketsForUpcomingLottery(studentId, lotteryId);
+		
+		for (LotteryTicket ticket : studentTicketsForLottery) {
+			if (ticket.getWinFlag() == 1) {
+				currentStudentWinnings = ticket.getPayout() + currentStudentWinnings;
+			}	
+		}
+		
+		return currentStudentWinnings;
+	}
+	
 }
