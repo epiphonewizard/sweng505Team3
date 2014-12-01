@@ -68,12 +68,13 @@ public class LotteryService {
 				lottery.getNumberOfBallsAvailable());
 
 		if (lottery.getFullMatchGuaranteed()) {
-			if (atLeastOneFullMatch(lotteryTickets, winningNumberSet)) {
-				lottery.setWinningNumbers(winningNumberSet);
-				lotteryRepository.update(lottery);
-			} else {
-				drawWinningNumbers(lottery, lotteryTickets);
-			}
+			while (!atLeastOneFullMatch(lotteryTickets, winningNumberSet)) {
+				winningNumberSet = pickRandom(
+						lottery.getNumberOfBallsPicked(),
+						lottery.getNumberOfBallsAvailable());
+			} 
+			lottery.setWinningNumbers(winningNumberSet);
+			lotteryRepository.update(lottery);
 
 		} else {
 			lottery.setWinningNumbers(winningNumberSet);
@@ -142,6 +143,7 @@ public class LotteryService {
 						ticket.setPayout(maxWinningsPerStudent);
 						ticket.setWinFlag(1);
 						purchaseTicketRepo.update(ticket);
+						//notifyWinners(ticket.getStudent().getId(), ticket.getPayout());
 						studentWinnings = studentWinnings
 								- maxWinningsPerStudent;
 					}

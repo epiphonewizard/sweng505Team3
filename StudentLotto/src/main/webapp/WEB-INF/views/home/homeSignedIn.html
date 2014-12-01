@@ -54,23 +54,23 @@
 <body>
 <div th:replace="fragments/header :: header">&nbsp;</div>
 <div class="container">
-    <!-- /* Handle the flash message */-->
-    <th:block th:if="${message != null}">
-        <!-- /* The message code is returned from the @Controller */ -->
-		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
-		<th:block th:if="${message.message == 'addUniversity.success'}">
-	      	<h1>University Successfully Added</h1>
-	    </th:block>
-	    <th:block th:if="${message.message == 'editUniversity.success'}">
-	      	<h1>University Successfully Updated</h1>
-	    </th:block>
-	     <th:block th:if="${message.message == 'ticket.edit.anonymousStudent'}">
-	   <div th:replace="fragments/alert :: alert (type='danger', message='Your session had expired. Please sign in and try again.')">Alert</div>
-	    </th:block>
-    </th:block>
     
     <th:block th:if="${student}">
 	    <div id="University" class="form-narrow form-horizontal">
+	    	<!-- /* Handle the flash message */-->
+		    <th:block th:if="${message != null}">
+		        <!-- /* The message code is returned from the @Controller */ -->
+				<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div>
+				<th:block th:if="${message.message == 'addUniversity.success'}">
+			      	<h1>University Successfully Added</h1>
+			    </th:block>
+			    <th:block th:if="${message.message == 'editUniversity.success'}">
+			      	<h1>University Successfully Updated</h1>
+			    </th:block>
+			     <th:block th:if="${message.message == 'ticket.edit.anonymousStudent'}">
+			   <div th:replace="fragments/alert :: alert (type='danger', message='Your session had expired. Please sign in and try again.')">Alert</div>
+			    </th:block>
+		    </th:block>
 	    	<fieldset>
 	    		<legend>My Lotteries</legend>
 	    		<p>
